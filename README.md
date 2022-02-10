@@ -18,7 +18,7 @@ For production environment
 $ git clone git@github.com:gaato/gaato.net.git gaato_net
 $ cd gaato_net
 $ pip install -r requirements.txt
-$ echo "ALLOWED_HOSTS = <Your Host Name>" > .env
+$ echo "ALLOWED_HOSTS=<Your Host Name>" > .env
 $ python gaato_net/generate_secretkey_setting.py > gaato_net/local_settings.py
 $ sudo docker build -t tex ./container # To host LaTeX API. It takes long time.
 $ # Use nginx and gunicorn or something
