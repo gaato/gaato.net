@@ -21,7 +21,7 @@ $ pip install -r requirements.txt
 $ echo "ALLOWED_HOSTS = <Your Host Name>" > .env
 $ python gaato_net/generate_secretkey_setting.py > gaato_net/local_settings.py
 $ sudo docker build -t tex ./container # To host LaTeX API. It takes long time.
-$ python manage.py runserver
+$ # Use nginx and gunicorn or something
 ```
 
 For development environment
