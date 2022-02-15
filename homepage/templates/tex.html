@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}LaTeX を画像化 or PDF 化{% endblock %}
+
+{% block contents %}
+  <div class="form-check form-check-radio form-check-inline">
+    <label class="form-check-label">
+      <input class="form-check-input" type="radio" name="type" id="png" value="png"> PNG
+      <span class="form-check-sign"></span>
+    </label>
+  </div>
+
+  <div class="form-check form-check-radio form-check-inline">
+    <label class="form-check-label">
+      <input class="form-check-input" type="radio" name="type" id="pdf" value="pdf"> PDF
+      <span class="form-check-sign"></span>
+    </label>
+  </div>
+
+  <div class="form-check">
+    <label class="form-check-label">
+        <input class="form-check-input" type="checkbox" id="math-mode" value="" checked>
+        数式モード（align* 環境）
+        <span class="form-check-sign">
+            <span class="check"></span>
+        </span>
+    </label>
+  </div>
+
+  <div class="form-group">
+    <textarea class="" id="code" rows="30" cols="100"></textarea>
+  </div>
+
+  <button class="btn btn-info" id="submit">Submit</button>
+
+  <div id="result"></div>
+
+  <pre>
+    <code id="error"></code>
+  </pre>
+{% endblock %}
+
+{% block javascript %}
+  <script src="{% static 'js/tex.js' %}" type="text/javascript"></script>
+{% endblock %}
