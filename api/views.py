@@ -52,7 +52,7 @@ class TexView(APIView):
                         'error': 'timeout',
                     }
                 case _:
-                    return Response(None, 500)
+                    return Response(None, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             return Response(result)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
