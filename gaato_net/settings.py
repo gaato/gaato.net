@@ -14,3 +14,5 @@ DEBUG = False
 
 ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS')]
 
+
+STATIC_ROOT = '/usr/share/nginx/html/static'
