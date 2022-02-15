@@ -13,7 +13,7 @@ class TexView(APIView):
             match serializer.data['type']:
                 case 'pdf':
                     r = subprocess.run(
-                        ['docker', 'run', '--rm', '-i', 'tex', 'texpdf.py', '-p'],
+                        ['sudo', 'docker', 'run', '--rm', '-i', 'tex', 'texpdf.py', '-p'],
                         input=serializer.data['code'],
                         stdout=subprocess.PIPE,
                         text=True,
@@ -21,14 +21,14 @@ class TexView(APIView):
                 case 'png':
                     if serializer.data.get('plain', False):
                         r = subprocess.run(
-                            ['docker', 'run', '--rm', '-i', 'tex', 'tex.py', '-p'],
+                            ['sudo', 'docker', 'run', '--rm', '-i', 'tex', 'tex.py', '-p'],
                             input=serializer.data['code'],
                             stdout=subprocess.PIPE,
                             text=True,
                         )
                     else:
                         r = subprocess.run(
-                            ['docker', 'run', '--rm', '-i', 'tex', 'tex.py'],
+                            ['sudo', 'docker', 'run', '--rm', '-i', 'tex', 'tex.py'],
                             input=serializer.data['code'],
                             stdout=subprocess.PIPE,
                             text=True,
