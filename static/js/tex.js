@@ -1,4 +1,4 @@
-var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
+const editor = CodeMirror.fromTextArea(document.getElementById('code'), {
   lineNumbers: true,
   mode: 'stex',
 });
@@ -25,13 +25,16 @@ $('#submit').on('click', function () {
     },
   })
     .done(function (data) {
-      console.log(data);
       switch (data.status) {
         case 0:
           if (type === 'png') {
             $('#result').html(`<img src="data:image/png;base64,${data.result}">`);
           } else {
-            $('#result').html(`<embed style="position:absolute; left: 0; top: 0;" width="100%" height="100%" type="application/pdf" src="data:application/pdf;base64,${data.result}" />`);
+            const nwin = window.open('', 'Newwindow');
+            nwin.document.open();
+            nwin.document.write('<html>');
+            nwin.document.write(`<embed style="position:absolute; left: 0; top: 0;" width="100%" height="100%" type="application/pdf" src="data:application/pdf;base64,${data.result}" />`);
+            nwin.document.write('</html>');
           }
           break;
         case 1:
