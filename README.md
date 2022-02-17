@@ -6,7 +6,7 @@ Copyright 2022 Gakuto Furuya
 
 My homepage and LaTeX API.
 
-This includes [Bootstrap](https://github.com/twbs/bootstrap) and [Now UI Kit](https://github.com/creativetimofficial/now-ui-kit).
+This includes [Now UI Kit](https://github.com/creativetimofficial/now-ui-kit) and [CodeMirror](https://github.com/codemirror/codemirror).
 
 ## Requirements
 
