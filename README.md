@@ -1,5 +1,7 @@
 # gaato.net
 
+Copyright 2022 Gakuto Furuya
+
 ## What is this
 
 My homepage and LaTeX API.
