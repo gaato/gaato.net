@@ -1,4 +1,54 @@
 body {
-    background-image: url(../img/p0526_m.jfif);
-    background-size: contain;
+  background: url(../img/party_inko.gif) repeat;
+  background-color: #000;
+  background-size: 90px;
+  opacity: 1;
+}
+
+@keyframes rainbow{
+  12%{color:#ff5353;}
+  24%{color:#ffcf53;}
+  36%{color:#e8ff53;}
+  48%{color:#53ff5d;}
+  60%{color:#53ffbc;}
+  72%{color:#5393ff;}
+  84%{color:#ca53ff;}
+  100%{color:#ff53bd;}
+}
+
+*:not(.CodeMirror *) {
+  animation: rainbow 3s infinite;
+}
+
+.sidebar-collapse .navbar-collapse:before {
+  background: linear-gradient(#2CA8FF 0%, #000 80%);
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.n-logo {
+  animation: 9s linear infinite rotation ;
+}
+
+@font-face {
+  font-family: 'HackGen';
+  src: url(../fonts/HackGen-Regular.ttf) format(opentype);
+}
+
+
+.CodeMirror pre.CodeMirror-line,
+.CodeMirror pre.CodeMirror-line-like,
+code {
+  font-family: 'HackGen' !important;
+}
+
+.error {
+  background-color: #000;
 }

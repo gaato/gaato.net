@@ -5,6 +5,7 @@
 
 {% block css %}
   <link rel="stylesheet" href="{% static 'css/codemirror.css' %}">
+  <link rel="stylesheet" href="{% static 'css/theme/monokai.css' %}">
 {% endblock %}
 
 {% block active_tex %}active{% endblock %}
@@ -42,7 +43,7 @@
 
   <div id="result"></div>
 
-  <pre>
+  <pre class="error">
     <code id="error"></code>
   </pre>
 {% endblock %}

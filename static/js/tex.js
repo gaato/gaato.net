@@ -1,6 +1,7 @@
 const editor = CodeMirror.fromTextArea(document.getElementById('code'), {
   lineNumbers: true,
   mode: 'stex',
+  theme: 'monokai',
 });
 
 $('#submit').on('click', function () {
