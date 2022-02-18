@@ -3,6 +3,7 @@ body {
   background-color: #000;
   background-size: 90px;
   opacity: 1;
+  font-family: "M PLUS Rounded 1c";
 }
 
 @keyframes rainbow{
@@ -16,7 +17,7 @@ body {
   100%{color:#ff53bd;}
 }
 
-*:not(.CodeMirror *) {
+*:not(.CodeMirror *, .card-body *) {
   animation: rainbow 3s infinite;
 }
 
@@ -37,11 +38,14 @@ body {
   animation: 9s linear infinite rotation ;
 }
 
+h6 {
+  text-transform: unset;
+}
+
 @font-face {
   font-family: 'HackGen';
   src: url(../fonts/HackGen-Regular.ttf) format(opentype);
 }
-
 
 .CodeMirror pre.CodeMirror-line,
 .CodeMirror pre.CodeMirror-line-like,
