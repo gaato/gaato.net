@@ -12,3 +12,5 @@ COPY ./tex-template /tex-template
 
 RUN chmod +x /usr/local/bin/tex.py \
   && chmod +x /usr/local/bin/texpdf.py
+
+RUN kanji-config-updmap-sys haranoaji
