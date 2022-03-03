@@ -6,7 +6,7 @@ Copyright 2022 Gakuto Furuya
 
 My homepage and LaTeX API.
 
-This includes [Now UI Kit](https://github.com/creativetimofficial/now-ui-kit), [CodeMirror](https://github.com/codemirror/codemirror) and [HackGen](https://github.com/yuru7/HackGen).
+This includes [Honoka](https://github.com/windyakin/Honoka), [CodeMirror](https://github.com/codemirror/codemirror) and [HackGen](https://github.com/yuru7/HackGen).
 
 ## Requirements
 

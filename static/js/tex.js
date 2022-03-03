@@ -1,7 +1,7 @@
 const editor = CodeMirror.fromTextArea(document.getElementById('code'), {
   lineNumbers: true,
   mode: 'stex',
-  theme: 'monokai',
+  theme: 'the-matrix',
 });
 
 $('#submit').on('click', function () {
@@ -68,6 +68,7 @@ $('#pdf').on('click', function () {
   const doc = editor.getDoc();
   doc.setValue(
 `\\documentclass[uplatex,dvipdfmx]{jsarticle}
+\\usepackage{amsmath,amssymb}
 \\begin{document}
 
 \\end{document}`
