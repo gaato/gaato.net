@@ -29,7 +29,7 @@ This includes [Honoka](https://github.com/windyakin/Honoka), [CodeMirror](https:
 
 For production environment
 ```sh
-$ git clone git@github.com:gaato/gaato.net.git gaato_net
+$ git clone https://github.com/gaato/gaato.net.git gaato_net
 $ cd gaato_net
 $ pip install -r requirements.txt
 $ echo "ALLOWED_HOSTS=<Your Host Name>" > .env
@@ -44,7 +44,7 @@ $ # Use Nginx and Gunicorn or something
 
 For development environment
 ```sh
-$ git clone git@github.com:gaato/gaato.net.git gaato_net
+$ git clone https://github.com/gaato/gaato.net.git gaato_net
 $ cd gaato_net
 $ pip install -r requirements.txt
 $ python gaato_net/generate_secretkey_setting.py > gaato_net/local_settings.py
