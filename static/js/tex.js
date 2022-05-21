@@ -5,10 +5,11 @@ const editor = CodeMirror.fromTextArea(document.getElementById('code'), {
 });
 
 const $button = document.getElementById('submit');
+const math_mode = document.getElementById('math-mode');
 $button.addEventListener('click', async function() {
   editor.save();
   const type = $('input[name=type]:checked').val();
-  const plain = type === 'png' ? !$('#math-mode').prop('checked') : null;
+  const plain = type === 'png' ? !math_mode.checked : null;
   const code = $('#code').val();
 
   $button.disabled = true;
@@ -55,14 +56,14 @@ $button.addEventListener('click', async function() {
 })
 
 $('#png').on('click', function () {
-  $('#math-mode').attr('disabled', false);
+  math_mode.disabled = false;
   $('#math-mode-form').removeClass('disabled');
   const doc = editor.getDoc();
   doc.setValue('');
 })
 
 $('#pdf').on('click', function () {
-  $('#math-mode').attr('disabled', true);
+  math_mode.disabled = true;
   $('#math-mode-form').addClass('disabled');
   const doc = editor.getDoc();
   doc.setValue(
