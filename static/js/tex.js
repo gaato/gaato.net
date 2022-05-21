@@ -4,28 +4,29 @@ const editor = CodeMirror.fromTextArea(document.getElementById('code'), {
   theme: 'the-matrix',
 });
 
-$('#submit').on('click', function () {
+$('#submit').on('click', async function() {
   editor.save();
   const $button = $('#submit');
   const type = $('input[name=type]:checked').val();
   const plain = type === 'png' ? !$('#math-mode').prop('checked') : null;
   const code = $('#code').val();
-  $.ajax({
-    url: '/api/tex',
-    type: 'post',
-    data: {
+
+  $button.attr('disabled', true);
+  $('#result').html('');
+  $('#error').text('');
+  await fetch('api/tex', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
       "type": type,
       "plain": plain,
       "code": code,
-    },
-    dataType: 'json',
-    beforeSend: function (xhr, settings) {
-      $button.attr('disabled', true);
-      $('#result').html('');
-      $('#error').text('');
-    },
+    }),
   })
-    .done(function (data) {
+    .then(async function(res) {
+      const data = await res.json();
       switch (data.status) {
         case 0:
           if (type === 'png') {
@@ -46,13 +47,11 @@ $('#submit').on('click', function () {
           break;
       }
     })
-    .fail(function (data) {
+    .catch(function(data) {
       console.log(data);
       $('#error').text('不明なエラー（よければがーとに知らせてください）');
-    })
-    .always(function (data) {
-      $button.attr('disabled', false);
-    })
+    });
+  $button.attr('disabled', false);
 })
 
 $('#png').on('click', function () {
