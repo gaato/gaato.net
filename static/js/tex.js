@@ -4,14 +4,14 @@ const editor = CodeMirror.fromTextArea(document.getElementById('code'), {
   theme: 'the-matrix',
 });
 
-$('#submit').on('click', async function() {
+const $button = document.getElementById('submit');
+$button.addEventListener('click', async function() {
   editor.save();
-  const $button = $('#submit');
   const type = $('input[name=type]:checked').val();
   const plain = type === 'png' ? !$('#math-mode').prop('checked') : null;
   const code = $('#code').val();
 
-  $button.attr('disabled', true);
+  $button.disabled = true;
   $('#result').html('');
   $('#error').text('');
   await fetch('api/tex', {
@@ -51,7 +51,7 @@ $('#submit').on('click', async function() {
       console.log(data);
       $('#error').text('不明なエラー（よければがーとに知らせてください）');
     });
-  $button.attr('disabled', false);
+  $button.disabled = false;
 })
 
 $('#png').on('click', function () {
