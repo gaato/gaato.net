@@ -13,7 +13,7 @@ const editor = CodeMirror.fromTextArea(code, {
 
 submit.addEventListener('click', async function() {
   editor.save();
-  const type = $('input[name=type]:checked').val();
+  const type = document.querySelector('input[name=type]:checked').value;
   const plain = type === 'png' ? !math_mode.checked : null;
 
   submit.disabled = true;
