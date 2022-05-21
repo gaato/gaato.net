@@ -1,21 +1,22 @@
-const editor = CodeMirror.fromTextArea(document.getElementById('code'), {
+const $button = document.getElementById('submit');
+const math_mode = document.getElementById('math-mode');
+const code = document.getElementById('code');
+
+const editor = CodeMirror.fromTextArea(code, {
   lineNumbers: true,
   mode: 'stex',
   theme: 'the-matrix',
 });
 
-const $button = document.getElementById('submit');
-const math_mode = document.getElementById('math-mode');
 $button.addEventListener('click', async function() {
   editor.save();
   const type = $('input[name=type]:checked').val();
   const plain = type === 'png' ? !math_mode.checked : null;
-  const code = $('#code').val();
 
   $button.disabled = true;
   $('#result').html('');
   $('#error').text('');
-  await fetch('api/tex', {
+  await fetch('https://gaato.net/api/tex', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -23,7 +24,7 @@ $button.addEventListener('click', async function() {
     body: JSON.stringify({
       "type": type,
       "plain": plain,
-      "code": code,
+      "code": code.value,
     }),
   })
     .then(async function(res) {
