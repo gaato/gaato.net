@@ -1,6 +1,7 @@
 const $button = document.getElementById('submit');
 const math_mode = document.getElementById('math-mode');
 const code = document.getElementById('code');
+const error_code = document.getElementById('error');
 
 const editor = CodeMirror.fromTextArea(code, {
   lineNumbers: true,
@@ -15,7 +16,7 @@ $button.addEventListener('click', async function() {
 
   $button.disabled = true;
   $('#result').html('');
-  $('#error').text('');
+  error_code.innerText = '';
   await fetch('https://gaato.net/api/tex', {
     method: 'POST',
     headers: {
@@ -42,16 +43,16 @@ $button.addEventListener('click', async function() {
           }
           break;
         case 1:
-          $('#error').text(data.error);
+          error_code.innerText = data.error;
           break;
         case 2:
-          $('#error').text('タイムアウトしました');
+          error_code.innerText = 'タイムアウトしました';
           break;
       }
     })
     .catch(function(data) {
       console.log(data);
-      $('#error').text('不明なエラー（よければがーとに知らせてください）');
+      error_code.innerText = '不明なエラー（よければがーとに知らせてください）';
     });
   $button.disabled = false;
 })
