@@ -58,14 +58,14 @@ $button.addEventListener('click', async function() {
   $button.disabled = false;
 })
 
-$('#png').on('click', function () {
+document.getElementById('png').addEventListener('click', function() {
   math_mode.disabled = false;
   $('#math-mode-form').removeClass('disabled');
   const doc = editor.getDoc();
   doc.setValue('');
 })
 
-$('#pdf').on('click', function () {
+document.getElementById('pdf').addEventListener('click', function() {
   math_mode.disabled = true;
   $('#math-mode-form').addClass('disabled');
   const doc = editor.getDoc();
