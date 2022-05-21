@@ -3,6 +3,7 @@ const math_mode = document.getElementById('math-mode');
 const code = document.getElementById('code');
 const error_code = document.getElementById('error');
 const result = document.getElementById('result');
+const math_mode_form = document.getElementById('math-mode-form');
 
 const editor = CodeMirror.fromTextArea(code, {
   lineNumbers: true,
@@ -60,14 +61,14 @@ $button.addEventListener('click', async function() {
 
 document.getElementById('png').addEventListener('click', function() {
   math_mode.disabled = false;
-  $('#math-mode-form').removeClass('disabled');
+  math_mode_form.classList.remove('disabled');
   const doc = editor.getDoc();
   doc.setValue('');
 })
 
 document.getElementById('pdf').addEventListener('click', function() {
   math_mode.disabled = true;
-  $('#math-mode-form').addClass('disabled');
+  math_mode_form.classList.add('disabled');
   const doc = editor.getDoc();
   doc.setValue(
 `\\documentclass[uplatex,dvipdfmx]{jsarticle}
