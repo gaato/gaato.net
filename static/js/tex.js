@@ -1,35 +1,41 @@
-const editor = CodeMirror.fromTextArea(document.getElementById('code'), {
+const submit = document.getElementById('submit');
+const math_mode = document.getElementById('math-mode');
+const code = document.getElementById('code');
+const error_code = document.getElementById('error');
+const result = document.getElementById('result');
+const math_mode_form = document.getElementById('math-mode-form');
+
+const editor = CodeMirror.fromTextArea(code, {
   lineNumbers: true,
   mode: 'stex',
   theme: 'the-matrix',
 });
 
-$('#submit').on('click', function () {
+submit.addEventListener('click', async function() {
   editor.save();
-  const $button = $('#submit');
-  const type = $('input[name=type]:checked').val();
-  const plain = type === 'png' ? !$('#math-mode').prop('checked') : null;
-  const code = $('#code').val();
-  $.ajax({
-    url: '/api/tex',
-    type: 'post',
-    data: {
+  const type = document.querySelector('input[name=type]:checked').value;
+  const plain = type === 'png' ? !math_mode.checked : null;
+
+  submit.disabled = true;
+  result.innerHTML = '';
+  error_code.innerText = '';
+  await fetch('api/tex', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
       "type": type,
       "plain": plain,
-      "code": code,
-    },
-    dataType: 'json',
-    beforeSend: function (xhr, settings) {
-      $button.attr('disabled', true);
-      $('#result').html('');
-      $('#error').text('');
-    },
+      "code": code.value,
+    }),
   })
-    .done(function (data) {
+    .then(async function(res) {
+      const data = await res.json();
       switch (data.status) {
         case 0:
           if (type === 'png') {
-            $('#result').html(`<img src="data:image/png;base64,${data.result}">`);
+            result.innerHTML = `<img src="data:image/png;base64,${data.result}">`;
           } else {
             const nwin = window.open('', 'Newwindow');
             nwin.document.open();
@@ -39,32 +45,30 @@ $('#submit').on('click', function () {
           }
           break;
         case 1:
-          $('#error').text(data.error);
+          error_code.innerText = data.error;
           break;
         case 2:
-          $('#error').text('タイムアウトしました');
+          error_code.innerText = 'タイムアウトしました';
           break;
       }
     })
-    .fail(function (data) {
+    .catch(function(data) {
       console.log(data);
-      $('#error').text('不明なエラー（よければがーとに知らせてください）');
-    })
-    .always(function (data) {
-      $button.attr('disabled', false);
-    })
+      error_code.innerText = '不明なエラー（よければがーとに知らせてください）';
+    });
+  submit.disabled = false;
 })
 
-$('#png').on('click', function () {
-  $('#math-mode').attr('disabled', false);
-  $('#math-mode-form').removeClass('disabled');
+document.getElementById('png').addEventListener('click', function() {
+  math_mode.disabled = false;
+  math_mode_form.classList.remove('disabled');
   const doc = editor.getDoc();
   doc.setValue('');
 })
 
-$('#pdf').on('click', function () {
-  $('#math-mode').attr('disabled', true);
-  $('#math-mode-form').addClass('disabled');
+document.getElementById('pdf').addEventListener('click', function() {
+  math_mode.disabled = true;
+  math_mode_form.classList.add('disabled');
   const doc = editor.getDoc();
   doc.setValue(
 `\\documentclass[uplatex,dvipdfmx]{jsarticle}
