@@ -2,6 +2,7 @@ const $button = document.getElementById('submit');
 const math_mode = document.getElementById('math-mode');
 const code = document.getElementById('code');
 const error_code = document.getElementById('error');
+const result = document.getElementById('result');
 
 const editor = CodeMirror.fromTextArea(code, {
   lineNumbers: true,
@@ -15,9 +16,9 @@ $button.addEventListener('click', async function() {
   const plain = type === 'png' ? !math_mode.checked : null;
 
   $button.disabled = true;
-  $('#result').html('');
+  result.innerHTML = '';
   error_code.innerText = '';
-  await fetch('https://gaato.net/api/tex', {
+  await fetch('api/tex', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -33,7 +34,7 @@ $button.addEventListener('click', async function() {
       switch (data.status) {
         case 0:
           if (type === 'png') {
-            $('#result').html(`<img src="data:image/png;base64,${data.result}">`);
+            result.innerHTML = `<img src="data:image/png;base64,${data.result}">`;
           } else {
             const nwin = window.open('', 'Newwindow');
             nwin.document.open();
