@@ -12,7 +12,7 @@ load_dotenv(verbose=True)
 DEBUG = False
 
 
-ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS')]
+ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS'), '127.0.0.1']
 
 
 STATIC_ROOT = '/usr/share/nginx/html/static'
