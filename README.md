@@ -36,8 +36,8 @@ $ echo "ALLOWED_HOSTS=<Your Host Name>" > .env
 $ python gaato_net/generate_secretkey_setting.py > gaato_net/local_settings.py
 $ sudo mkdir -p /usr/share/nginx/html/static
 $ sudo chown <Your User Name> /usr/share/nginx/html/static
-$ python manage.py collectstatic
 $ mkdir logs
+$ python manage.py collectstatic
 $ sudo docker build -t tex ./container # To host LaTeX API. It takes long time.
 $ # Use Nginx and Gunicorn or something
 ```
