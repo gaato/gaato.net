@@ -1,0 +1,4 @@
+baseURL = "http://gaato.net/"
+languageCode = "ja"
+title = "gaato.net"
+theme = "raditian-free-hugo-theme"
