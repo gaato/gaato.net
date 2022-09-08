@@ -2,6 +2,7 @@ baseURL = "http://gaato.net/blog/"
 languageCode = "ja"
 title = "がーとのブログ"
 theme = "m10c"
+relativeURLs = true
 
 [params]
 author = "gaato"
