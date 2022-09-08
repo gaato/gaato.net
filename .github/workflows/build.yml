@@ -1,0 +1,22 @@
+on: push
+name: Build for testing
+jobs:
+  web-deploy:
+    name: Build
+    runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+    steps:
+    - name: Get latest code
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+
+    - name: Setup Hugo
+      uses: peaceiris/actions-hugo@v2
+      with:
+        hugo-version: '0.91.2'
+        extended: true
+
+    - name: Build
+      run: sh build.sh
