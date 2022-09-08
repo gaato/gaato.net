@@ -1,12 +1,6 @@
 [submodule "index/themes/raditian-free-hugo-theme"]
 	path = index/themes/raditian-free-hugo-theme
 	url = git@github.com:radity/raditian-free-hugo-theme.git
-[submodule "blog/themes/ananke"]
-	path = blog/themes/ananke
-	url = https://github.com/theNewDynamic/gohugo-theme-ananke.git
-[submodule "blog/themes/github-style"]
-	path = blog/themes/github-style
-	url = git@github.com:MeiK2333/github-style.git
 [submodule "blog/themes/m10c"]
 	path = blog/themes/m10c
 	url = git@github.com:vaga/hugo-theme-m10c.git
