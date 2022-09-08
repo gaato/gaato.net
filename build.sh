@@ -1,4 +1,4 @@
 cd index
-hugo --minify -d ../public
+hugo --minify -d ../html
 cd ../blog
-hugo --minify -d ../public/blog
+hugo --minify -d ../html/blog
