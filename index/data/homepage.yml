@@ -1,0 +1,85 @@
+# homepage
+homepage:
+  head:
+    title: "Home | gaato"
+# showcase
+showcase:
+  enable: true
+  title: "Hello, I’m gaato."
+  subtitle: "Back-End Developer"
+  description: "I study data science at Tokyo University Science. I want to work as a server-side engineer."
+  image:
+    alt: "Happy Hacking Keyboard"
+    x: "img/showcase/hhkb.png"
+    _2x: "img/showcase/hhkb@2x.png"
+  imageMobile:
+    alt: "Happy Hacking Keyboard"
+    x: "img/showcase/hhkb.png"
+
+  socialLinks:
+
+    - icon: "github"
+      URL: "https://github.com/gaato"
+
+    - icon: "twitter"
+      URL: "https://twitter.com/gaato__"
+
+    - icon: "twitter"
+      URL: "https://twitter.com/gaato11"
+
+    - icon: "youtube"
+      URL: "https://www.youtube.com/channel/UCq8mpASXfCdapiKyZAoMGBw"
+
+# about
+about:
+  enable: true
+  title: "Who am I?"
+  content: '<p class="lead">
+    I am a university student who loves math, programming, and VTubers. I watch a lot of VTubers,
+    especially Hololive, and I love all the members of Hololive. I also started programming
+    as a hobby and am working hard to turn it into a career.
+    </p>
+    <p class="lead">
+    私は数学とプログラミングとVTuberが好きな大学生です。
+    VTuberでは特にホロライブをよく見ていて、ホロライブのメンバーは全員愛しています。
+    また、趣味で始めたプログラミングを仕事にしようと頑張っています。
+    </p>'
+
+  image:
+    x: "img/who-am-i/avatar.png"
+    _2x: "img/who-am-i/avatar@2x.png"
+
+# education
+education:
+  enable: true
+  title: "Education"
+  items:
+    - university: "Tokyo University of Science"
+      year: "2020-"
+      degree: "Bachelor’s degree of Applied Mathematics"
+
+# Client & Work
+client_and_work:
+  title: "Works"
+  enable: true
+
+  works:
+    - title: "CodeRunBot"
+      description: "I developed the Discord bot that can run codes and render LaTeX."
+      button:
+        icon: "icon-arrow-right"
+        btnText: "Detail"
+        URL: "https://top.gg/bot/761428259241328680"
+      image:
+        x: "img/works/coderunbot.png"
+      is_even: false
+
+    - title: "Web API for LaTeX"
+      description: "I developed a Web API that executes LaTeX on Docker and returns the results."
+      button:
+        icon: "icon-arrow-right"
+        btnText: "GitHub"
+        URL: "https://github.com/gaato/tex.gaato.net"
+      image:
+        x: "img/works/latex.png"
+      is_even: true

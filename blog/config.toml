@@ -1,0 +1,25 @@
+baseURL = "http://gaato.net/blog/"
+languageCode = "ja"
+title = "がーとのブログ"
+theme = "m10c"
+
+[params]
+author = "gaato"
+description = "書きたいことを書きます"
+avatar = "img/avatar.png"
+favicon = "/blog/favicon.png"
+
+[[params.social]]
+  icon = "github"
+  name = "My Github"
+  url = "https://github.com/gaato"
+
+[[params.social]]
+  icon = "twitter"
+  name = "Main account"
+  url = "https://twitter.com/gaato__"
+
+[[params.social]]
+  icon = "twitter"
+  name = "Otaku account"
+  url = "https://twitter.com/gaato11"
