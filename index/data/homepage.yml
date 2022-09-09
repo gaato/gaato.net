@@ -72,6 +72,7 @@ client_and_work:
         URL: "https://top.gg/bot/761428259241328680"
       image:
         x: "img/works/coderunbot.png"
+        _2x: "img/works/coderunbot.png"
       is_even: false
 
     - title: "Web API for LaTeX"
@@ -81,5 +82,6 @@ client_and_work:
         btnText: "GitHub"
         URL: "https://github.com/gaato/tex.gaato.net"
       image:
+        x: "img/works/latex.png"
         x: "img/works/latex.png"
       is_even: true
