@@ -83,5 +83,5 @@ client_and_work:
         URL: "https://github.com/gaato/tex.gaato.net"
       image:
         x: "img/works/latex.png"
-        x: "img/works/latex.png"
+        _2x: "img/works/latex.png"
       is_even: true
