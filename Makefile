@@ -28,12 +28,12 @@ blog:
 # Serve top page without blog.
 test-index:
 	$(SUBMOD_UPDATE)
-	cd $(INDEX_DIR); $(TEST) $(INDEX_ARGS)
+	cd $(INDEX_DIR); $(TEST)
 
 # Serve blog site.
 test-blog:
 	$(SUBMOD_UPDATE)
-	cd $(BLOG_DIR); $(TEST) $(BLOG_ARGS)
+	cd $(BLOG_DIR); $(TEST)
 
 # Clean the generated product.
 clean:
