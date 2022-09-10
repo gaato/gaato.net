@@ -38,3 +38,6 @@ test-blog:
 # Clean the generated product.
 clean:
 	rm -rf $(OUTPUT)
+	@for f in $(shell git ls-files --other --ignored --exclude-standard); do\
+		rm -rf $$f;\
+	done
