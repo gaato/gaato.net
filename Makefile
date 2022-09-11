@@ -1,6 +1,6 @@
 .SUFFIXES:
 
-CC := hugo --minify --gc
+CC := hugo --minify
 TEST := hugo server --port 1313
 
 SUBMOD_UPDATE := git submodule update --recursive
