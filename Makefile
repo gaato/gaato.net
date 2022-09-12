@@ -3,7 +3,7 @@
 CC := hugo --minify
 TEST := hugo server
 
-SUBMOD_UPDATE := git submodule update --recursive
+SUBMOD_UPDATE := git submodule update --init --recursive
 
 OUTPUT := html
 
