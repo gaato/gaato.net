@@ -22,7 +22,7 @@ jobs:
         extended: true
 
     - name: Build
-      run: sh build.sh
+      run: make
 
     - name: Sync files
       uses: SamKirkland/FTP-Deploy-Action@4.3.2
