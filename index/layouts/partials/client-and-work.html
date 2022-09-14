@@ -27,6 +27,12 @@
     <div
       class="row row--padded rad-animation-group rad-fade-down {{ if .is_even }}flex-column-reverse flex-md-row{{ end }}"
     >
+    {{ $origin := resources.Get .image.x }}
+    {{ $halfSize := printf "%dx%d" (div $origin.Width 2) (div $origin.Height 2)}}
+    {{ $webpImg := $origin.Resize (printf "%dx%d webp" $origin.Width $origin.Height) }}
+    {{ $webpImgHalf := $webpImg.Resize $halfSize }}
+    {{ $jpgImg := $origin.Resize (printf "%dx%d jpg" $origin.Width $origin.Height) }}
+    {{ $jpgImgHalf := $jpgImg.Resize $halfSize }}
       {{ if .is_even }}
       <div class="col-12 col-md-5 mt-4 mt-md-0 my-md-auto">
         <h3>{{ .title }}</h3>
@@ -38,23 +44,27 @@
         ></a>
       </div>
       <div class="col-12 col-md-7 pl-md-0 text-right">
-        <img
-          class='lozad img-responsive {{ cond (eq ( mod $index 4) 0) "img-clip-left-backward" "img-clip-left-forward" }}'
-          src="data:image/gif;base64,R0lGODlhBwACAIAAAP///wAAACH5BAEAAAEALAAAAAAHAAIAAAIDjI9YADs="
-          data-src="{{ .image.x | absURL }}"
-          data-srcset="{{ .image.x | absURL }} 1x, {{ .image._2x | absURL }} 2x"
-          alt="{{ .title }}"
-        />
+        <picture>
+          <source type="image/webp"
+            srcset="{{ $webpImgHalf.RelPermalink }} 1x, {{ $webpImg.RelPermalink }} 2x">
+          <img class='lozad img-responsive {{ cond (eq ( mod $index 4) 0) "img-clip-left-backward" "img-clip-left-forward" }}'
+            src="data:image/gif;base64,R0lGODlhBwACAIAAAP///wAAACH5BAEAAAEALAAAAAAHAAIAAAIDjI9YADs="
+            data-src="{{ $jpgImg.RelPermalink }}"
+            data-srcset="{{ $jpgImgHalf.RelPermalink }} 1x, {{ $jpgImg.RelPermalink }} 2x"
+            alt="{{ .title }}" />
+        </picture>
       </div>
       {{ else }}
       <div class="col-12 col-md-7 pl-md-0 text-right">
-        <img
-          class='lozad img-responsive {{ cond (eq ( mod $index 4) 1)  "img-clip-right-backward" "img-clip-right-forward" }}'
-          src="data:image/gif;base64,R0lGODlhBwACAIAAAP///wAAACH5BAEAAAEALAAAAAAHAAIAAAIDjI9YADs="
-          data-src="{{ .image.x | absURL }}"
-          data-srcset="{{ .image.x | absURL }} 1x, {{ .image._2x | absURL }} 2x"
-          alt="{{ .title }}"
-        />
+        <picture>
+          <source type="image/webp"
+            srcset="{{ $webpImgHalf.RelPermalink }} 1x, {{ $webpImg.RelPermalink }} 2x">
+          <img class='lozad img-responsive {{ cond (eq ( mod $index 4) 1)  "img-clip-right-backward" "img-clip-right-forward" }}'
+            src="data:image/gif;base64,R0lGODlhBwACAIAAAP///wAAACH5BAEAAAEALAAAAAAHAAIAAAIDjI9YADs="
+            data-src="{{ $jpgImg.RelPermalink }}"
+            data-srcset="{{ $jpgImgHalf.RelPermalink }} 1x, {{ $jpgImg.RelPermalink }} 2x"
+            alt="{{ .title }}" />
+        </picture>
       </div>
       <div class="col-12 col-md-5 mt-4 mt-md-0 my-md-auto">
         <h3>{{ .title }}</h3>

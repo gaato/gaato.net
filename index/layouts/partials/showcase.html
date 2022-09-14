@@ -1,13 +1,21 @@
 {{ if .Site.Data.homepage.showcase.enable }}
 <section class="rad-showcase rad-showcase--index rad-animation-group rad-fade-down">
   <div class="rad-showcase__bg">
-    <img
-      class="lozad img-responsive"
-      src="data:image/gif;base64,R0lGODlhBwACAIAAAP///wAAACH5BAEAAAEALAAAAAAHAAIAAAIDjI9YADs="
-      data-src="{{ .Site.Data.homepage.showcase.image.x | absURL }}"
-      data-srcset="{{ .Site.Data.homepage.showcase.image.x | absURL }} 1x, {{ .Site.Data.homepage.showcase.image._2x | absURL }} 2x"
-      alt="{{ .Site.Data.homepage.showcase.image.alt }}"
-    />
+    {{ $origin := resources.Get .Site.Data.homepage.showcase.image._2x }}
+    {{ $halfSize := printf "%dx%d" (div $origin.Width 2) (div $origin.Height 2)}}
+    {{ $webpImg := $origin.Resize (printf "%dx%d webp" $origin.Width $origin.Height) }}
+    {{ $webpImgHalf := $webpImg.Resize $halfSize }}
+    {{ $jpgImg := $origin.Resize (printf "%dx%d jpg" $origin.Width $origin.Height) }}
+    {{ $jpgImgHalf := $jpgImg.Resize $halfSize }}
+    <picture>
+      <source type="image/webp" srcset="{{ $webpImgHalf.RelPermalink }} 1x, {{ $webpImg.RelPermalink }} 2x">
+      <img class="lozad img-responsive"
+        src="data:image/gif;base64,R0lGODlhBwACAIAAAP///wAAACH5BAEAAAEALAAAAAAHAAIAAAIDjI9YADs="
+        data-src="{{ $jpgImg.RelPermalink }}"
+        data-srcset="{{ $jpgImgHalf.RelPermalink }} 1x, {{ $jpgImg.RelPermalink }} 2x"
+        alt="{{ .Site.Data.homepage.showcase.image.alt }}"
+        />
+    </picture>
   </div>
   <div class="container">
     <div class="row">
@@ -42,12 +50,16 @@
     </div>
   </div>
   <div class="rad-showcase__bg rad-showcase__bg--mobile">
-    <img
-      class="lozad img-responsive"
-      src="data:image/gif;base64,R0lGODlhBwACAIAAAP///wAAACH5BAEAAAEALAAAAAAHAAIAAAIDjI9YADs="
-      data-src="{{ .Site.Data.homepage.showcase.imageMobile.x | absURL }}"
-      alt="{{ .Site.Data.homepage.showcase.imageMobile.alt }}"
-    />
+    {{ $origin := resources.Get .Site.Data.homepage.showcase.imageMobile.x }}
+    {{ $webpImg := $origin.Resize (printf "%dx%d webp" $origin.Width $origin.Height) }}
+    {{ $jpgImg := $origin.Resize (printf "%dx%d jpg" $origin.Width $origin.Height) }}
+    <picture>
+      <source type="image/webp" srcset="{{ $webpImg.RelPermalink }}">
+      <img class="lozad img-responsive"
+        src="data:image/gif;base64,R0lGODlhBwACAIAAAP///wAAACH5BAEAAAEALAAAAAAHAAIAAAIDjI9YADs="
+        data-src="{{ $jpgImg.RelPermalink }}"
+        alt="{{ .Site.Data.homepage.showcase.imageMobile.alt }}" />
+    </picture>
   </div>
 </section>
 {{ end }}
