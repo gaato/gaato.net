@@ -6,7 +6,7 @@ homepage:
 showcase:
   enable: true
   title: "Hello, I’m gaato."
-  subtitle: "Back-End Developer"
+  subtitle: "Web / Discord Bot Developer"
   description: "I study data science at Tokyo University Science. I want to work as a server-side engineer."
   image:
     alt: "Happy Hacking Keyboard"
@@ -40,8 +40,8 @@ about:
     as a hobby and am working hard to turn it into a career.
     </p>
     <p class="lead">
-    私は数学とプログラミングとVTuberが好きな大学生です。
-    VTuberでは特にホロライブをよく見ていて、ホロライブのメンバーは全員愛しています。
+    私は数学とプログラミングと VTuber が好きな大学生です。
+    VTuber では特にホロライブをよく見ていて、ホロライブのメンバーは全員愛しています。
     また、趣味で始めたプログラミングを仕事にしようと頑張っています。
     </p>'
 
