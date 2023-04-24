@@ -1,7 +1,7 @@
 # homepage
 homepage:
   head:
-    title: "Home | gaato"
+    title: "Home | がーと / gaato"
 # showcase
 showcase:
   enable: true
@@ -36,8 +36,15 @@ about:
   title: "Who am I?"
   content: '<p class="lead">
     I am a university student who loves math, programming, and VTubers.
-    I watch a lot of VTubers, especially Hololive.
-    I also started programming as a hobby and am working hard to turn it into a career.
+    </p><p class="lead">
+    I am studying applied mathematics at university.
+    Applied mathematics here includes Mathematical Data Science, Mathematical Modeling, and Computational Intelligence.
+    </p><p class="lead">
+    I started programming as a hobby and am working hard to turn it into a career.
+    </p><p class="lead">
+    I watch a lot of VTubers, especially hololive.
+    My oshi are <a href="https://www.youtube.com/channel/@NekomataOkayu">Nekomata Okayu</a> and
+    <a href="https://www.youtube.com/@HoshimachiSuisei">Hoshimachi Suisei</a>.
     </p>'
 
   image:
