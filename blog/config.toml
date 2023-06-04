@@ -6,7 +6,7 @@ theme = "m10c"
 [params]
 author = "gaato"
 description = "書きたいことを書きます"
-avatar = "img/avatar.png"
+avatar = "/blog/avatar.png"
 favicon = "/blog/favicon.png"
 
 [[params.social]]
