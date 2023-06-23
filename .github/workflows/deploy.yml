@@ -25,4 +25,4 @@ jobs:
       run: make
 
     - name: Upload Files
-      run: find . -type d | xargs -I{} curl --user ${{ secrets.USERNAME }}:${{ secrets.PASSWORD }} --digest -X MKCOL ${{ secrets.URL }}/gaato.net/{} && find . -type f | xargs -I{} curl --user ${{ secrets.USERNAME }}:${{ secrets.PASSWORD }} --digest -T{} ${{ secrets.URL }}/gaato.net/{}
+      run: cp html && find . -type d | xargs -I{} curl --user ${{ secrets.USERNAME }}:${{ secrets.PASSWORD }} --digest -X MKCOL ${{ secrets.URL }}/gaato.net/{} && find . -type f | xargs -I{} curl --user ${{ secrets.USERNAME }}:${{ secrets.PASSWORD }} --digest -T{} ${{ secrets.URL }}/gaato.net/{}
