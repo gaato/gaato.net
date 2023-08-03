@@ -7,7 +7,7 @@ showcase:
   enable: true
   title: "Hello, I’m gaato."
   subtitle: "Web / Discord Bot Developer"
-  description: "I study applied mathematics at Tokyo University Science. I want to work as a server-side engineer."
+  description: "I study applied mathematics at Tokyo University of Science. I want to work as a server-side engineer."
   image:
     alt: "Happy Hacking Keyboard"
     x: "img/showcase/hhkb.png"
