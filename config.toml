@@ -1,75 +1,78 @@
-baseURL = "https://gaato.net/"
-languageCode = "en-us"
-theme = "raditian-free-hugo-theme"
+baseURL = 'http://gaato.net/'
+languageCode = 'en-us'
+title = 'がーと / gaato'
 
-# Plugins
-[params.plugins]
+[module]
+[[module.imports]]
+    path = 'github.com/yukuro/hugo-theme-shell'
 
-# CSS Plugins
-[[params.plugins.css]]
-URL = "css/main.css"
-[[params.plugins.css]]
-URL = "css/rad-icons.css"
-[[params.plugins.css]]
-URL = "css/custom.css"
+[Params]
+  # Note: This is for the meta description, which is different from the "description" displayed in the terminal.
+  description = "がーと / gaato"
+  [Params.Terminal]
+  # Note: color scheme
+  # Note: You can choose between
+  # Note: hugo-theme-shell original: ["shell-powershell", "shell-ubuntu", "shell-retro"]
+  # Note: or
+  # Note: gogh theme: https://mayccoll.github.io/Gogh/
+  scheme = "Molokai"
 
-# JS Plugins
-[[params.plugins.js]]
-URL = "js/rad-animations.js"
-[[params.plugins.js]]
-URL = "js/sticky-header.js"
-[[params.plugins.js]]
-URL = "js/library/fontfaceobserver.js"
+  # Note: in terminal
+  # [userName]@[pcName]:~/$ cd [workDir]
+  # [userName]@[pcName]:~/[workDir]$ cat [profile]
+  #
+  # [description]
+  #
+  # Note: if you set Params.Tree > use = true
+  # [userName]@[pcName]:~/[workDir]$ tree ./[folderName]/
+  # ./[folderName]/
+  # ...
+  # Note: result of the tree command
+  userName = "gaato"
+  pcName = "tokyo"
+  workDir = "journey"
+  profile = "profile.txt"
 
+  # Note: speed at which text is displayed on the terminal
+  # Note: if set to 0, typing animation will be disabled
+  # Note:
+  # Note: if you want to enable Mathjax, you need to set it to 0
+  # Note: and set "math: true" at front matter in your Markdown file
+  ps1Delay = 0 # prompt speed : [userName]@[pcName]:~/$ , [userName]@[pcName]:~/[workDir]$
+  stdoutDelay = 0 # stdout speed : [description] , files in Params.Tree
+  commandDelay = 50 # command speed : cd [workDir] , cat [profile] , tree ./[folderName]/
 
-# navigation
-[menu]
+  # terminalDelay = 20 : deprecated
 
-[[menu.header]]
-name = "About"
-URL = "#about"
-weight = 2
+  # Note: speed at which text is displayed on the activity pages
+  # Note: if set to 0, typing animation will be disabled
+  # Note: 
+  # Note: if you want to enable Mathjax, you need to set it to 0
+  # Note: and set "math: true" at front matter in your Markdown file
+  titleDelay = 0 # title speed : "title" in front matter
+  contentDelay = 0 # content speed : content in .md file
 
-[[menu.header]]
-name = "Portfolio"
-URL = "#portfolio"
-weight = 3
+  # activityDelay = 5 : deprecated
 
-[[menu.header]]
-name = "Blog"
-URL = "https://blog.gaato.net"
-weight = 4
+  description = """
+  Hi, I'm がーと / gaato.
+  I'm learning English and Indonesian.
+  I'm a fan of hololive.
+  I play GeoGuessr.
 
+  """
 
-[[menu.footer]]
-name = "About"
-URL = "#about"
-weight = 2
+  # Note: If you want to use a Markdown file, you can use the following
+  # description = "/description.md"
+  # Note: and put the description.md in /content/description.md
 
-[[menu.footer]]
-name = "Portfolio"
-URL = "#portfolio"
-weight = 3
-
-[[menu.footer]]
-name = "Blog"
-URL = "https://blog.gaato.net"
-weight = 4
-
-
-[params]
-
-sections = ["showcase", "about", "education", "client-and-work"]
-
-googleTagManagerID = "GTM-HFY7V1F0DJ" # Google Analytics works with Google Tag Manager
-
-[params.logo]
-text1 = "gaato"
-text2 = ".net"
-
-[params.footer]
-copyright = "© 2022 Gakuto Furuya"
-[params.footer.radity_logo]
-x = "img/general/design-and-code-radity.png"
-_2x = "img/general/design-and-code-radity@2x.png"
-alt = "Design & Code - Radity"
+  [Params.Tree]
+  use = true
+  folderName = "activities"
+  # Note: ["ACTIVITY", "URL or PATH TO YOUR MARKDOWN FILE"]
+  files = [ 
+    ["X/Twitter (general)", "https://x.com/gaato__"],
+    ["X/Twitter (hololive)", "https://x.com/gaato11"],
+    ["note", "https://note.com/gaato"],
+    ["GitHub", "https://github.com/gaato"],
+  ]
