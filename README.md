@@ -1,7 +1,13 @@
 # gaato.net
 
-[![Deploy website on push](https://github.com/gaato/gaato.net/actions/workflows/hugo.yml/badge.svg)](https://github.com/gaato/gaato.net/actions/workflows/hugo.yml)
+This is the source for my personal website built with [Next.js](https://nextjs.org/).
 
-## What is this
+## Development
 
-My website
+```
+cd website
+npm install
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) to view the site during development.

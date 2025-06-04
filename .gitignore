@@ -19,3 +19,10 @@ hugo.linux
 # End of https://www.toptal.com/developers/gitignore/api/hugo
 
 /html
+
+# Node
+node_modules/
+website/node_modules/
+.next/
+website/out/
+out/

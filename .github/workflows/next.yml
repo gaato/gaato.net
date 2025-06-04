@@ -1,4 +1,4 @@
-name: Hugo
+name: Next.js
 
 on:
   push:
@@ -13,24 +13,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          submodules: true
+        uses: actions/checkout@v3
 
-      # https://github.com/marketplace/actions/github-pages-action
-      - name: Setup
-        uses: peaceiris/actions-hugo@v2
+      - name: Set up Node
+        uses: actions/setup-node@v4
         with:
-          hugo-version: 'latest'
-          extended: true
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: website/package-lock.json
+
+      - name: Install dependencies
+        working-directory: website
+        run: npm ci
 
       - name: Build
-        run: hugo --minify --gc
+        working-directory: website
+        run: npm run build && npx next export
 
       - name: Upload
         uses: actions/upload-pages-artifact@v2
         with:
-          path: public
+          path: website/out
 
   deploy:
     if: github.event.pull_request.merged == true || github.event_name == 'push'
