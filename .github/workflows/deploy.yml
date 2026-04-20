@@ -36,6 +36,10 @@ jobs:
                   "let effect_runs = { val: 0 }",
                   "let effect_runs : Ref[Int] = { val: 0 }",
               ),
+              Path(".mooncakes/mizchi/luna/src/platform/dom/element/render.mbt"): (
+                  "let is_first = { val: true }",
+                  "let is_first : Ref[Bool] = { val: true }",
+              ),
           }
 
           for path, (before, after) in patches.items():
