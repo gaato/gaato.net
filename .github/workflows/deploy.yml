@@ -1,8 +1,9 @@
 name: Deploy to Cloudflare Pages
 
 on:
+  workflow_dispatch:
   push:
-    branches: [moonbit]
+    branches: [main]
 
 jobs:
   deploy:
