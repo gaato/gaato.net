@@ -19,6 +19,11 @@ jobs:
 
       - run: moon update && bun install
 
+      - name: Patch luna for current MoonBit on CI
+        run: |
+          perl -0pi -e 's/let active = \{ val: true \}/let active : Ref[Bool] = { val: true }/' .mooncakes/mizchi/luna/src/luna/signal/signal.mbt
+          perl -0pi -e 's/let effect_runs = \{ val: 0 \}/let effect_runs : Ref[Int] = { val: 0 }/' .mooncakes/mizchi/luna/src/luna/signal/store_bench.mbt
+
       - run: bun run build
 
       - uses: cloudflare/wrangler-action@v3
