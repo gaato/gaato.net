@@ -3,8 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "moon build --release && vite build"
+    "patch:luna": "node scripts/patch-luna.mjs",
+    "dev": "moon update && bun run patch:luna && vite",
+    "build": "moon update && bun run patch:luna && moon build --release && vite build"
   },
   "devDependencies": {
     "vite": "^6.0.0",

@@ -20,38 +20,8 @@ jobs:
 
       - run: moon update && bun install
 
-      - name: Hydrate MoonBit dependencies
-        run: moon build --release || true
-
       - name: Patch luna for current MoonBit on CI
-        run: |
-          python <<'PY'
-          from pathlib import Path
-
-          patches = {
-              Path(".mooncakes/mizchi/luna/src/luna/signal/signal.mbt"): (
-                  "let active = { val: true }",
-                  "let active : Ref[Bool] = { val: true }",
-              ),
-              Path(".mooncakes/mizchi/luna/src/luna/signal/store_bench.mbt"): (
-                  "let effect_runs = { val: 0 }",
-                  "let effect_runs : Ref[Int] = { val: 0 }",
-              ),
-              Path(".mooncakes/mizchi/luna/src/platform/dom/element/render.mbt"): (
-                  "let is_first = { val: true }",
-                  "let is_first : Ref[Bool] = { val: true }",
-              ),
-          }
-
-          for path, (before, after) in patches.items():
-              text = path.read_text()
-              if before in text:
-                  path.write_text(text.replace(before, after))
-                  text = path.read_text()
-              if after not in text:
-                  raise SystemExit(f"failed to patch {path}")
-              print(f"patched {path}")
-          PY
+        run: bun run patch:luna
 
       - run: bun run build
 
