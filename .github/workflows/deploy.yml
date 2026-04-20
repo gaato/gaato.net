@@ -21,7 +21,7 @@ jobs:
       - run: moon update && bun install
 
       - name: Patch luna for current MoonBit on CI
-        run: bun run patch:luna
+        run: bun run prepare:moon
 
       - run: bun run build
 
