@@ -4,8 +4,9 @@
   "type": "module",
   "scripts": {
     "patch:luna": "node scripts/patch-luna.mjs",
-    "dev": "moon update && bun run patch:luna && vite",
-    "build": "moon update && bun run patch:luna && moon build --release && vite build"
+    "prepare:moon": "bash scripts/prepare-moon.sh",
+    "dev": "bun run prepare:moon && vite",
+    "build": "bun run prepare:moon && moon build --release && vite build"
   },
   "devDependencies": {
     "vite": "^6.0.0",
