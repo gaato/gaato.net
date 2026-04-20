@@ -21,8 +21,29 @@ jobs:
 
       - name: Patch luna for current MoonBit on CI
         run: |
-          perl -0pi -e 's/let active = \{ val: true \}/let active : Ref[Bool] = { val: true }/' .mooncakes/mizchi/luna/src/luna/signal/signal.mbt
-          perl -0pi -e 's/let effect_runs = \{ val: 0 \}/let effect_runs : Ref[Int] = { val: 0 }/' .mooncakes/mizchi/luna/src/luna/signal/store_bench.mbt
+          python <<'PY'
+          from pathlib import Path
+
+          patches = {
+              Path(".mooncakes/mizchi/luna/src/luna/signal/signal.mbt"): (
+                  "let active = { val: true }",
+                  "let active : Ref[Bool] = { val: true }",
+              ),
+              Path(".mooncakes/mizchi/luna/src/luna/signal/store_bench.mbt"): (
+                  "let effect_runs = { val: 0 }",
+                  "let effect_runs : Ref[Int] = { val: 0 }",
+              ),
+          }
+
+          for path, (before, after) in patches.items():
+              text = path.read_text()
+              if before in text:
+                  path.write_text(text.replace(before, after))
+                  text = path.read_text()
+              if after not in text:
+                  raise SystemExit(f"failed to patch {path}")
+              print(f"patched {path}")
+          PY
 
       - run: bun run build
 
