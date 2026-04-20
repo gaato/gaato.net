@@ -1,30 +1,41 @@
 # gaato.net
 
-- `site/`: Cloudflare Pages (static site)
-- `worker/`: Cloudflare Worker (counter + stats)
+Personal website built with MoonBit and deployed to Cloudflare Pages.
+
+## Setup
+
+Install the following tools first:
+
+- [MoonBit](https://www.moonbitlang.com/)
+- [Bun](https://bun.sh/)
+
+Then install dependencies:
+
+```sh
+bun install
+```
+
+## Development
+
+Start the local development server:
+
+```sh
+bun run dev
+```
+
+## Build
+
+Create a production build:
+
+```sh
+bun run build
+```
 
 ## Deploy
 
-### Pages
+Pushes to `main` deploy to Cloudflare Pages through GitHub Actions.
 
-Connect this repository to Cloudflare Pages.
+## License
 
-- Project root: repository root
-- Build command: (none)
-- Output directory: `site`
-
-### Worker
-
-This repo includes a GitHub Action which deploys the Worker on pushes to `main`.
-
-Set these GitHub Secrets:
-
-- `CLOUDFLARE_API_TOKEN`
-
-The Worker uses routes in `worker/wrangler.toml` (`/counter.svg`, `/stats.svg`, `/stats.json`).
-
-## Legacy
-
-The previous contents are preserved on:
-
-- `moto-legacy-2026-01-20`
+- Code in this repository is licensed under the Blue Oak Model License 1.0.0. See `LICENSE.md`.
+- Website content (text, images, and other creative assets) is All rights reserved unless explicitly noted otherwise.

@@ -1,0 +1,13 @@
+{
+  "name": "gaato-net",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "moon build --release && vite build"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0",
+    "vite-plugin-moonbit": "^0.1.0"
+  }
+}
