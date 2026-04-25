@@ -668,7 +668,6 @@ fn main {
         ],
       )
       @dom.render(el |> @dom.DomElement::from_jsdom, app)
-      start_background_after_paint(fn() { mount_cellular_background() })
     }
     None => ()
   }

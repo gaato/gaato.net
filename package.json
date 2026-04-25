@@ -5,8 +5,9 @@
   "scripts": {
     "patch:luna": "node scripts/patch-luna.mjs",
     "prepare:moon": "bash scripts/prepare-moon.sh",
+    "build:wasm": "moon build --target wasm-gc --release src/background",
     "dev": "bun run prepare:moon && vite",
-    "build": "bun run prepare:moon && moon build --release && vite build"
+    "build": "bun run prepare:moon && bun run build:wasm && moon build --release && vite build"
   },
   "devDependencies": {
     "vite": "^6.0.0",

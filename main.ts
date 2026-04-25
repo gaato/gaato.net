@@ -3,3 +3,222 @@ if (import.meta.env.DEV) {
 } else {
   void import("./_build/js/release/build/gaato-net.js");
 }
+
+import wasmUrl from "./_build/wasm-gc/release/build/background/background.wasm?url";
+
+type BackgroundWasm = {
+  setup(columns: number, rows: number, birthMask: number, surviveMask: number, seed: number): void;
+  resize(columns: number, rows: number): void;
+  step(): void;
+  get_columns(): number;
+  get_rows(): number;
+  get_alive(index: number): number;
+  get_energy(index: number): number;
+};
+
+type AutomatonRule = {
+  birth: number[];
+  survive: number[];
+};
+
+type AutomatonPalette = {
+  red: number;
+  green: number;
+  blue: number;
+  redGain: number;
+  greenGain: number;
+  blueGain: number;
+  alphaBase: number;
+  alphaGain: number;
+};
+
+const BG_CLASS = "background-automaton";
+const BG_MAX_DPR = 2.0;
+const BG_BASE_STEP_MS = 140;
+const BG_REDUCED_STEP_MS = 520;
+const BG_MIN_CELL_SIZE = 10;
+const BG_MAX_CELL_SIZE = 18;
+const BG_TARGET_COLS = 72;
+
+function clamp(value: number, lower: number, upper: number): number {
+  return Math.min(Math.max(value, lower), upper);
+}
+
+function ceilDiv(value: number, divisor: number): number {
+  return Math.ceil(value / divisor);
+}
+
+function randomRule(): AutomatonRule {
+  const rules: AutomatonRule[] = [
+    { birth: [3], survive: [2, 3] },
+    { birth: [3, 6], survive: [2, 3] },
+    { birth: [3], survive: [1, 2, 3, 4, 5] },
+    { birth: [3, 6, 7, 8], survive: [3, 4, 6, 7, 8] },
+    { birth: [4, 6, 7, 8], survive: [3, 5, 6, 7, 8] },
+  ];
+  return rules[Math.floor(Math.random() * rules.length)] ?? rules[0];
+}
+
+function maskFor(values: number[]): number {
+  return values.reduce((mask, value) => mask | (1 << value), 0);
+}
+
+function sum(values: number[]): number {
+  return values.reduce((total, value) => total + value, 0);
+}
+
+function normalizedAverage(values: number[]): number {
+  return values.length === 0 ? 0 : sum(values) / (values.length * 8);
+}
+
+function seededUnit(seed: number): number {
+  return (seed % 97) / 96;
+}
+
+function paletteForRule(rule: AutomatonRule): AutomatonPalette {
+  const birthSum = sum(rule.birth);
+  const surviveSum = sum(rule.survive);
+  const birthDensity = rule.birth.length / 8;
+  const surviveDensity = rule.survive.length / 8;
+  const birthAverage = normalizedAverage(rule.birth);
+  const surviveAverage = normalizedAverage(rule.survive);
+  const activity = clamp(birthDensity * 0.58 + surviveDensity * 0.42, 0, 1);
+  const contrast = clamp(Math.abs(birthAverage - surviveAverage), 0, 1);
+  const stability = clamp(1 - contrast * 0.82, 0, 1);
+  const warmSeed = seededUnit(
+    birthSum * 37 + surviveSum * 19 + rule.birth.length * 53 + rule.survive.length * 29,
+  );
+  const coolSeed = seededUnit(
+    birthSum * 17 + surviveSum * 31 + rule.birth.length * 11 + rule.survive.length * 47,
+  );
+  return {
+    red: clamp(14 + 84 * warmSeed + 34 * contrast, 0, 255),
+    green: clamp(58 + 52 * stability + 28 * activity, 0, 255),
+    blue: clamp(68 + 78 * coolSeed + 18 * (1 - activity), 0, 255),
+    redGain: clamp(12 + 44 * (1 - surviveAverage) + 20 * warmSeed, 0, 255),
+    greenGain: clamp(24 + 42 * stability + 16 * activity, 0, 255),
+    blueGain: clamp(22 + 48 * (1 - contrast) + 18 * coolSeed, 0, 255),
+    alphaBase: clamp(0.11 + activity * 0.04, 0.08, 0.2),
+    alphaGain: clamp(0.24 + contrast * 0.09 + stability * 0.05, 0.18, 0.4),
+  };
+}
+
+function ensureBackgroundCanvas(): HTMLCanvasElement {
+  const existing = document.querySelector<HTMLCanvasElement>(`.${BG_CLASS}`);
+  if (existing) {
+    return existing;
+  }
+  const canvas = document.createElement("canvas");
+  canvas.className = BG_CLASS;
+  canvas.setAttribute("aria-hidden", "true");
+  document.body.prepend(canvas);
+  return canvas;
+}
+
+async function loadBackgroundWasm(): Promise<BackgroundWasm> {
+  const response = fetch(wasmUrl);
+  const result = await WebAssembly.instantiateStreaming(response, {});
+  return result.instance.exports as BackgroundWasm;
+}
+
+function startBackgroundAfterPaint(callback: () => void): void {
+  const start = () => requestAnimationFrame(() => requestAnimationFrame(callback));
+  if (document.readyState === "loading") {
+    addEventListener("DOMContentLoaded", start, { once: true });
+  } else {
+    start();
+  }
+}
+
+async function mountCellularBackground(): Promise<void> {
+  const wasm = await loadBackgroundWasm();
+  const canvas = ensureBackgroundCanvas();
+  const ctx = canvas.getContext("2d");
+  if (!ctx) {
+    return;
+  }
+
+  const rule = randomRule();
+  const palette = paletteForRule(rule);
+  let reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let width = 0;
+  let height = 0;
+  let dpr = 1;
+  let cellSize = BG_MIN_CELL_SIZE;
+  let lastTime = 0;
+  let accumulated = 0;
+  let initialized = false;
+
+  const render = () => {
+    ctx.clearRect(0, 0, width, height);
+    const columns = wasm.get_columns();
+    const rows = wasm.get_rows();
+    for (let row = 0; row < rows; row += 1) {
+      for (let column = 0; column < columns; column += 1) {
+        const index = row * columns + column;
+        const value = wasm.get_energy(index);
+        if (value < 0.03) {
+          continue;
+        }
+        const inset = cellSize * 0.08;
+        const glow = wasm.get_alive(index) === 1 ? value : value * 0.72;
+        const red = Math.round(palette.red + glow * palette.redGain);
+        const green = Math.round(palette.green + glow * palette.greenGain);
+        const blue = Math.round(palette.blue + glow * palette.blueGain);
+        const alpha = palette.alphaBase + glow * palette.alphaGain;
+        ctx.fillStyle = `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+        ctx.fillRect(
+          column * cellSize + inset,
+          row * cellSize + inset,
+          cellSize - inset * 2,
+          cellSize - inset * 2,
+        );
+      }
+    }
+  };
+
+  const resize = () => {
+    width = innerWidth;
+    height = innerHeight;
+    dpr = Math.min(devicePixelRatio, BG_MAX_DPR);
+    reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    cellSize = clamp(Math.round(width / BG_TARGET_COLS), BG_MIN_CELL_SIZE, BG_MAX_CELL_SIZE);
+    const columns = ceilDiv(width, cellSize);
+    const rows = ceilDiv(height, cellSize);
+    canvas.width = Math.round(width * dpr);
+    canvas.height = Math.round(height * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    if (initialized) {
+      wasm.resize(columns, rows);
+    } else {
+      const seed = Math.floor(Math.random() * 0x7fffffff) || 1;
+      wasm.setup(columns, rows, maskFor(rule.birth), maskFor(rule.survive), seed);
+      initialized = true;
+    }
+    render();
+  };
+
+  const frame = (time: number) => {
+    if (lastTime === 0) {
+      lastTime = time;
+    }
+    const delta = Math.min(time - lastTime, 1000);
+    lastTime = time;
+    accumulated += delta;
+    const stepMs = reducedMotion ? BG_REDUCED_STEP_MS : BG_BASE_STEP_MS;
+    while (accumulated >= stepMs) {
+      wasm.step();
+      accumulated -= stepMs;
+    }
+    render();
+    requestAnimationFrame(frame);
+  };
+
+  resize();
+  addEventListener("resize", resize);
+  requestAnimationFrame(frame);
+}
+
+startBackgroundAfterPaint(() => {
+  void mountCellularBackground();
+});

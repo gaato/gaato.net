@@ -1,0 +1,16 @@
+{
+  "supported-targets": "wasm-gc",
+  "link": {
+    "wasm-gc": {
+      "exports": [
+        "setup",
+        "resize",
+        "step",
+        "get_columns",
+        "get_rows",
+        "get_alive",
+        "get_energy"
+      ]
+    }
+  }
+}
