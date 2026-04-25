@@ -16,21 +16,6 @@ struct I18n {
   eyebrow : String
   headline : String
   summary : Array[String]
-  quote_text : String
-  quote_author : String
-  about_title : String
-  about : Array[String]
-  current_title : String
-  current_role : String
-  current_meta : String
-  current_points : Array[String]
-  oss_title : String
-  oss_role : String
-  oss_meta : String
-  oss_points : Array[String]
-  education_title : String
-  education_school : String
-  education_detail : String
   links_title : String
   link_notes : Array[String]
 }
@@ -40,153 +25,58 @@ fn i18n(lang : Lang) -> I18n {
     Ja =>
       {
         eyebrow: "gaato.net",
-        headline: "ソフトウェアを書いています。",
+        headline: "Gakuto Furuya / gaato",
         summary: [
-          "日本語・英語・インドネシア語でだいたい話せます。広くいろいろ触るタイプです。",
+          "東京でソフトウェアを書いています。",
+          "個人基盤、openSUSE、入力方式、言語、hololive など。",
+          "連絡先: g.furuya@gaato.net",
         ],
-        quote_text:
-          "Most of the good programmers do programming not because they expect to get paid or get adulation by the public, but because it is fun to program.",
-        quote_author: "Linus Torvalds",
-        about_title: "About",
-        about: [
-          "新しい技術に触れたり、手間を減らす仕組みを整えたりするのが好きです。",
-          "東京の端の方で暮らしながら、hololive や言語の話を楽しんでいます。このサイトは MoonBit で書いています。",
-        ],
-        current_title: "Work",
-        current_role: "（株）クレアンスメアードでソフトウェアエンジニアをしています",
-        current_meta: "CRM / AI を活用した IoT / モバイルアプリ",
-        current_points: [
-          "CRM の開発や改善を進めています。",
-          "AI を活用した IoT 製品の開発に関わっています。",
-          "Ionic + Cordova 製アプリを Capacitor へ移行しています。",
-        ],
-        oss_title: "OSS",
-        oss_role: "openSUSE 向けの packaging や upstream へのコントリビュートをしています",
-        oss_meta: "仕事とは別の時間で続けていること",
-        oss_points: [
-          "openSUSE 向けのパッケージングを継続しています。",
-          "karukan を openSUSE:Factory に提出し、fcitx5-karukan と karukan-tools として accepted されました。",
-          "KDE の kholidays に、日本の祝日データの不足分を補う修正を送りました。",
-          "2024–2027 年ぶんの日本の祝日更新が upstream にマージされています。",
-        ],
-        education_title: "Background",
-        education_school: "東京理科大学 理学部第一部 応用数学科",
-        education_detail:
-          "2020.04 - 2025.03 / 数理統計学、計算機科学、数値解析を学び、卒業研究では窓付きフーリエ変換と連続ウェーブレット変換を用いた音源分離を研究しました。",
         links_title: "Links",
         link_notes: [
-          "いちばんよく更新している場所です。",
-          "@gaato11 です。いちばん雑に近況を書いています。",
-          "hololive や言語学習について書いています。",
-          "VTuber ファン向けの言語交流 Discord サーバーです。",
-          "仕事まわりのプロフィールです。",
-          "日本語で書いた記事です。",
-          "短めのメモや記事です。",
-          "karukan などのパッケージやビルド作業です。",
-          "openSUSE 側の活動です。",
-          "kholidays など KDE 側の活動です。",
+          "コードと実験",
+          "近況",
+          "記事",
+          "技術メモ",
+          "仕事寄りのプロフィール",
+          "openSUSE packaging",
         ],
       }
     En =>
       {
         eyebrow: "gaato.net",
-        headline: "I write software.",
+        headline: "Gakuto Furuya / gaato",
         summary: [
-          "I am generally fine in Japanese, English, and Indonesian. I tend to work across a fairly wide range of things.",
+          "I write software in Tokyo.",
+          "Personal infrastructure, openSUSE, input methods, languages, and hololive.",
+          "Contact: g.furuya@gaato.net",
         ],
-        quote_text:
-          "Most of the good programmers do programming not because they expect to get paid or get adulation by the public, but because it is fun to program.",
-        quote_author: "Linus Torvalds",
-        about_title: "About",
-        about: [
-          "I like getting my hands on new technology and building small systems that reduce friction.",
-          "I live on the outskirts of Tokyo. I like hololive and languages, and this site is written in MoonBit.",
-        ],
-        current_title: "Work",
-        current_role: "Software Engineer at Cleansmaerd Inc.",
-        current_meta: "CRM / AI-assisted IoT / mobile apps",
-        current_points: [
-          "Working on CRM development and improvements.",
-          "Building AI-assisted IoT products.",
-          "Migrating an Ionic + Cordova application to Capacitor.",
-        ],
-        oss_title: "OSS",
-        oss_role: "I do openSUSE packaging work and contribute upstream outside my day job",
-        oss_meta: "separate from work",
-        oss_points: [
-          "I keep doing packaging work for openSUSE.",
-          "Submitted karukan to openSUSE:Factory, where it was accepted as fcitx5-karukan and karukan-tools.",
-          "I sent fixes to KDE's kholidays to fill in missing Japanese holiday data.",
-          "The Japanese holiday updates for 2024-2027 have been merged upstream.",
-        ],
-        education_title: "Background",
-        education_school:
-          "Tokyo University of Science / Faculty of Science Division I / Department of Applied Mathematics",
-        education_detail:
-          "2020.04 - 2025.03 / Studied mathematical statistics, computer science, and numerical analysis, then researched source separation with STFT and continuous wavelet transform.",
         links_title: "Links",
         link_notes: [
-          "Where most of my code ends up.",
-          "I am @gaato11 there, and it is where I post the most casually.",
-          "I write there about hololive and language learning.",
-          "A language exchange Discord server for VTuber fans.",
-          "A work-oriented profile.",
-          "Articles written in Japanese.",
-          "Short notes and posts.",
-          "Packaging and build work, including karukan.",
-          "openSUSE-side activity.",
-          "KDE-side activity, including kholidays.",
+          "Code and experiments",
+          "Short updates",
+          "Articles",
+          "Technical notes",
+          "Work-oriented profile",
+          "openSUSE packaging",
         ],
       }
     Id =>
       {
         eyebrow: "gaato.net",
-        headline: "Saya menulis perangkat lunak.",
+        headline: "Gakuto Furuya / gaato",
         summary: [
-          "Saya umumnya nyaman memakai bahasa Jepang, Inggris, dan Indonesia. Saya cenderung mengerjakan banyak hal yang cukup beragam.",
+          "Saya menulis perangkat lunak di Tokyo.",
+          "Infrastruktur pribadi, openSUSE, input method, bahasa, dan hololive.",
+          "Kontak: g.furuya@gaato.net",
         ],
-        quote_text:
-          "Most of the good programmers do programming not because they expect to get paid or get adulation by the public, but because it is fun to program.",
-        quote_author: "Linus Torvalds",
-        about_title: "Tentang",
-        about: [
-          "Saya suka menyentuh teknologi baru dan membuat sistem kecil yang mengurangi kerepotan.",
-          "Saya tinggal di pinggiran Tokyo. Saya suka hololive dan bahasa, dan situs ini ditulis dengan MoonBit.",
-        ],
-        current_title: "Pekerjaan",
-        current_role: "Software Engineer di Cleansmaerd Inc.",
-        current_meta: "CRM / IoT berbantuan AI / aplikasi mobile",
-        current_points: [
-          "Mengerjakan pengembangan dan perbaikan CRM.",
-          "Terlibat dalam pengembangan produk IoT berbantuan AI.",
-          "Memigrasikan aplikasi Ionic + Cordova ke Capacitor.",
-        ],
-        oss_title: "OSS",
-        oss_role: "Di luar pekerjaan saya mengerjakan packaging openSUSE dan kontribusi upstream",
-        oss_meta: "terpisah dari pekerjaan",
-        oss_points: [
-          "Saya terus mengerjakan packaging untuk openSUSE.",
-          "Saya mengirimkan karukan ke openSUSE:Factory, lalu diterima sebagai fcitx5-karukan dan karukan-tools.",
-          "Saya juga mengirim perbaikan ke kholidays milik KDE untuk melengkapi data hari libur Jepang.",
-          "Pembaruan hari libur Jepang untuk 2024-2027 sudah di-merge ke upstream.",
-        ],
-        education_title: "Latar Belakang",
-        education_school:
-          "Tokyo University of Science / Fakultas Sains Divisi I / Departemen Matematika Terapan",
-        education_detail:
-          "2020.04 - 2025.03 / Mempelajari statistika matematika, ilmu komputer, dan analisis numerik, lalu meneliti pemisahan sumber suara dengan STFT dan continuous wavelet transform.",
         links_title: "Tautan",
         link_notes: [
-          "Tempat yang paling sering saya perbarui.",
-          "Akun saya di sana adalah @gaato11, dan itulah tempat saya menulis paling santai.",
-          "Saya menulis di sana tentang hololive dan belajar bahasa.",
-          "Server Discord pertukaran bahasa untuk penggemar VTuber.",
-          "Profil yang lebih berorientasi kerja.",
-          "Artikel dalam bahasa Jepang.",
-          "Catatan dan tulisan pendek.",
-          "Pekerjaan packaging dan build, termasuk karukan.",
-          "Aktivitas di sisi openSUSE.",
-          "Aktivitas di sisi KDE, termasuk kholidays.",
+          "Kode dan eksperimen",
+          "Kabar singkat",
+          "Artikel",
+          "Catatan teknis",
+          "Profil untuk pekerjaan",
+          "Packaging openSUSE",
         ],
       }
   }
@@ -202,13 +92,9 @@ fn links() -> Array[ProfileLink] {
     { label: "GitHub", url: "https://github.com/gaato" },
     { label: "X / Twitter", url: "https://x.com/gaato11" },
     { label: "note", url: "https://note.com/gaato" },
-    { label: "HoloLang Exchange", url: "https://join.hololang.exchange/" },
-    { label: "LinkedIn", url: "https://www.linkedin.com/in/gaato" },
-    { label: "Qiita", url: "https://qiita.com/gaato" },
     { label: "Zenn", url: "https://zenn.dev/gaato" },
+    { label: "LinkedIn", url: "https://www.linkedin.com/in/gaato" },
     { label: "openSUSE Build Service", url: "https://build.opensuse.org/users/gaato" },
-    { label: "openSUSE Gitea", url: "https://src.opensuse.org/gaato" },
-    { label: "KDE GitLab", url: "https://invent.kde.org/gaato" },
   ]
 }
 
@@ -224,6 +110,17 @@ const BG_NOISE_REFRESH_INTERVAL = 18
 struct AutomatonRule {
   birth : Array[Int]
   survive : Array[Int]
+}
+
+struct AutomatonPalette {
+  red : Double
+  green : Double
+  blue : Double
+  red_gain : Double
+  green_gain : Double
+  blue_gain : Double
+  alpha_base : Double
+  alpha_gain : Double
 }
 
 fn automaton_rules() -> Array[AutomatonRule] {
@@ -246,6 +143,7 @@ priv struct BackgroundState {
   canvas : @js_dom.HTMLCanvasElement
   ctx : @canvas.CanvasRenderingContext2D
   rule : AutomatonRule
+  palette : AutomatonPalette
   mut last_time : Double
   mut accumulated : Double
   mut width : Int
@@ -290,6 +188,16 @@ fn min_double(left : Double, right : Double) -> Double {
   }
 }
 
+fn clamp_double(value : Double, lower : Double, upper : Double) -> Double {
+  if value < lower {
+    lower
+  } else if value > upper {
+    upper
+  } else {
+    value
+  }
+}
+
 fn ceil_div(value : Int, divisor : Int) -> Int {
   (value + divisor - 1) / divisor
 }
@@ -324,6 +232,54 @@ fn random_index(limit : Int) -> Int {
   @math.Math::floor(@math.Math::random() * limit.to_double())
 }
 
+fn sum_ints(values : Array[Int]) -> Int {
+  let mut total = 0
+  for value in values {
+    total += value
+  }
+  total
+}
+
+fn normalized_average(values : Array[Int]) -> Double {
+  if values.length() == 0 {
+    0.0
+  } else {
+    sum_ints(values).to_double() / (values.length() * 8).to_double()
+  }
+}
+
+fn seeded_unit(seed : Int) -> Double {
+  (seed % 97).to_double() / 96.0
+}
+
+fn palette_for_rule(rule : AutomatonRule) -> AutomatonPalette {
+  let birth_sum = sum_ints(rule.birth)
+  let survive_sum = sum_ints(rule.survive)
+  let birth_density = rule.birth.length().to_double() / 8.0
+  let survive_density = rule.survive.length().to_double() / 8.0
+  let birth_average = normalized_average(rule.birth)
+  let survive_average = normalized_average(rule.survive)
+  let activity = clamp_double(birth_density * 0.58 + survive_density * 0.42, 0.0, 1.0)
+  let contrast = clamp_double(@math.Math::abs(birth_average - survive_average), 0.0, 1.0)
+  let stability = clamp_double(1.0 - contrast * 0.82, 0.0, 1.0)
+  let warm_seed = seeded_unit(
+    birth_sum * 37 + survive_sum * 19 + rule.birth.length() * 53 + rule.survive.length() * 29,
+  )
+  let cool_seed = seeded_unit(
+    birth_sum * 17 + survive_sum * 31 + rule.birth.length() * 11 + rule.survive.length() * 47,
+  )
+  {
+    red: clamp_double(14.0 + 84.0 * warm_seed + 34.0 * contrast, 0.0, 255.0),
+    green: clamp_double(58.0 + 52.0 * stability + 28.0 * activity, 0.0, 255.0),
+    blue: clamp_double(68.0 + 78.0 * cool_seed + 18.0 * (1.0 - activity), 0.0, 255.0),
+    red_gain: clamp_double(12.0 + 44.0 * (1.0 - survive_average) + 20.0 * warm_seed, 0.0, 255.0),
+    green_gain: clamp_double(24.0 + 42.0 * stability + 16.0 * activity, 0.0, 255.0),
+    blue_gain: clamp_double(22.0 + 48.0 * (1.0 - contrast) + 18.0 * cool_seed, 0.0, 255.0),
+    alpha_base: clamp_double(0.11 + activity * 0.04, 0.08, 0.2),
+    alpha_gain: clamp_double(0.24 + contrast * 0.09 + stability * 0.05, 0.18, 0.4),
+  }
+}
+
 fn contains_neighbor_count(values : Array[Int], target : Int) -> Bool {
   for value in values {
     if value == target {
@@ -351,6 +307,7 @@ fn ensure_background_canvas(doc : @js_dom.Document) -> @js_dom.HTMLCanvasElement
 
 fn render_background(state : BackgroundState) -> Unit {
   state.ctx.clearRect(0.0, 0.0, state.width.to_double(), state.height.to_double())
+  let palette = state.palette
   for row = 0; row < state.rows; row = row + 1 {
     for column = 0; column < state.columns; column = column + 1 {
       let index = row * state.columns + column
@@ -360,10 +317,10 @@ fn render_background(state : BackgroundState) -> Unit {
         let y = (row * state.cell_size).to_double()
         let inset = state.cell_size.to_double() * 0.08
         let glow = if state.current[index] == 1 { value } else { value * 0.72 }
-        let red = @math.Math::round(8.0 + glow * 10.0)
-        let green = @math.Math::round(102.0 + glow * 64.0)
-        let blue = @math.Math::round(108.0 + glow * 82.0)
-        let alpha = 0.14 + glow * 0.32
+        let red = @math.Math::round(palette.red + glow * palette.red_gain)
+        let green = @math.Math::round(palette.green + glow * palette.green_gain)
+        let blue = @math.Math::round(palette.blue + glow * palette.blue_gain)
+        let alpha = palette.alpha_base + glow * palette.alpha_gain
         state.ctx.fillStyle = "rgba(" +
           red.to_string() +
           ", " +
@@ -527,6 +484,7 @@ fn mount_cellular_background() -> Unit {
     canvas,
     ctx,
     rule,
+    palette: palette_for_rule(rule),
     last_time: 0.0,
     accumulated: 0.0,
     width: 0,
@@ -571,40 +529,6 @@ fn lang_button(
 fn summary_line(index : Int, current : @signal.Signal[Lang]) -> @dom.DomNode {
   @dom.p([
     @dom.text_dyn(fn() { i18n(current.get()).summary[index] }),
-  ])
-}
-
-fn about_line(index : Int, current : @signal.Signal[Lang]) -> @dom.DomNode {
-  @dom.p([
-    @dom.text_dyn(fn() { i18n(current.get()).about[index] }),
-  ])
-}
-
-fn hero_quote(current : @signal.Signal[Lang]) -> @dom.DomNode {
-  @dom.div(
-    class="hero-quote",
-    [
-      @dom.p(
-        class="hero-quote-text",
-        [@dom.text_dyn(fn() { i18n(current.get()).quote_text })],
-      ),
-      @dom.p(
-        class="hero-quote-author",
-        [@dom.text_dyn(fn() { i18n(current.get()).quote_author })],
-      ),
-    ],
-  )
-}
-
-fn current_point(index : Int, current : @signal.Signal[Lang]) -> @dom.DomNode {
-  @dom.li([
-    @dom.text_dyn(fn() { i18n(current.get()).current_points[index] }),
-  ])
-}
-
-fn oss_point(index : Int, current : @signal.Signal[Lang]) -> @dom.DomNode {
-  @dom.li([
-    @dom.text_dyn(fn() { i18n(current.get()).oss_points[index] }),
   ])
 }
 
@@ -669,105 +593,17 @@ fn main {
           @dom.div(
             class="panel hero",
             [
-              @dom.h1([@dom.text("がーと / gaato")]),
+              @dom.h1([@dom.text_dyn(fn() { i18n(current_lang.get()).headline })]),
               @dom.p(
-                class="headline",
-                [@dom.text_dyn(fn() { i18n(current_lang.get()).headline })],
+                class="handle",
+                [@dom.text("gaato.net")],
               ),
               @dom.div(
                 class="summary",
                 [
                   summary_line(0, current_lang),
-                ],
-              ),
-              hero_quote(current_lang),
-            ],
-          ),
-          @dom.div(
-            class="section-grid",
-            [
-              @dom.div(
-                class="panel",
-                [
-                  @dom.h2(
-                    class="section-title",
-                    [@dom.text_dyn(fn() { i18n(current_lang.get()).about_title })],
-                  ),
-                  @dom.div(
-                    class="stack",
-                    [
-                      about_line(0, current_lang),
-                      about_line(1, current_lang),
-                    ],
-                  ),
-                ],
-              ),
-              @dom.div(
-                class="panel",
-                [
-                  @dom.h2(
-                    class="section-title",
-                    [@dom.text_dyn(fn() { i18n(current_lang.get()).current_title })],
-                  ),
-                  @dom.p(
-                    class="card-title",
-                    [@dom.text_dyn(fn() { i18n(current_lang.get()).current_role })],
-                  ),
-                  @dom.p(
-                    class="meta-line",
-                    [@dom.text_dyn(fn() { i18n(current_lang.get()).current_meta })],
-                  ),
-                  @dom.ul(
-                    class="detail-list",
-                    [
-                      current_point(0, current_lang),
-                      current_point(1, current_lang),
-                      current_point(2, current_lang),
-                    ],
-                  ),
-                ],
-              ),
-              @dom.div(
-                class="panel",
-                [
-                  @dom.h2(
-                    class="section-title",
-                    [@dom.text_dyn(fn() { i18n(current_lang.get()).oss_title })],
-                  ),
-                  @dom.p(
-                    class="card-title",
-                    [@dom.text_dyn(fn() { i18n(current_lang.get()).oss_role })],
-                  ),
-                  @dom.p(
-                    class="meta-line",
-                    [@dom.text_dyn(fn() { i18n(current_lang.get()).oss_meta })],
-                  ),
-                  @dom.ul(
-                    class="detail-list",
-                    [
-                      oss_point(0, current_lang),
-                      oss_point(1, current_lang),
-                      oss_point(2, current_lang),
-                      oss_point(3, current_lang),
-                    ],
-                  ),
-                ],
-              ),
-              @dom.div(
-                class="panel",
-                [
-                  @dom.h2(
-                    class="section-title",
-                    [@dom.text_dyn(fn() { i18n(current_lang.get()).education_title })],
-                  ),
-                  @dom.p(
-                    class="card-title",
-                    [@dom.text_dyn(fn() { i18n(current_lang.get()).education_school })],
-                  ),
-                  @dom.p(
-                    class="meta-line",
-                    [@dom.text_dyn(fn() { i18n(current_lang.get()).education_detail })],
-                  ),
+                  summary_line(1, current_lang),
+                  summary_line(2, current_lang),
                 ],
               ),
             ],
@@ -788,10 +624,6 @@ fn main {
                   link_card(3, current_lang),
                   link_card(4, current_lang),
                   link_card(5, current_lang),
-                  link_card(6, current_lang),
-                  link_card(7, current_lang),
-                  link_card(8, current_lang),
-                  link_card(9, current_lang),
                 ],
               ),
             ],

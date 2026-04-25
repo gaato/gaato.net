@@ -95,6 +95,7 @@ function _M0DTPC16option6OptionGRP46mizchi2js7browser3dom7ElementE4Some(param0) 
 _M0DTPC16option6OptionGRP46mizchi2js7browser3dom7ElementE4Some.prototype.$tag = 1;
 const _M0MP46mizchi2js8builtins4math4Math6random = () => Math.random();
 const _M0MP46mizchi2js8builtins4math4Math5floor = (x) => Math.floor(x);
+const _M0MP46mizchi2js8builtins4math4Math3abs = (x) => Math.abs(x);
 const _M0MP46mizchi2js8builtins4math4Math5round = (x) => Math.round(x);
 const _M0FP46mizchi2js7browser3dom6window = () => window;
 const _M0MP46mizchi2js7browser3dom7Element7prepend = (self, nodes) => self.prepend(...nodes);
@@ -137,51 +138,47 @@ function _M0TP56mizchi4luna8platform3dom7element10DomElement(param0) {
 }
 const _M0MP56mizchi4luna8platform3dom7element10HandlerMap5click = (m, handler) => { m.click = handler; return m; };
 const _M0MP56mizchi4luna8platform3dom7element10HandlerMap9to__attrs = (m) => Object.entries(m).map(([k, v]) => ({ _0: k, _1: { $tag: 2, _0: v } }));
-function _M0TP28internal11gaato_2dnet4I18n(param0, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11, param12, param13, param14, param15, param16, param17, param18, param19) {
+function _M0TP28internal11gaato_2dnet4I18n(param0, param1, param2, param3, param4) {
   this.eyebrow = param0;
   this.headline = param1;
   this.summary = param2;
-  this.quote_text = param3;
-  this.quote_author = param4;
-  this.about_title = param5;
-  this.about = param6;
-  this.current_title = param7;
-  this.current_role = param8;
-  this.current_meta = param9;
-  this.current_points = param10;
-  this.oss_title = param11;
-  this.oss_role = param12;
-  this.oss_meta = param13;
-  this.oss_points = param14;
-  this.education_title = param15;
-  this.education_school = param16;
-  this.education_detail = param17;
-  this.links_title = param18;
-  this.link_notes = param19;
+  this.links_title = param3;
+  this.link_notes = param4;
 }
 function _M0TP28internal11gaato_2dnet13AutomatonRule(param0, param1) {
   this.birth = param0;
   this.survive = param1;
 }
 const _M0FP28internal11gaato_2dnet24prefers__reduced__motion = (win) => win.matchMedia("(prefers-reduced-motion: reduce)").matches;
-function _M0TP28internal11gaato_2dnet15BackgroundState(param0, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11, param12, param13, param14, param15, param16) {
+function _M0TP28internal11gaato_2dnet16AutomatonPalette(param0, param1, param2, param3, param4, param5, param6, param7) {
+  this.red = param0;
+  this.green = param1;
+  this.blue = param2;
+  this.red_gain = param3;
+  this.green_gain = param4;
+  this.blue_gain = param5;
+  this.alpha_base = param6;
+  this.alpha_gain = param7;
+}
+function _M0TP28internal11gaato_2dnet15BackgroundState(param0, param1, param2, param3, param4, param5, param6, param7, param8, param9, param10, param11, param12, param13, param14, param15, param16, param17) {
   this.win = param0;
   this.canvas = param1;
   this.ctx = param2;
   this.rule = param3;
-  this.last_time = param4;
-  this.accumulated = param5;
-  this.width = param6;
-  this.height = param7;
-  this.dpr = param8;
-  this.cell_size = param9;
-  this.columns = param10;
-  this.rows = param11;
-  this.generation = param12;
-  this.current = param13;
-  this.next = param14;
-  this.energy = param15;
-  this.reduced_motion = param16;
+  this.palette = param4;
+  this.last_time = param5;
+  this.accumulated = param6;
+  this.width = param7;
+  this.height = param8;
+  this.dpr = param9;
+  this.cell_size = param10;
+  this.columns = param11;
+  this.rows = param12;
+  this.generation = param13;
+  this.current = param14;
+  this.next = param15;
+  this.energy = param16;
+  this.reduced_motion = param17;
 }
 function _M0DTPC16option6OptionGRP311moonbitlang5async9js__async11AbortSignalE4None() {}
 _M0DTPC16option6OptionGRP311moonbitlang5async9js__async11AbortSignalE4None.prototype.$tag = 0;
@@ -214,58 +211,33 @@ _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValu
 const _M0FP092moonbitlang_2fcore_2fbuiltin_2fStringBuilder_24as_24_40moonbitlang_2fcore_2fbuiltin_2eLogger = { method_0: _M0IPB13StringBuilderPB6Logger13write__string, method_1: _M0IP016_24default__implPB6Logger16write__substringGRPB13StringBuilderE, method_2: _M0IPB13StringBuilderPB6Logger11write__view, method_3: _M0IPB13StringBuilderPB6Logger11write__char };
 const _M0FP46mizchi4luna4luna6signal19effect__id__counter = new _M0TPC13ref3RefGiE(0);
 const _M0FP46mizchi4luna4luna6signal17reactive__context = new _M0TP46mizchi4luna4luna6signal15ReactiveContext(undefined, undefined, _M0DTPC16option6OptionGRPB5ArrayGWEuEE4None__, 0, [], []);
-const _M0FP28internal11gaato_2dnet5linksN6recordS172 = new _M0TP28internal11gaato_2dnet11ProfileLink("GitHub", "https://github.com/gaato");
-const _M0FP28internal11gaato_2dnet5linksN6recordS173 = new _M0TP28internal11gaato_2dnet11ProfileLink("X / Twitter", "https://x.com/gaato11");
-const _M0FP28internal11gaato_2dnet5linksN6recordS174 = new _M0TP28internal11gaato_2dnet11ProfileLink("note", "https://note.com/gaato");
-const _M0FP28internal11gaato_2dnet5linksN6recordS175 = new _M0TP28internal11gaato_2dnet11ProfileLink("HoloLang Exchange", "https://join.hololang.exchange/");
-const _M0FP28internal11gaato_2dnet5linksN6recordS176 = new _M0TP28internal11gaato_2dnet11ProfileLink("LinkedIn", "https://www.linkedin.com/in/gaato");
-const _M0FP28internal11gaato_2dnet5linksN6recordS177 = new _M0TP28internal11gaato_2dnet11ProfileLink("Qiita", "https://qiita.com/gaato");
-const _M0FP28internal11gaato_2dnet5linksN6recordS178 = new _M0TP28internal11gaato_2dnet11ProfileLink("Zenn", "https://zenn.dev/gaato");
-const _M0FP28internal11gaato_2dnet5linksN6recordS179 = new _M0TP28internal11gaato_2dnet11ProfileLink("openSUSE Build Service", "https://build.opensuse.org/users/gaato");
-const _M0FP28internal11gaato_2dnet5linksN6recordS180 = new _M0TP28internal11gaato_2dnet11ProfileLink("openSUSE Gitea", "https://src.opensuse.org/gaato");
-const _M0FP28internal11gaato_2dnet5linksN6recordS181 = new _M0TP28internal11gaato_2dnet11ProfileLink("KDE GitLab", "https://invent.kde.org/gaato");
-const _M0FP28internal11gaato_2dnet11hero__quoteN6constrS182 = "hero-quote";
-const _M0FP28internal11gaato_2dnet11hero__quoteN6constrS183 = "hero-quote-text";
-const _M0FP28internal11gaato_2dnet11hero__quoteN6constrS184 = "hero-quote-author";
-const _M0FP28internal11gaato_2dnet10link__cardN6constrS185 = "_blank";
-const _M0FP28internal11gaato_2dnet10link__cardN6constrS186 = "link-card";
-const _M0FP28internal11gaato_2dnet10link__cardN6constrS187 = new _M0DTP56mizchi4luna8platform3dom7element4Attr10AttrString("noopener noreferrer");
-const _M0FP28internal11gaato_2dnet10link__cardN5tupleS188 = { _0: "rel", _1: _M0FP28internal11gaato_2dnet10link__cardN6constrS187 };
-const _M0FP28internal11gaato_2dnet10link__cardN6constrS189 = "link-label-row";
-const _M0FP28internal11gaato_2dnet10link__cardN6constrS190 = "link-label";
-const _M0FP28internal11gaato_2dnet10link__cardN6constrS191 = "link-arrow";
-const _M0FP28internal11gaato_2dnet10link__cardN6constrS192 = "link-note";
+const _M0FP28internal11gaato_2dnet5linksN6recordS191 = new _M0TP28internal11gaato_2dnet11ProfileLink("GitHub", "https://github.com/gaato");
+const _M0FP28internal11gaato_2dnet5linksN6recordS192 = new _M0TP28internal11gaato_2dnet11ProfileLink("X / Twitter", "https://x.com/gaato11");
+const _M0FP28internal11gaato_2dnet5linksN6recordS193 = new _M0TP28internal11gaato_2dnet11ProfileLink("note", "https://note.com/gaato");
+const _M0FP28internal11gaato_2dnet5linksN6recordS194 = new _M0TP28internal11gaato_2dnet11ProfileLink("Zenn", "https://zenn.dev/gaato");
+const _M0FP28internal11gaato_2dnet5linksN6recordS195 = new _M0TP28internal11gaato_2dnet11ProfileLink("LinkedIn", "https://www.linkedin.com/in/gaato");
+const _M0FP28internal11gaato_2dnet5linksN6recordS196 = new _M0TP28internal11gaato_2dnet11ProfileLink("openSUSE Build Service", "https://build.opensuse.org/users/gaato");
+const _M0FP28internal11gaato_2dnet10link__cardN6constrS197 = "_blank";
+const _M0FP28internal11gaato_2dnet10link__cardN6constrS198 = "link-card";
+const _M0FP28internal11gaato_2dnet10link__cardN6constrS199 = new _M0DTP56mizchi4luna8platform3dom7element4Attr10AttrString("noopener noreferrer");
+const _M0FP28internal11gaato_2dnet10link__cardN5tupleS200 = { _0: "rel", _1: _M0FP28internal11gaato_2dnet10link__cardN6constrS199 };
+const _M0FP28internal11gaato_2dnet10link__cardN6constrS201 = "link-label-row";
+const _M0FP28internal11gaato_2dnet10link__cardN6constrS202 = "link-label";
+const _M0FP28internal11gaato_2dnet10link__cardN6constrS203 = "link-arrow";
+const _M0FP28internal11gaato_2dnet10link__cardN6constrS204 = "link-note";
 const _M0FP56mizchi4luna8platform3dom7element6buttonN6constrS1339 = new _M0DTP56mizchi4luna8platform3dom7element9AttrValue6Static("true");
 const _M0FP56mizchi4luna8platform3dom7element6buttonN5tupleS1340 = { _0: "disabled", _1: _M0FP56mizchi4luna8platform3dom7element6buttonN6constrS1339 };
-const _M0FP28internal11gaato_2dnet7_2amainN6constrS193 = "page";
-const _M0FP28internal11gaato_2dnet7_2amainN6constrS194 = "topbar";
-const _M0FP28internal11gaato_2dnet7_2amainN6constrS195 = "eyebrow-block";
-const _M0FP28internal11gaato_2dnet7_2amainN6constrS196 = "eyebrow";
-const _M0FP28internal11gaato_2dnet7_2amainN6constrS197 = "lang-switcher";
-const _M0FP28internal11gaato_2dnet7_2amainN6constrS198 = "panel hero";
-const _M0FP28internal11gaato_2dnet7_2amainN6constrS199 = "headline";
-const _M0FP28internal11gaato_2dnet7_2amainN6constrS200 = "summary";
-const _M0FP28internal11gaato_2dnet7_2amainN6constrS201 = "section-grid";
-const _M0FP28internal11gaato_2dnet7_2amainN6constrS202 = "panel";
-const _M0FP28internal11gaato_2dnet7_2amainN6constrS203 = "section-title";
-const _M0FP28internal11gaato_2dnet7_2amainN6constrS204 = "stack";
-const _M0FP28internal11gaato_2dnet7_2amainN6constrS205 = "panel";
-const _M0FP28internal11gaato_2dnet7_2amainN6constrS206 = "section-title";
-const _M0FP28internal11gaato_2dnet7_2amainN6constrS207 = "card-title";
-const _M0FP28internal11gaato_2dnet7_2amainN6constrS208 = "meta-line";
-const _M0FP28internal11gaato_2dnet7_2amainN6constrS209 = "detail-list";
-const _M0FP28internal11gaato_2dnet7_2amainN6constrS210 = "panel";
-const _M0FP28internal11gaato_2dnet7_2amainN6constrS211 = "section-title";
-const _M0FP28internal11gaato_2dnet7_2amainN6constrS212 = "card-title";
-const _M0FP28internal11gaato_2dnet7_2amainN6constrS213 = "meta-line";
-const _M0FP28internal11gaato_2dnet7_2amainN6constrS214 = "detail-list";
-const _M0FP28internal11gaato_2dnet7_2amainN6constrS215 = "panel";
-const _M0FP28internal11gaato_2dnet7_2amainN6constrS216 = "section-title";
-const _M0FP28internal11gaato_2dnet7_2amainN6constrS217 = "card-title";
-const _M0FP28internal11gaato_2dnet7_2amainN6constrS218 = "meta-line";
-const _M0FP28internal11gaato_2dnet7_2amainN6constrS219 = "panel";
-const _M0FP28internal11gaato_2dnet7_2amainN6constrS220 = "section-title";
-const _M0FP28internal11gaato_2dnet7_2amainN6constrS221 = "links";
+const _M0FP28internal11gaato_2dnet7_2amainN6constrS205 = "page";
+const _M0FP28internal11gaato_2dnet7_2amainN6constrS206 = "topbar";
+const _M0FP28internal11gaato_2dnet7_2amainN6constrS207 = "eyebrow-block";
+const _M0FP28internal11gaato_2dnet7_2amainN6constrS208 = "eyebrow";
+const _M0FP28internal11gaato_2dnet7_2amainN6constrS209 = "lang-switcher";
+const _M0FP28internal11gaato_2dnet7_2amainN6constrS210 = "panel hero";
+const _M0FP28internal11gaato_2dnet7_2amainN6constrS211 = "handle";
+const _M0FP28internal11gaato_2dnet7_2amainN6constrS212 = "summary";
+const _M0FP28internal11gaato_2dnet7_2amainN6constrS213 = "panel";
+const _M0FP28internal11gaato_2dnet7_2amainN6constrS214 = "section-title";
+const _M0FP28internal11gaato_2dnet7_2amainN6constrS215 = "links";
 function _M0MPB13StringBuilder11new_2einner(size_hint) {
   return new _M0TPB13StringBuilder("");
 }
@@ -1083,24 +1055,24 @@ function _M0FP56mizchi4luna8platform3dom7element4text(content) {
 function _M0FP56mizchi4luna8platform3dom7element9text__dyn(content) {
   return _M0FP56mizchi4luna8platform3dom7element10text__node(content);
 }
-function _M0IP28internal11gaato_2dnet4LangPB2Eq5equal(_x_106, _x_107) {
-  switch (_x_106) {
+function _M0IP28internal11gaato_2dnet4LangPB2Eq5equal(_x_120, _x_121) {
+  switch (_x_120) {
     case 0: {
-      if (_x_107 === 0) {
+      if (_x_121 === 0) {
         return true;
       } else {
         return false;
       }
     }
     case 1: {
-      if (_x_107 === 1) {
+      if (_x_121 === 1) {
         return true;
       } else {
         return false;
       }
     }
     default: {
-      if (_x_107 === 2) {
+      if (_x_121 === 2) {
         return true;
       } else {
         return false;
@@ -1124,13 +1096,13 @@ function _M0MP28internal11gaato_2dnet4Lang10to__string(self) {
 function _M0FP28internal11gaato_2dnet4i18n(lang) {
   switch (lang) {
     case 0: {
-      return new _M0TP28internal11gaato_2dnet4I18n("gaato.net", "ソフトウェアを書いています。", ["日本語・英語・インドネシア語でだいたい話せます。広くいろいろ触るタイプです。"], "Most of the good programmers do programming not because they expect to get paid or get adulation by the public, but because it is fun to program.", "Linus Torvalds", "About", ["新しい技術に触れたり、手間を減らす仕組みを整えたりするのが好きです。", "東京の端の方で暮らしながら、hololive や言語の話を楽しんでいます。このサイトは MoonBit で書いています。"], "Work", "（株）クレアンスメアードでソフトウェアエンジニアをしています", "CRM / AI を活用した IoT / モバイルアプリ", ["CRM の開発や改善を進めています。", "AI を活用した IoT 製品の開発に関わっています。", "Ionic + Cordova 製アプリを Capacitor へ移行しています。"], "OSS", "openSUSE 向けの packaging や upstream へのコントリビュートをしています", "仕事とは別の時間で続けていること", ["openSUSE 向けのパッケージングを継続しています。", "karukan を openSUSE:Factory に提出し、fcitx5-karukan と karukan-tools として accepted されました。", "KDE の kholidays に、日本の祝日データの不足分を補う修正を送りました。", "2024–2027 年ぶんの日本の祝日更新が upstream にマージされています。"], "Background", "東京理科大学 理学部第一部 応用数学科", "2020.04 - 2025.03 / 数理統計学、計算機科学、数値解析を学び、卒業研究では窓付きフーリエ変換と連続ウェーブレット変換を用いた音源分離を研究しました。", "Links", ["いちばんよく更新している場所です。", "@gaato11 です。いちばん雑に近況を書いています。", "hololive や言語学習について書いています。", "VTuber ファン向けの言語交流 Discord サーバーです。", "仕事まわりのプロフィールです。", "日本語で書いた記事です。", "短めのメモや記事です。", "karukan などのパッケージやビルド作業です。", "openSUSE 側の活動です。", "kholidays など KDE 側の活動です。"]);
+      return new _M0TP28internal11gaato_2dnet4I18n("gaato.net", "Gakuto Furuya / gaato", ["東京でソフトウェアを書いています。", "個人基盤、openSUSE、入力方式、言語、hololive など。", "連絡先: g.furuya@gaato.net"], "Links", ["コードと実験", "近況", "記事", "技術メモ", "仕事寄りのプロフィール", "openSUSE packaging"]);
     }
     case 1: {
-      return new _M0TP28internal11gaato_2dnet4I18n("gaato.net", "I write software.", ["I am generally fine in Japanese, English, and Indonesian. I tend to work across a fairly wide range of things."], "Most of the good programmers do programming not because they expect to get paid or get adulation by the public, but because it is fun to program.", "Linus Torvalds", "About", ["I like getting my hands on new technology and building small systems that reduce friction.", "I live on the outskirts of Tokyo. I like hololive and languages, and this site is written in MoonBit."], "Work", "Software Engineer at Cleansmaerd Inc.", "CRM / AI-assisted IoT / mobile apps", ["Working on CRM development and improvements.", "Building AI-assisted IoT products.", "Migrating an Ionic + Cordova application to Capacitor."], "OSS", "I do openSUSE packaging work and contribute upstream outside my day job", "separate from work", ["I keep doing packaging work for openSUSE.", "Submitted karukan to openSUSE:Factory, where it was accepted as fcitx5-karukan and karukan-tools.", "I sent fixes to KDE's kholidays to fill in missing Japanese holiday data.", "The Japanese holiday updates for 2024-2027 have been merged upstream."], "Background", "Tokyo University of Science / Faculty of Science Division I / Department of Applied Mathematics", "2020.04 - 2025.03 / Studied mathematical statistics, computer science, and numerical analysis, then researched source separation with STFT and continuous wavelet transform.", "Links", ["Where most of my code ends up.", "I am @gaato11 there, and it is where I post the most casually.", "I write there about hololive and language learning.", "A language exchange Discord server for VTuber fans.", "A work-oriented profile.", "Articles written in Japanese.", "Short notes and posts.", "Packaging and build work, including karukan.", "openSUSE-side activity.", "KDE-side activity, including kholidays."]);
+      return new _M0TP28internal11gaato_2dnet4I18n("gaato.net", "Gakuto Furuya / gaato", ["I write software in Tokyo.", "Personal infrastructure, openSUSE, input methods, languages, and hololive.", "Contact: g.furuya@gaato.net"], "Links", ["Code and experiments", "Short updates", "Articles", "Technical notes", "Work-oriented profile", "openSUSE packaging"]);
     }
     default: {
-      return new _M0TP28internal11gaato_2dnet4I18n("gaato.net", "Saya menulis perangkat lunak.", ["Saya umumnya nyaman memakai bahasa Jepang, Inggris, dan Indonesia. Saya cenderung mengerjakan banyak hal yang cukup beragam."], "Most of the good programmers do programming not because they expect to get paid or get adulation by the public, but because it is fun to program.", "Linus Torvalds", "Tentang", ["Saya suka menyentuh teknologi baru dan membuat sistem kecil yang mengurangi kerepotan.", "Saya tinggal di pinggiran Tokyo. Saya suka hololive dan bahasa, dan situs ini ditulis dengan MoonBit."], "Pekerjaan", "Software Engineer di Cleansmaerd Inc.", "CRM / IoT berbantuan AI / aplikasi mobile", ["Mengerjakan pengembangan dan perbaikan CRM.", "Terlibat dalam pengembangan produk IoT berbantuan AI.", "Memigrasikan aplikasi Ionic + Cordova ke Capacitor."], "OSS", "Di luar pekerjaan saya mengerjakan packaging openSUSE dan kontribusi upstream", "terpisah dari pekerjaan", ["Saya terus mengerjakan packaging untuk openSUSE.", "Saya mengirimkan karukan ke openSUSE:Factory, lalu diterima sebagai fcitx5-karukan dan karukan-tools.", "Saya juga mengirim perbaikan ke kholidays milik KDE untuk melengkapi data hari libur Jepang.", "Pembaruan hari libur Jepang untuk 2024-2027 sudah di-merge ke upstream."], "Latar Belakang", "Tokyo University of Science / Fakultas Sains Divisi I / Departemen Matematika Terapan", "2020.04 - 2025.03 / Mempelajari statistika matematika, ilmu komputer, dan analisis numerik, lalu meneliti pemisahan sumber suara dengan STFT dan continuous wavelet transform.", "Tautan", ["Tempat yang paling sering saya perbarui.", "Akun saya di sana adalah @gaato11, dan itulah tempat saya menulis paling santai.", "Saya menulis di sana tentang hololive dan belajar bahasa.", "Server Discord pertukaran bahasa untuk penggemar VTuber.", "Profil yang lebih berorientasi kerja.", "Artikel dalam bahasa Jepang.", "Catatan dan tulisan pendek.", "Pekerjaan packaging dan build, termasuk karukan.", "Aktivitas di sisi openSUSE.", "Aktivitas di sisi KDE, termasuk kholidays."]);
+      return new _M0TP28internal11gaato_2dnet4I18n("gaato.net", "Gakuto Furuya / gaato", ["Saya menulis perangkat lunak di Tokyo.", "Infrastruktur pribadi, openSUSE, input method, bahasa, dan hololive.", "Kontak: g.furuya@gaato.net"], "Tautan", ["Kode dan eksperimen", "Kabar singkat", "Artikel", "Catatan teknis", "Profil untuk pekerjaan", "Packaging openSUSE"]);
     }
   }
 }
@@ -1177,6 +1149,82 @@ function _M0FP28internal11gaato_2dnet19make__double__array(length) {
 function _M0FP28internal11gaato_2dnet11wrap__index(value, size) {
   return value < 0 ? value + size | 0 : value >= size ? value - size | 0 : value;
 }
+function _M0FP28internal11gaato_2dnet9sum__ints(values) {
+  let total = 0;
+  const _bind = values.length;
+  let _tmp = 0;
+  while (true) {
+    const _ = _tmp;
+    if (_ < _bind) {
+      const value = values[_];
+      total = total + value | 0;
+      _tmp = _ + 1 | 0;
+      continue;
+    } else {
+      break;
+    }
+  }
+  return total;
+}
+function _M0FP28internal11gaato_2dnet19normalized__average(values) {
+  return values.length === 0 ? 0 : (_M0FP28internal11gaato_2dnet9sum__ints(values) + 0) / ((Math.imul(values.length, 8) | 0) + 0);
+}
+function _M0FP28internal11gaato_2dnet18palette__for__rule(rule) {
+  const birth_sum = _M0FP28internal11gaato_2dnet9sum__ints(rule.birth);
+  const survive_sum = _M0FP28internal11gaato_2dnet9sum__ints(rule.survive);
+  const birth_density = (rule.birth.length + 0) / 8;
+  const survive_density = (rule.survive.length + 0) / 8;
+  const birth_average = _M0FP28internal11gaato_2dnet19normalized__average(rule.birth);
+  const survive_average = _M0FP28internal11gaato_2dnet19normalized__average(rule.survive);
+  const _p = birth_density * 0.58 + survive_density * 0.42;
+  const _p$2 = 0;
+  const _p$3 = 1;
+  const activity = _p < _p$2 ? _p$2 : _p > _p$3 ? _p$3 : _p;
+  const _p$4 = _M0MP46mizchi2js8builtins4math4Math3abs(birth_average - survive_average);
+  const _p$5 = 0;
+  const _p$6 = 1;
+  const contrast = _p$4 < _p$5 ? _p$5 : _p$4 > _p$6 ? _p$6 : _p$4;
+  const _p$7 = 1 - contrast * 0.82;
+  const _p$8 = 0;
+  const _p$9 = 1;
+  const stability = _p$7 < _p$8 ? _p$8 : _p$7 > _p$9 ? _p$9 : _p$7;
+  const _p$10 = (((Math.imul(birth_sum, 37) | 0) + (Math.imul(survive_sum, 19) | 0) | 0) + (Math.imul(rule.birth.length, 53) | 0) | 0) + (Math.imul(rule.survive.length, 29) | 0) | 0;
+  const warm_seed = ((_p$10 % 97 | 0) + 0) / 96;
+  const _p$11 = (((Math.imul(birth_sum, 17) | 0) + (Math.imul(survive_sum, 31) | 0) | 0) + (Math.imul(rule.birth.length, 11) | 0) | 0) + (Math.imul(rule.survive.length, 47) | 0) | 0;
+  const cool_seed = ((_p$11 % 97 | 0) + 0) / 96;
+  const _p$12 = 14 + 84 * warm_seed + 34 * contrast;
+  const _p$13 = 0;
+  const _p$14 = 255;
+  const _tmp = _p$12 < _p$13 ? _p$13 : _p$12 > _p$14 ? _p$14 : _p$12;
+  const _p$15 = 58 + 52 * stability + 28 * activity;
+  const _p$16 = 0;
+  const _p$17 = 255;
+  const _tmp$2 = _p$15 < _p$16 ? _p$16 : _p$15 > _p$17 ? _p$17 : _p$15;
+  const _p$18 = 68 + 78 * cool_seed + 18 * (1 - activity);
+  const _p$19 = 0;
+  const _p$20 = 255;
+  const _tmp$3 = _p$18 < _p$19 ? _p$19 : _p$18 > _p$20 ? _p$20 : _p$18;
+  const _p$21 = 12 + 44 * (1 - survive_average) + 20 * warm_seed;
+  const _p$22 = 0;
+  const _p$23 = 255;
+  const _tmp$4 = _p$21 < _p$22 ? _p$22 : _p$21 > _p$23 ? _p$23 : _p$21;
+  const _p$24 = 24 + 42 * stability + 16 * activity;
+  const _p$25 = 0;
+  const _p$26 = 255;
+  const _tmp$5 = _p$24 < _p$25 ? _p$25 : _p$24 > _p$26 ? _p$26 : _p$24;
+  const _p$27 = 22 + 48 * (1 - contrast) + 18 * cool_seed;
+  const _p$28 = 0;
+  const _p$29 = 255;
+  const _tmp$6 = _p$27 < _p$28 ? _p$28 : _p$27 > _p$29 ? _p$29 : _p$27;
+  const _p$30 = 0.11 + activity * 0.04;
+  const _p$31 = 0.08;
+  const _p$32 = 0.2;
+  const _tmp$7 = _p$30 < _p$31 ? _p$31 : _p$30 > _p$32 ? _p$32 : _p$30;
+  const _p$33 = 0.24 + contrast * 0.09 + stability * 0.05;
+  const _p$34 = 0.18;
+  const _p$35 = 0.4;
+  return new _M0TP28internal11gaato_2dnet16AutomatonPalette(_tmp, _tmp$2, _tmp$3, _tmp$4, _tmp$5, _tmp$6, _tmp$7, _p$33 < _p$34 ? _p$34 : _p$33 > _p$35 ? _p$35 : _p$33);
+}
 function _M0FP28internal11gaato_2dnet25contains__neighbor__count(values, target) {
   const _bind = values.length;
   let _tmp = 0;
@@ -1216,6 +1264,7 @@ function _M0FP28internal11gaato_2dnet26ensure__background__canvas(doc) {
 }
 function _M0FP28internal11gaato_2dnet18render__background(state) {
   _M0MP46mizchi2js7browser6canvas24CanvasRenderingContext2D9clearRect(state.ctx, 0, 0, state.width + 0, state.height + 0);
+  const palette = state.palette;
   let _tmp = 0;
   while (true) {
     const row = _tmp;
@@ -1231,10 +1280,10 @@ function _M0FP28internal11gaato_2dnet18render__background(state) {
             const y = (Math.imul(row, state.cell_size) | 0) + 0;
             const inset = (state.cell_size + 0) * 0.08;
             const glow = _M0MPC15array5Array2atGiE(state.current, index) === 1 ? value : value * 0.72;
-            const red = _M0MP46mizchi2js8builtins4math4Math5round(8 + glow * 10);
-            const green = _M0MP46mizchi2js8builtins4math4Math5round(102 + glow * 64);
-            const blue = _M0MP46mizchi2js8builtins4math4Math5round(108 + glow * 82);
-            const alpha = 0.14 + glow * 0.32;
+            const red = _M0MP46mizchi2js8builtins4math4Math5round(palette.red + glow * palette.red_gain);
+            const green = _M0MP46mizchi2js8builtins4math4Math5round(palette.green + glow * palette.green_gain);
+            const blue = _M0MP46mizchi2js8builtins4math4Math5round(palette.blue + glow * palette.blue_gain);
+            const alpha = palette.alpha_base + glow * palette.alpha_gain;
             state.ctx.fillStyle = `rgba(${_M0MPC13int3Int18to__string_2einner(red, 10)}, ${_M0MPC13int3Int18to__string_2einner(green, 10)}, ${_M0MPC13int3Int18to__string_2einner(blue, 10)}, ${_M0MPC16double6Double10to__string(alpha)})`;
             _M0MP46mizchi2js7browser6canvas24CanvasRenderingContext2D8fillRect(state.ctx, x + inset, y + inset, state.cell_size + 0 - inset * 2, state.cell_size + 0 - inset * 2);
           }
@@ -1451,7 +1500,7 @@ function _M0FP28internal11gaato_2dnet27mount__cellular__background() {
   const canvas = _M0FP28internal11gaato_2dnet26ensure__background__canvas(doc);
   const ctx = _M0MP46mizchi2js7browser3dom17HTMLCanvasElement10getContext(canvas, "2d");
   const rule = _M0FP28internal11gaato_2dnet23random__automaton__rule();
-  const state = new _M0TP28internal11gaato_2dnet15BackgroundState(win, canvas, ctx, rule, 0, 0, 0, 0, 1, 10, 0, 0, 0, [], [], [], false);
+  const state = new _M0TP28internal11gaato_2dnet15BackgroundState(win, canvas, ctx, rule, _M0FP28internal11gaato_2dnet18palette__for__rule(rule), 0, 0, 0, 0, 1, 10, 0, 0, 0, [], [], [], false);
   _M0FP28internal11gaato_2dnet18resize__background(state);
   _M0MP46mizchi2js3web5event11EventTarget24addEventListener_2einner(win, "resize", (_discard_) => {
     _M0FP28internal11gaato_2dnet18resize__background(state);
@@ -1466,21 +1515,9 @@ function _M0FP28internal11gaato_2dnet12lang__button(lang, current) {
 function _M0FP28internal11gaato_2dnet13summary__line(index, current) {
   return _M0FP56mizchi4luna8platform3dom7element1p(undefined, undefined, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element9text__dyn(() => _M0MPC15array5Array2atGsE(_M0FP28internal11gaato_2dnet4i18n(_M0MP46mizchi4luna4luna6signal6Signal3getGRP28internal11gaato_2dnet4LangE(current)).summary, index))]);
 }
-function _M0FP28internal11gaato_2dnet11about__line(index, current) {
-  return _M0FP56mizchi4luna8platform3dom7element1p(undefined, undefined, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element9text__dyn(() => _M0MPC15array5Array2atGsE(_M0FP28internal11gaato_2dnet4i18n(_M0MP46mizchi4luna4luna6signal6Signal3getGRP28internal11gaato_2dnet4LangE(current)).about, index))]);
-}
-function _M0FP28internal11gaato_2dnet11hero__quote(current) {
-  return _M0FP56mizchi4luna8platform3dom7element3div(undefined, _M0FP28internal11gaato_2dnet11hero__quoteN6constrS182, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element1p(undefined, _M0FP28internal11gaato_2dnet11hero__quoteN6constrS183, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element9text__dyn(() => _M0FP28internal11gaato_2dnet4i18n(_M0MP46mizchi4luna4luna6signal6Signal3getGRP28internal11gaato_2dnet4LangE(current)).quote_text)]), _M0FP56mizchi4luna8platform3dom7element1p(undefined, _M0FP28internal11gaato_2dnet11hero__quoteN6constrS184, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element9text__dyn(() => _M0FP28internal11gaato_2dnet4i18n(_M0MP46mizchi4luna4luna6signal6Signal3getGRP28internal11gaato_2dnet4LangE(current)).quote_author)])]);
-}
-function _M0FP28internal11gaato_2dnet14current__point(index, current) {
-  return _M0FP56mizchi4luna8platform3dom7element2li(undefined, undefined, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element9text__dyn(() => _M0MPC15array5Array2atGsE(_M0FP28internal11gaato_2dnet4i18n(_M0MP46mizchi4luna4luna6signal6Signal3getGRP28internal11gaato_2dnet4LangE(current)).current_points, index))]);
-}
-function _M0FP28internal11gaato_2dnet10oss__point(index, current) {
-  return _M0FP56mizchi4luna8platform3dom7element2li(undefined, undefined, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element9text__dyn(() => _M0MPC15array5Array2atGsE(_M0FP28internal11gaato_2dnet4i18n(_M0MP46mizchi4luna4luna6signal6Signal3getGRP28internal11gaato_2dnet4LangE(current)).oss_points, index))]);
-}
 function _M0FP28internal11gaato_2dnet10link__card(index, current) {
-  const link = _M0MPC15array5Array2atGsE([_M0FP28internal11gaato_2dnet5linksN6recordS172, _M0FP28internal11gaato_2dnet5linksN6recordS173, _M0FP28internal11gaato_2dnet5linksN6recordS174, _M0FP28internal11gaato_2dnet5linksN6recordS175, _M0FP28internal11gaato_2dnet5linksN6recordS176, _M0FP28internal11gaato_2dnet5linksN6recordS177, _M0FP28internal11gaato_2dnet5linksN6recordS178, _M0FP28internal11gaato_2dnet5linksN6recordS179, _M0FP28internal11gaato_2dnet5linksN6recordS180, _M0FP28internal11gaato_2dnet5linksN6recordS181], index);
-  return _M0FP56mizchi4luna8platform3dom7element2li(undefined, undefined, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element1a(link.url, _M0FP28internal11gaato_2dnet10link__cardN6constrS185, undefined, _M0FP28internal11gaato_2dnet10link__cardN6constrS186, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, new _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4Some([_M0FP28internal11gaato_2dnet10link__cardN5tupleS188]), _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element3div(undefined, _M0FP28internal11gaato_2dnet10link__cardN6constrS189, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element1p(undefined, _M0FP28internal11gaato_2dnet10link__cardN6constrS190, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element4text(link.label)]), _M0FP56mizchi4luna8platform3dom7element1p(undefined, _M0FP28internal11gaato_2dnet10link__cardN6constrS191, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element4text("↗")])]), _M0FP56mizchi4luna8platform3dom7element1p(undefined, _M0FP28internal11gaato_2dnet10link__cardN6constrS192, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element9text__dyn(() => _M0MPC15array5Array2atGsE(_M0FP28internal11gaato_2dnet4i18n(_M0MP46mizchi4luna4luna6signal6Signal3getGRP28internal11gaato_2dnet4LangE(current)).link_notes, index))])])]);
+  const link = _M0MPC15array5Array2atGsE([_M0FP28internal11gaato_2dnet5linksN6recordS191, _M0FP28internal11gaato_2dnet5linksN6recordS192, _M0FP28internal11gaato_2dnet5linksN6recordS193, _M0FP28internal11gaato_2dnet5linksN6recordS194, _M0FP28internal11gaato_2dnet5linksN6recordS195, _M0FP28internal11gaato_2dnet5linksN6recordS196], index);
+  return _M0FP56mizchi4luna8platform3dom7element2li(undefined, undefined, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element1a(link.url, _M0FP28internal11gaato_2dnet10link__cardN6constrS197, undefined, _M0FP28internal11gaato_2dnet10link__cardN6constrS198, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, new _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4Some([_M0FP28internal11gaato_2dnet10link__cardN5tupleS200]), _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element3div(undefined, _M0FP28internal11gaato_2dnet10link__cardN6constrS201, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element1p(undefined, _M0FP28internal11gaato_2dnet10link__cardN6constrS202, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element4text(link.label)]), _M0FP56mizchi4luna8platform3dom7element1p(undefined, _M0FP28internal11gaato_2dnet10link__cardN6constrS203, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element4text("↗")])]), _M0FP56mizchi4luna8platform3dom7element1p(undefined, _M0FP28internal11gaato_2dnet10link__cardN6constrS204, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element9text__dyn(() => _M0MPC15array5Array2atGsE(_M0FP28internal11gaato_2dnet4i18n(_M0MP46mizchi4luna4luna6signal6Signal3getGRP28internal11gaato_2dnet4LangE(current)).link_notes, index))])])]);
 }
 (() => {
   const current_lang = _M0FP46mizchi4luna4luna6signal6signalGRP28internal11gaato_2dnet4LangE(0);
@@ -1490,7 +1527,7 @@ function _M0FP28internal11gaato_2dnet10link__card(index, current) {
   if (_bind.$tag === 1) {
     const _Some = _bind;
     const _el = _Some._0;
-    const app = _M0FP56mizchi4luna8platform3dom7element3div(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS193, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element3div(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS194, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element3div(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS195, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element1p(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS196, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element9text__dyn(() => _M0FP28internal11gaato_2dnet4i18n(_M0MP46mizchi4luna4luna6signal6Signal3getGRP28internal11gaato_2dnet4LangE(current_lang)).eyebrow)])]), _M0FP56mizchi4luna8platform3dom7element3div(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS197, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP28internal11gaato_2dnet12lang__button(0, current_lang), _M0FP28internal11gaato_2dnet12lang__button(1, current_lang), _M0FP28internal11gaato_2dnet12lang__button(2, current_lang)])]), _M0FP56mizchi4luna8platform3dom7element3div(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS198, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element2h1(undefined, undefined, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element4text("がーと / gaato")]), _M0FP56mizchi4luna8platform3dom7element1p(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS199, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element9text__dyn(() => _M0FP28internal11gaato_2dnet4i18n(_M0MP46mizchi4luna4luna6signal6Signal3getGRP28internal11gaato_2dnet4LangE(current_lang)).headline)]), _M0FP56mizchi4luna8platform3dom7element3div(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS200, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP28internal11gaato_2dnet13summary__line(0, current_lang)]), _M0FP28internal11gaato_2dnet11hero__quote(current_lang)]), _M0FP56mizchi4luna8platform3dom7element3div(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS201, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element3div(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS202, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element2h2(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS203, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element9text__dyn(() => _M0FP28internal11gaato_2dnet4i18n(_M0MP46mizchi4luna4luna6signal6Signal3getGRP28internal11gaato_2dnet4LangE(current_lang)).about_title)]), _M0FP56mizchi4luna8platform3dom7element3div(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS204, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP28internal11gaato_2dnet11about__line(0, current_lang), _M0FP28internal11gaato_2dnet11about__line(1, current_lang)])]), _M0FP56mizchi4luna8platform3dom7element3div(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS205, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element2h2(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS206, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element9text__dyn(() => _M0FP28internal11gaato_2dnet4i18n(_M0MP46mizchi4luna4luna6signal6Signal3getGRP28internal11gaato_2dnet4LangE(current_lang)).current_title)]), _M0FP56mizchi4luna8platform3dom7element1p(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS207, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element9text__dyn(() => _M0FP28internal11gaato_2dnet4i18n(_M0MP46mizchi4luna4luna6signal6Signal3getGRP28internal11gaato_2dnet4LangE(current_lang)).current_role)]), _M0FP56mizchi4luna8platform3dom7element1p(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS208, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element9text__dyn(() => _M0FP28internal11gaato_2dnet4i18n(_M0MP46mizchi4luna4luna6signal6Signal3getGRP28internal11gaato_2dnet4LangE(current_lang)).current_meta)]), _M0FP56mizchi4luna8platform3dom7element2ul(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS209, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP28internal11gaato_2dnet14current__point(0, current_lang), _M0FP28internal11gaato_2dnet14current__point(1, current_lang), _M0FP28internal11gaato_2dnet14current__point(2, current_lang)])]), _M0FP56mizchi4luna8platform3dom7element3div(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS210, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element2h2(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS211, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element9text__dyn(() => _M0FP28internal11gaato_2dnet4i18n(_M0MP46mizchi4luna4luna6signal6Signal3getGRP28internal11gaato_2dnet4LangE(current_lang)).oss_title)]), _M0FP56mizchi4luna8platform3dom7element1p(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS212, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element9text__dyn(() => _M0FP28internal11gaato_2dnet4i18n(_M0MP46mizchi4luna4luna6signal6Signal3getGRP28internal11gaato_2dnet4LangE(current_lang)).oss_role)]), _M0FP56mizchi4luna8platform3dom7element1p(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS213, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element9text__dyn(() => _M0FP28internal11gaato_2dnet4i18n(_M0MP46mizchi4luna4luna6signal6Signal3getGRP28internal11gaato_2dnet4LangE(current_lang)).oss_meta)]), _M0FP56mizchi4luna8platform3dom7element2ul(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS214, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP28internal11gaato_2dnet10oss__point(0, current_lang), _M0FP28internal11gaato_2dnet10oss__point(1, current_lang), _M0FP28internal11gaato_2dnet10oss__point(2, current_lang), _M0FP28internal11gaato_2dnet10oss__point(3, current_lang)])]), _M0FP56mizchi4luna8platform3dom7element3div(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS215, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element2h2(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS216, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element9text__dyn(() => _M0FP28internal11gaato_2dnet4i18n(_M0MP46mizchi4luna4luna6signal6Signal3getGRP28internal11gaato_2dnet4LangE(current_lang)).education_title)]), _M0FP56mizchi4luna8platform3dom7element1p(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS217, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element9text__dyn(() => _M0FP28internal11gaato_2dnet4i18n(_M0MP46mizchi4luna4luna6signal6Signal3getGRP28internal11gaato_2dnet4LangE(current_lang)).education_school)]), _M0FP56mizchi4luna8platform3dom7element1p(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS218, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element9text__dyn(() => _M0FP28internal11gaato_2dnet4i18n(_M0MP46mizchi4luna4luna6signal6Signal3getGRP28internal11gaato_2dnet4LangE(current_lang)).education_detail)])])]), _M0FP56mizchi4luna8platform3dom7element3div(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS219, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element2h2(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS220, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element9text__dyn(() => _M0FP28internal11gaato_2dnet4i18n(_M0MP46mizchi4luna4luna6signal6Signal3getGRP28internal11gaato_2dnet4LangE(current_lang)).links_title)]), _M0FP56mizchi4luna8platform3dom7element2ul(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS221, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP28internal11gaato_2dnet10link__card(0, current_lang), _M0FP28internal11gaato_2dnet10link__card(1, current_lang), _M0FP28internal11gaato_2dnet10link__card(2, current_lang), _M0FP28internal11gaato_2dnet10link__card(3, current_lang), _M0FP28internal11gaato_2dnet10link__card(4, current_lang), _M0FP28internal11gaato_2dnet10link__card(5, current_lang), _M0FP28internal11gaato_2dnet10link__card(6, current_lang), _M0FP28internal11gaato_2dnet10link__card(7, current_lang), _M0FP28internal11gaato_2dnet10link__card(8, current_lang), _M0FP28internal11gaato_2dnet10link__card(9, current_lang)])])]);
+    const app = _M0FP56mizchi4luna8platform3dom7element3div(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS205, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element3div(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS206, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element3div(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS207, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element1p(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS208, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element9text__dyn(() => _M0FP28internal11gaato_2dnet4i18n(_M0MP46mizchi4luna4luna6signal6Signal3getGRP28internal11gaato_2dnet4LangE(current_lang)).eyebrow)])]), _M0FP56mizchi4luna8platform3dom7element3div(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS209, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP28internal11gaato_2dnet12lang__button(0, current_lang), _M0FP28internal11gaato_2dnet12lang__button(1, current_lang), _M0FP28internal11gaato_2dnet12lang__button(2, current_lang)])]), _M0FP56mizchi4luna8platform3dom7element3div(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS210, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element2h1(undefined, undefined, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element9text__dyn(() => _M0FP28internal11gaato_2dnet4i18n(_M0MP46mizchi4luna4luna6signal6Signal3getGRP28internal11gaato_2dnet4LangE(current_lang)).headline)]), _M0FP56mizchi4luna8platform3dom7element1p(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS211, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element4text("gaato.net")]), _M0FP56mizchi4luna8platform3dom7element3div(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS212, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP28internal11gaato_2dnet13summary__line(0, current_lang), _M0FP28internal11gaato_2dnet13summary__line(1, current_lang), _M0FP28internal11gaato_2dnet13summary__line(2, current_lang)])]), _M0FP56mizchi4luna8platform3dom7element3div(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS213, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element2h2(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS214, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP56mizchi4luna8platform3dom7element9text__dyn(() => _M0FP28internal11gaato_2dnet4i18n(_M0MP46mizchi4luna4luna6signal6Signal3getGRP28internal11gaato_2dnet4LangE(current_lang)).links_title)]), _M0FP56mizchi4luna8platform3dom7element2ul(undefined, _M0FP28internal11gaato_2dnet7_2amainN6constrS215, undefined, undefined, undefined, _M0DTPC16option6OptionGRP56mizchi4luna8platform3dom7element10HandlerMapE4None__, undefined, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element4AttrEEE4None__, _M0DTPC16option6OptionGRPB5ArrayGUsRP56mizchi4luna8platform3dom7element9AttrValueEEE4None__, [_M0FP28internal11gaato_2dnet10link__card(0, current_lang), _M0FP28internal11gaato_2dnet10link__card(1, current_lang), _M0FP28internal11gaato_2dnet10link__card(2, current_lang), _M0FP28internal11gaato_2dnet10link__card(3, current_lang), _M0FP28internal11gaato_2dnet10link__card(4, current_lang), _M0FP28internal11gaato_2dnet10link__card(5, current_lang)])])]);
     _M0FP56mizchi4luna8platform3dom7element6render(_M0MP56mizchi4luna8platform3dom7element10DomElement11from__jsdom(_el), app);
     return;
   } else {
