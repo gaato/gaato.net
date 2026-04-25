@@ -1097,13 +1097,13 @@ function _M0MP28internal11gaato_2dnet4Lang10to__string(self) {
 function _M0FP28internal11gaato_2dnet4i18n(lang) {
   switch (lang) {
     case 0: {
-      return new _M0TP28internal11gaato_2dnet4I18n("gaato.net", "がーと / gaato", ["数学と技術と語学とVTuberが好きです。"], "Links", ["コードと実験", "近況", "記事", "技術メモ", "数学", "仕事寄りのプロフィール", "openSUSE packaging"]);
+      return new _M0TP28internal11gaato_2dnet4I18n("gaato.net", "がーと / gaato", ["数学と技術と語学とVTuberが好きです。"], "Links", ["コードと実験", "オタク活動", "記事", "技術メモ", "数学", "仕事寄りのプロフィール", "openSUSE packaging"]);
     }
     case 1: {
-      return new _M0TP28internal11gaato_2dnet4I18n("gaato.net", "がーと / gaato", ["I like mathematics, technology, languages, and VTubers."], "Links", ["Code and experiments", "Short updates", "Articles", "Technical notes", "Mathematics", "Work-oriented profile", "openSUSE packaging"]);
+      return new _M0TP28internal11gaato_2dnet4I18n("gaato.net", "がーと / gaato", ["I like mathematics, technology, languages, and VTubers."], "Links", ["Code and experiments", "Otaku activity", "Articles", "Technical notes", "Mathematics", "Work-oriented profile", "openSUSE packaging"]);
     }
     default: {
-      return new _M0TP28internal11gaato_2dnet4I18n("gaato.net", "がーと / gaato", ["Saya suka matematika, teknologi, bahasa, dan VTuber."], "Tautan", ["Kode dan eksperimen", "Kabar singkat", "Artikel", "Catatan teknis", "Matematika", "Profil untuk pekerjaan", "Packaging openSUSE"]);
+      return new _M0TP28internal11gaato_2dnet4I18n("gaato.net", "がーと / gaato", ["Saya suka matematika, teknologi, bahasa, dan VTuber."], "Tautan", ["Kode dan eksperimen", "Aktivitas otaku", "Artikel", "Catatan teknis", "Matematika", "Profil untuk pekerjaan", "Packaging openSUSE"]);
     }
   }
 }

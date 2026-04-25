@@ -32,7 +32,7 @@ fn i18n(lang : Lang) -> I18n {
         links_title: "Links",
         link_notes: [
           "コードと実験",
-          "近況",
+          "オタク活動",
           "記事",
           "技術メモ",
           "数学",
@@ -50,7 +50,7 @@ fn i18n(lang : Lang) -> I18n {
         links_title: "Links",
         link_notes: [
           "Code and experiments",
-          "Short updates",
+          "Otaku activity",
           "Articles",
           "Technical notes",
           "Mathematics",
@@ -68,7 +68,7 @@ fn i18n(lang : Lang) -> I18n {
         links_title: "Tautan",
         link_notes: [
           "Kode dan eksperimen",
-          "Kabar singkat",
+          "Aktivitas otaku",
           "Artikel",
           "Catatan teknis",
           "Matematika",
