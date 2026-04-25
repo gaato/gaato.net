@@ -97,12 +97,12 @@ fn links() -> Array[ProfileLink] {
 }
 
 const BG_CLASS = "background-automaton"
-const BG_MAX_DPR = 2.0
+const BG_MAX_DPR = 1.5
 const BG_BASE_STEP_MS = 140.0
 const BG_REDUCED_STEP_MS = 520.0
-const BG_MIN_CELL_SIZE = 10
-const BG_MAX_CELL_SIZE = 18
-const BG_TARGET_COLS = 72
+const BG_MIN_CELL_SIZE = 14
+const BG_MAX_CELL_SIZE = 24
+const BG_TARGET_COLS = 48
 const BG_NOISE_REFRESH_INTERVAL = 18
 
 struct AutomatonRule {
@@ -159,6 +159,16 @@ priv struct BackgroundState {
 
 extern "js" fn prefers_reduced_motion(win : @js_dom.Window) -> Bool =
   #|(win) => win.matchMedia("(prefers-reduced-motion: reduce)").matches
+
+extern "js" fn start_background_later(callback : () -> Unit) -> Unit =
+  #|(callback) => {
+  #|  const start = () => setTimeout(callback, 3500)
+  #|  if (document.readyState === "complete") {
+  #|    start()
+  #|  } else {
+  #|    addEventListener("load", start, { once: true })
+  #|  }
+  #|}
 
 fn clamp_int(value : Int, lower : Int, upper : Int) -> Int {
   if value < lower {
@@ -560,7 +570,6 @@ fn link_card(index : Int, current : @signal.Signal[Lang]) -> @dom.DomNode {
 fn main {
   let current_lang : @signal.Signal[Lang] = @signal.signal(Ja)
   let doc = @js_dom.document()
-  mount_cellular_background()
   match doc.getElementById("app") {
     Some(el) => {
       let app = @dom.div(
@@ -628,6 +637,7 @@ fn main {
         ],
       )
       @dom.render(el |> @dom.DomElement::from_jsdom, app)
+      start_background_later(fn() { mount_cellular_background() })
     }
     None => ()
   }
