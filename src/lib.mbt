@@ -27,7 +27,7 @@ fn i18n(lang : Lang) -> I18n {
         eyebrow: "gaato.net",
         headline: "がーと / gaato",
         summary: [
-          "技術と語学とVTuberが好きです。",
+          "数学と技術と語学とVTuberが好きです。",
         ],
         links_title: "Links",
         link_notes: [
@@ -35,6 +35,7 @@ fn i18n(lang : Lang) -> I18n {
           "近況",
           "記事",
           "技術メモ",
+          "数学",
           "仕事寄りのプロフィール",
           "openSUSE packaging",
         ],
@@ -44,7 +45,7 @@ fn i18n(lang : Lang) -> I18n {
         eyebrow: "gaato.net",
         headline: "がーと / gaato",
         summary: [
-          "I like technology, languages, and VTubers.",
+          "I like mathematics, technology, languages, and VTubers.",
         ],
         links_title: "Links",
         link_notes: [
@@ -52,6 +53,7 @@ fn i18n(lang : Lang) -> I18n {
           "Short updates",
           "Articles",
           "Technical notes",
+          "Mathematics",
           "Work-oriented profile",
           "openSUSE packaging",
         ],
@@ -61,7 +63,7 @@ fn i18n(lang : Lang) -> I18n {
         eyebrow: "gaato.net",
         headline: "がーと / gaato",
         summary: [
-          "Saya suka teknologi, bahasa, dan VTuber.",
+          "Saya suka matematika, teknologi, bahasa, dan VTuber.",
         ],
         links_title: "Tautan",
         link_notes: [
@@ -69,6 +71,7 @@ fn i18n(lang : Lang) -> I18n {
           "Kabar singkat",
           "Artikel",
           "Catatan teknis",
+          "Matematika",
           "Profil untuk pekerjaan",
           "Packaging openSUSE",
         ],
@@ -87,6 +90,7 @@ fn links() -> Array[ProfileLink] {
     { label: "X / Twitter", url: "https://x.com/gaato11" },
     { label: "note", url: "https://note.com/gaato" },
     { label: "Zenn", url: "https://zenn.dev/gaato" },
+    { label: "Mathlog", url: "https://mathlog.info/users/368" },
     { label: "LinkedIn", url: "https://www.linkedin.com/in/gaato" },
     { label: "openSUSE Build Service", url: "https://build.opensuse.org/users/gaato" },
   ]
@@ -616,6 +620,7 @@ fn main {
                   link_card(3, current_lang),
                   link_card(4, current_lang),
                   link_card(5, current_lang),
+                  link_card(6, current_lang),
                 ],
               ),
             ],
