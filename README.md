@@ -1,6 +1,6 @@
 # gaato.net
 
-Personal website built with MoonBit.
+Personal website built with MoonBit and deployed to Cloudflare Pages.
 
 ## Setup
 
@@ -30,6 +30,10 @@ Create a production build:
 ```sh
 bun run build
 ```
+
+## Deploy
+
+Pushes to `main` deploy to Cloudflare Pages through GitHub Actions.
 
 ## License
 
