@@ -160,13 +160,19 @@ priv struct BackgroundState {
 extern "js" fn prefers_reduced_motion(win : @js_dom.Window) -> Bool =
   #|(win) => win.matchMedia("(prefers-reduced-motion: reduce)").matches
 
-extern "js" fn start_background_later(callback : () -> Unit) -> Unit =
+extern "js" fn start_background_after_paint(callback : () -> Unit) -> Unit =
   #|(callback) => {
-  #|  const start = () => setTimeout(callback, 3500)
-  #|  if (document.readyState === "complete") {
-  #|    start()
+  #|  const start = () => {
+  #|    if ("requestAnimationFrame" in globalThis) {
+  #|      requestAnimationFrame(() => requestAnimationFrame(callback))
+  #|    } else {
+  #|      setTimeout(callback, 0)
+  #|    }
+  #|  }
+  #|  if (document.readyState === "loading") {
+  #|    addEventListener("DOMContentLoaded", start, { once: true })
   #|  } else {
-  #|    addEventListener("load", start, { once: true })
+  #|    start()
   #|  }
   #|}
 
@@ -637,7 +643,7 @@ fn main {
         ],
       )
       @dom.render(el |> @dom.DomElement::from_jsdom, app)
-      start_background_later(fn() { mount_cellular_background() })
+      start_background_after_paint(fn() { mount_cellular_background() })
     }
     None => ()
   }
