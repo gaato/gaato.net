@@ -25,11 +25,9 @@ fn i18n(lang : Lang) -> I18n {
     Ja =>
       {
         eyebrow: "gaato.net",
-        headline: "Gakuto Furuya / gaato",
+        headline: "がーと / gaato",
         summary: [
-          "東京でソフトウェアを書いています。",
-          "個人基盤、openSUSE、入力方式、言語、hololive など。",
-          "連絡先: g.furuya@gaato.net",
+          "技術と語学とVTuberが好きです。",
         ],
         links_title: "Links",
         link_notes: [
@@ -44,11 +42,9 @@ fn i18n(lang : Lang) -> I18n {
     En =>
       {
         eyebrow: "gaato.net",
-        headline: "Gakuto Furuya / gaato",
+        headline: "がーと / gaato",
         summary: [
-          "I write software in Tokyo.",
-          "Personal infrastructure, openSUSE, input methods, languages, and hololive.",
-          "Contact: g.furuya@gaato.net",
+          "I like technology, languages, and VTubers.",
         ],
         links_title: "Links",
         link_notes: [
@@ -63,11 +59,9 @@ fn i18n(lang : Lang) -> I18n {
     Id =>
       {
         eyebrow: "gaato.net",
-        headline: "Gakuto Furuya / gaato",
+        headline: "がーと / gaato",
         summary: [
-          "Saya menulis perangkat lunak di Tokyo.",
-          "Infrastruktur pribadi, openSUSE, input method, bahasa, dan hololive.",
-          "Kontak: g.furuya@gaato.net",
+          "Saya suka teknologi, bahasa, dan VTuber.",
         ],
         links_title: "Tautan",
         link_notes: [
@@ -602,8 +596,6 @@ fn main {
                 class="summary",
                 [
                   summary_line(0, current_lang),
-                  summary_line(1, current_lang),
-                  summary_line(2, current_lang),
                 ],
               ),
             ],
