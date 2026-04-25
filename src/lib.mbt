@@ -36,7 +36,6 @@ fn i18n(lang : Lang) -> I18n {
           "記事",
           "技術メモ",
           "数学",
-          "仕事寄りのプロフィール",
           "openSUSE packaging",
         ],
       }
@@ -54,7 +53,6 @@ fn i18n(lang : Lang) -> I18n {
           "Articles",
           "Technical notes",
           "Mathematics",
-          "Work-oriented profile",
           "openSUSE packaging",
         ],
       }
@@ -72,7 +70,6 @@ fn i18n(lang : Lang) -> I18n {
           "Artikel",
           "Catatan teknis",
           "Matematika",
-          "Profil untuk pekerjaan",
           "Packaging openSUSE",
         ],
       }
@@ -91,7 +88,6 @@ fn links() -> Array[ProfileLink] {
     { label: "note", url: "https://note.com/gaato" },
     { label: "Zenn", url: "https://zenn.dev/gaato" },
     { label: "Mathlog", url: "https://mathlog.info/users/368" },
-    { label: "LinkedIn", url: "https://www.linkedin.com/in/gaato" },
     { label: "openSUSE Build Service", url: "https://build.opensuse.org/users/gaato" },
   ]
 }
@@ -665,7 +661,6 @@ fn main {
                   link_card(3, current_lang),
                   link_card(4, current_lang),
                   link_card(5, current_lang),
-                  link_card(6, current_lang),
                 ],
               ),
             ],
