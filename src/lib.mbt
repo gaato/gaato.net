@@ -97,12 +97,12 @@ fn links() -> Array[ProfileLink] {
 }
 
 const BG_CLASS = "background-automaton"
-const BG_MAX_DPR = 1.5
+const BG_MAX_DPR = 2.0
 const BG_BASE_STEP_MS = 140.0
 const BG_REDUCED_STEP_MS = 520.0
-const BG_MIN_CELL_SIZE = 14
-const BG_MAX_CELL_SIZE = 24
-const BG_TARGET_COLS = 48
+const BG_MIN_CELL_SIZE = 10
+const BG_MAX_CELL_SIZE = 18
+const BG_TARGET_COLS = 72
 const BG_NOISE_REFRESH_INTERVAL = 18
 
 struct AutomatonRule {
@@ -188,6 +188,14 @@ fn clamp_int(value : Int, lower : Int, upper : Int) -> Int {
 
 fn max_double(left : Double, right : Double) -> Double {
   if left > right {
+    left
+  } else {
+    right
+  }
+}
+
+fn min_int(left : Int, right : Int) -> Int {
+  if left < right {
     left
   } else {
     right
@@ -439,6 +447,11 @@ fn step_background(state : BackgroundState) -> Unit {
 }
 
 fn resize_background(state : BackgroundState) -> Unit {
+  let old_columns = state.columns
+  let old_rows = state.rows
+  let old_current = state.current
+  let old_next = state.next
+  let old_energy = state.energy
   state.width = state.win.innerWidth()
   state.height = state.win.innerHeight()
   state.dpr = min_double(state.win.devicePixelRatio(), BG_MAX_DPR)
@@ -457,7 +470,24 @@ fn resize_background(state : BackgroundState) -> Unit {
   state.current = make_int_array(cell_count)
   state.next = make_int_array(cell_count)
   state.energy = make_double_array(cell_count)
-  seed_background(state)
+  if old_columns == 0 || old_rows == 0 {
+    seed_background(state)
+  } else {
+    let columns_to_copy = min_int(old_columns, state.columns)
+    let rows_to_copy = min_int(old_rows, state.rows)
+    for row = 0; row < rows_to_copy; row = row + 1 {
+      for column = 0; column < columns_to_copy; column = column + 1 {
+        let old_index = row * old_columns + column
+        let new_index = row * state.columns + column
+        state.current[new_index] = old_current[old_index]
+        state.next[new_index] = old_next[old_index]
+        state.energy[new_index] = old_energy[old_index]
+      }
+    }
+    if state.columns != old_columns || state.rows != old_rows {
+      inject_noise(state, 0.018)
+    }
+  }
   render_background(state)
 }
 
