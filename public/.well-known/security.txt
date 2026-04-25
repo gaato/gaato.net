@@ -1,0 +1,4 @@
+Contact: https://github.com/gaato
+Expires: 2027-04-01T00:00:00Z
+Preferred-Languages: ja, en
+Canonical: https://gaato.net/.well-known/security.txt
