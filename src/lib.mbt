@@ -12,6 +12,14 @@ fn Lang::to_string(self : Lang) -> String {
   }
 }
 
+fn lang_from_code(code : String) -> Lang {
+  match code {
+    "en" => En
+    "id" => Id
+    _ => Ja
+  }
+}
+
 struct I18n {
   eyebrow : String
   headline : String
@@ -155,6 +163,25 @@ priv struct BackgroundState {
 
 extern "js" fn prefers_reduced_motion(win : @js_dom.Window) -> Bool =
   #|(win) => win.matchMedia("(prefers-reduced-motion: reduce)").matches
+
+extern "js" fn detect_initial_lang() -> String =
+  #|() => {
+  #|  const candidates = Array.isArray(navigator.languages) && navigator.languages.length > 0
+  #|    ? navigator.languages
+  #|    : [navigator.language ?? "ja"]
+  #|  for (const candidate of candidates) {
+  #|    const normalized = String(candidate).toLowerCase()
+  #|    if (normalized.startsWith("ja")) return "ja"
+  #|    if (normalized.startsWith("en")) return "en"
+  #|    if (normalized.startsWith("id")) return "id"
+  #|  }
+  #|  return "ja"
+  #|}
+
+extern "js" fn set_document_lang(lang : String) -> Unit =
+  #|(lang) => {
+  #|  document.documentElement.lang = lang
+  #|}
 
 extern "js" fn start_background_after_paint(callback : () -> Unit) -> Unit =
   #|(callback) => {
@@ -548,8 +575,12 @@ fn lang_button(
   lang : Lang,
   current : @signal.Signal[Lang]
 ) -> @dom.DomNode {
+  let lang_code = lang.to_string()
   @dom.button(
-    on=@dom.events().click(fn(_) { current.set(lang) }),
+    on=@dom.events().click(fn(_) {
+      current.set(lang)
+      set_document_lang(lang_code)
+    }),
     dyn_attrs=[
       (
         "data-active",
@@ -600,7 +631,9 @@ fn link_card(index : Int, current : @signal.Signal[Lang]) -> @dom.DomNode {
 }
 
 fn main {
-  let current_lang : @signal.Signal[Lang] = @signal.signal(Ja)
+  let initial_lang = lang_from_code(detect_initial_lang())
+  let current_lang : @signal.Signal[Lang] = @signal.signal(initial_lang)
+  set_document_lang(initial_lang.to_string())
   let doc = @js_dom.document()
   match doc.getElementById("app") {
     Some(el) => {
