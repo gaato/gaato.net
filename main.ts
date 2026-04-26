@@ -34,6 +34,8 @@ const BG_BASE_STEP_MS = 140;
 const BG_MIN_CELL_SIZE = 10;
 const BG_MAX_CELL_SIZE = 18;
 const BG_TARGET_COLS = 72;
+const LANG_PANEL_SELECTOR = "[data-lang-panel]";
+const LANG_LINK_SELECTOR = "[data-lang-link]";
 
 function clamp(value: number, lower: number, upper: number): number {
   return Math.min(Math.max(value, lower), upper);
@@ -41,6 +43,35 @@ function clamp(value: number, lower: number, upper: number): number {
 
 function ceilDiv(value: number, divisor: number): number {
   return Math.ceil(value / divisor);
+}
+
+function scheduleOptionalWork(callback: () => void): void {
+  const start = () => {
+    requestAnimationFrame(callback);
+  };
+
+  if (document.readyState === "loading") {
+    addEventListener("DOMContentLoaded", start, { once: true });
+  } else {
+    start();
+  }
+}
+
+function setActivePanel(panel: HTMLElement, active: boolean): void {
+  panel.hidden = !active;
+  if (active) {
+    panel.setAttribute("data-active-lang-panel", "");
+  } else {
+    panel.removeAttribute("data-active-lang-panel");
+  }
+}
+
+function setActiveLangLink(link: HTMLAnchorElement, active: boolean): void {
+  if (active) {
+    link.setAttribute("aria-current", "true");
+  } else {
+    link.removeAttribute("aria-current");
+  }
 }
 
 function normalizeLang(value: string | null | undefined): Lang | null {
@@ -70,22 +101,11 @@ function detectInitialLang(): Lang {
 
 function applyLang(lang: Lang): void {
   document.documentElement.lang = lang;
-  for (const panel of document.querySelectorAll<HTMLElement>("[data-lang-panel]")) {
-    const active = panel.dataset.langPanel === lang;
-    panel.hidden = !active;
-    if (active) {
-      panel.setAttribute("data-active-lang-panel", "");
-    } else {
-      panel.removeAttribute("data-active-lang-panel");
-    }
+  for (const panel of document.querySelectorAll<HTMLElement>(LANG_PANEL_SELECTOR)) {
+    setActivePanel(panel, panel.dataset.langPanel === lang);
   }
-  for (const link of document.querySelectorAll<HTMLAnchorElement>("[data-lang-link]")) {
-    const active = link.dataset.langLink === lang;
-    if (active) {
-      link.setAttribute("aria-current", "true");
-    } else {
-      link.removeAttribute("aria-current");
-    }
+  for (const link of document.querySelectorAll<HTMLAnchorElement>(LANG_LINK_SELECTOR)) {
+    setActiveLangLink(link, link.dataset.langLink === lang);
   }
 }
 
@@ -152,18 +172,6 @@ async function loadBackgroundWasm(): Promise<BackgroundWasm> {
   const response = fetch(wasmUrl);
   const result = await WebAssembly.instantiateStreaming(response, {});
   return result.instance.exports as BackgroundWasm;
-}
-
-function scheduleOptionalWork(callback: () => void): void {
-  const start = () => {
-    requestAnimationFrame(callback);
-  };
-
-  if (document.readyState === "loading") {
-    addEventListener("DOMContentLoaded", start, { once: true });
-  } else {
-    start();
-  }
 }
 
 async function mountCellularBackground(): Promise<void> {
