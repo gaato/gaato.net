@@ -1,4 +1,5 @@
 /*
+  ! Access-Control-Allow-Origin
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   Cross-Origin-Resource-Policy: same-origin
