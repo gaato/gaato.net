@@ -2,7 +2,6 @@ priv struct Rule {
   name : String
   birth_mask : Int
   survive_mask : Int
-  density_per_1000 : Int
 }
 
 priv struct RunStats {
@@ -12,10 +11,17 @@ priv struct RunStats {
   repeat_rate : Double
 }
 
+priv struct RuleScore {
+  name : String
+  mut density_per_1000 : Int
+  mut stats : RunStats
+}
+
 let board_size : Int = 64
-let burn_in_steps : Int = 64
-let measure_steps : Int = 96
+let burn_in_steps : Int = 256
+let measure_steps : Int = 768
 let recent_hash_count : Int = 8
+let density_candidates_per_1000 : Array[Int] = [5, 10, 20, 30, 50, 80, 100, 140, 180, 250, 350, 500]
 
 fn mask_for(values : Array[Int]) -> Int {
   let mut mask = 0
@@ -25,12 +31,11 @@ fn mask_for(values : Array[Int]) -> Int {
   mask
 }
 
-fn rule(name : String, birth : Array[Int], survive : Array[Int], density_per_1000 : Int) -> Rule {
+fn rule(name : String, birth : Array[Int], survive : Array[Int]) -> Rule {
   {
     name,
     birth_mask: mask_for(birth),
     survive_mask: mask_for(survive),
-    density_per_1000,
   }
 }
 
@@ -50,13 +55,13 @@ fn next_random(state : Int) -> Int {
   (state * 173 + 139) % 1000003
 }
 
-fn seed_board(board : Array[Int], r : Rule) -> Unit {
+fn seed_board(board : Array[Int], r : Rule, density_per_1000 : Int) -> Unit {
   let mut random = (
-    r.birth_mask * 2003 + r.survive_mask * 9176 + r.density_per_1000 * 37 + 1
+    r.birth_mask * 2003 + r.survive_mask * 9176 + density_per_1000 * 37 + 1
   ) % 1000003
   for i = 0; i < board.length(); i = i + 1 {
     random = next_random(random)
-    board[i] = if random % 1000 < r.density_per_1000 { 1 } else { 0 }
+    board[i] = if random % 1000 < density_per_1000 { 1 } else { 0 }
   }
 }
 
@@ -157,11 +162,11 @@ fn closeness(value : Double, target : Double, width : Double) -> Double {
   if score < 0.0 { 0.0 } else if score > 1.0 { 1.0 } else { score }
 }
 
-fn score_rule(r : Rule) -> RunStats {
+fn score_rule(r : Rule, density_per_1000 : Int) -> RunStats {
   let board_cells = board_size * board_size
   let current = make_int_array(board_cells, 0)
   let next = make_int_array(board_cells, 0)
-  seed_board(current, r)
+  seed_board(current, r, density_per_1000)
   for i = 0; i < burn_in_steps; i = i + 1 {
     ignore(step_board(current, next, r))
     swap_boards(current, next)
@@ -195,31 +200,65 @@ fn score_rule(r : Rule) -> RunStats {
   { score, mean_density, mean_activity, repeat_rate }
 }
 
-fn print_score(r : Rule) -> Unit {
-  let stats = score_rule(r)
+fn best_density(r : Rule) -> RuleScore {
+  let first_stats = score_rule(r, density_candidates_per_1000[0])
+  let best : RuleScore = {
+    name: r.name,
+    density_per_1000: density_candidates_per_1000[0],
+    stats: first_stats,
+  }
+  for i = 1; i < density_candidates_per_1000.length(); i = i + 1 {
+    let density = density_candidates_per_1000[i]
+    let stats = score_rule(r, density)
+    if stats.score > best.stats.score {
+      best.density_per_1000 = density
+      best.stats = stats
+    }
+  }
+  best
+}
+
+fn print_score(score : RuleScore) -> Unit {
+  let status = if score.stats.score < 0.01 { "reject" } else { "keep" }
   println(
-    "\{r.name}\t\{r.density_per_1000.to_double() / 10.0}%\t\{stats.score}\t\{stats.mean_density}\t\{stats.mean_activity}\t\{stats.repeat_rate}",
+    "\{score.name}\t\{status}\t\{score.density_per_1000.to_double() / 10.0}%\t\{score.stats.score}\t\{score.stats.mean_density}\t\{score.stats.mean_activity}\t\{score.stats.repeat_rate}",
   )
+}
+
+fn print_density_sweep(r : Rule) -> Unit {
+  println("rule\tdensity\tscore\tmean_density\tmean_activity\trepeat_rate")
+  for i = 0; i < density_candidates_per_1000.length(); i = i + 1 {
+    let density = density_candidates_per_1000[i]
+    let stats = score_rule(r, density)
+    println(
+      "\{r.name}\t\{density.to_double() / 10.0}%\t\{stats.score}\t\{stats.mean_density}\t\{stats.mean_activity}\t\{stats.repeat_rate}",
+    )
+  }
 }
 
 fn main {
   let rules : Array[Rule] = [
-    rule("B3/S23", [3], [2, 3], 140),
-    rule("B36/S23", [3, 6], [2, 3], 100),
-    rule("B37/S23", [3, 7], [2, 3], 80),
-    rule("B3/S238", [3], [2, 3, 8], 120),
-    rule("B3/S023", [3], [0, 2, 3], 80),
-    rule("B36/S125", [3, 6], [1, 2, 5], 80),
-    rule("B357/S238", [3, 5, 7], [2, 3, 8], 100),
-    rule("B38/S238", [3, 8], [2, 3, 8], 100),
-    rule("B1357/S1357", [1, 3, 5, 7], [1, 3, 5, 7], 35),
-    rule("B2/S", [2], [], 20),
-    rule("B234/S", [2, 3, 4], [], 15),
-    rule("B34/S34", [3, 4], [3, 4], 220),
-    rule("B25/S4", [2, 5], [4], 30),
+    rule("B3/S23", [3], [2, 3]),
+    rule("B36/S23", [3, 6], [2, 3]),
+    rule("B37/S23", [3, 7], [2, 3]),
+    rule("B3/S238", [3], [2, 3, 8]),
+    rule("B3/S023", [3], [0, 2, 3]),
+    rule("B36/S125", [3, 6], [1, 2, 5]),
+    rule("B357/S238", [3, 5, 7], [2, 3, 8]),
+    rule("B38/S238", [3, 8], [2, 3, 8]),
+    rule("B1357/S1357", [1, 3, 5, 7], [1, 3, 5, 7]),
+    rule("B2/S", [2], []),
+    rule("B234/S", [2, 3, 4], []),
+    rule("B34/S34", [3, 4], [3, 4]),
+    rule("B25/S4", [2, 5], [4]),
   ]
-  println("rule\tdensity\tscore\tmean_density\tmean_activity\trepeat_rate")
-  for i = 0; i < rules.length(); i = i + 1 {
-    print_score(rules[i])
+  let args = @env.args()
+  if args.length() > 1 && args[1] == "b34" {
+    print_density_sweep(rule("B34/S34", [3, 4], [3, 4]))
+  } else {
+    println("rule\tstatus\tbest_density\tscore\tmean_density\tmean_activity\trepeat_rate")
+    for i = 0; i < rules.length(); i = i + 1 {
+      print_score(best_density(rules[i]))
+    }
   }
 }
