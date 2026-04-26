@@ -7,12 +7,7 @@
     "allowJs": true,
     "strict": true,
     "esModuleInterop": true,
-    "skipLibCheck": true,
-    "paths": {
-      "mbt:internal/gaato-net": [
-        "./target/js/release/build/app/app.js"
-      ]
-    }
+    "skipLibCheck": true
   },
   "include": [
     "*.ts",

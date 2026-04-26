@@ -1,10 +1,6 @@
-if (import.meta.env.DEV) {
-  void import("./_build/js/debug/build/gaato-net.js");
-} else {
-  void import("./_build/js/release/build/gaato-net.js");
-}
-
 import wasmUrl from "./_build/wasm-gc/release/build/background/background.wasm?url";
+
+type Lang = "ja" | "en" | "id";
 
 type BackgroundWasm = {
   setup(columns: number, rows: number, birthMask: number, surviveMask: number, seed: number): void;
@@ -32,10 +28,9 @@ type AutomatonPalette = {
   alphaGain: number;
 };
 
-const BG_CLASS = "background-automaton";
+const LANGS: Lang[] = ["ja", "en", "id"];
 const BG_MAX_DPR = 2.0;
 const BG_BASE_STEP_MS = 140;
-const BG_REDUCED_STEP_MS = 520;
 const BG_MIN_CELL_SIZE = 10;
 const BG_MAX_CELL_SIZE = 18;
 const BG_TARGET_COLS = 72;
@@ -46,6 +41,68 @@ function clamp(value: number, lower: number, upper: number): number {
 
 function ceilDiv(value: number, divisor: number): number {
   return Math.ceil(value / divisor);
+}
+
+function normalizeLang(value: string | null | undefined): Lang | null {
+  const normalized = value?.toLowerCase();
+  if (!normalized) {
+    return null;
+  }
+  return LANGS.find((lang) => normalized === lang || normalized.startsWith(`${lang}-`)) ?? null;
+}
+
+function detectInitialLang(): Lang {
+  const params = new URLSearchParams(location.search);
+  const queryLang = normalizeLang(params.get("lang"));
+  if (queryLang) {
+    return queryLang;
+  }
+
+  const candidates = navigator.languages.length > 0 ? navigator.languages : [navigator.language];
+  for (const candidate of candidates) {
+    const lang = normalizeLang(candidate);
+    if (lang) {
+      return lang;
+    }
+  }
+  return "ja";
+}
+
+function setUrlLang(lang: Lang): void {
+  const url = new URL(location.href);
+  url.searchParams.set("lang", lang);
+  history.replaceState(null, "", url);
+}
+
+function applyLang(lang: Lang, updateUrl: boolean): void {
+  document.documentElement.lang = lang;
+  for (const panel of document.querySelectorAll<HTMLElement>("[data-lang-panel]")) {
+    panel.hidden = panel.dataset.langPanel !== lang;
+  }
+  for (const button of document.querySelectorAll<HTMLButtonElement>("[data-lang-button]")) {
+    const active = button.dataset.langButton === lang;
+    if (active) {
+      button.setAttribute("aria-current", "true");
+    } else {
+      button.removeAttribute("aria-current");
+    }
+  }
+  if (updateUrl) {
+    setUrlLang(lang);
+  }
+}
+
+function mountLanguageSwitcher(): void {
+  const initialLang = detectInitialLang();
+  applyLang(initialLang, new URLSearchParams(location.search).has("lang"));
+
+  for (const button of document.querySelectorAll<HTMLButtonElement>("[data-lang-button]")) {
+    const lang = normalizeLang(button.dataset.langButton);
+    if (!lang) {
+      continue;
+    }
+    button.addEventListener("click", () => applyLang(lang, true));
+  }
 }
 
 function randomRule(): AutomatonRule {
@@ -103,26 +160,22 @@ function paletteForRule(rule: AutomatonRule): AutomatonPalette {
   };
 }
 
-function ensureBackgroundCanvas(): HTMLCanvasElement {
-  const existing = document.querySelector<HTMLCanvasElement>(`.${BG_CLASS}`);
-  if (existing) {
-    return existing;
-  }
-  const canvas = document.createElement("canvas");
-  canvas.className = BG_CLASS;
-  canvas.setAttribute("aria-hidden", "true");
-  document.body.prepend(canvas);
-  return canvas;
-}
-
 async function loadBackgroundWasm(): Promise<BackgroundWasm> {
   const response = fetch(wasmUrl);
   const result = await WebAssembly.instantiateStreaming(response, {});
   return result.instance.exports as BackgroundWasm;
 }
 
-function startBackgroundAfterPaint(callback: () => void): void {
-  const start = () => requestAnimationFrame(() => requestAnimationFrame(callback));
+function scheduleOptionalWork(callback: () => void): void {
+  const start = () => {
+    const requestIdleCallback = globalThis.requestIdleCallback;
+    if (requestIdleCallback) {
+      requestIdleCallback(callback, { timeout: 1200 });
+    } else {
+      requestAnimationFrame(() => requestAnimationFrame(callback));
+    }
+  };
+
   if (document.readyState === "loading") {
     addEventListener("DOMContentLoaded", start, { once: true });
   } else {
@@ -131,16 +184,20 @@ function startBackgroundAfterPaint(callback: () => void): void {
 }
 
 async function mountCellularBackground(): Promise<void> {
-  const wasm = await loadBackgroundWasm();
-  const canvas = ensureBackgroundCanvas();
-  const ctx = canvas.getContext("2d");
-  if (!ctx) {
+  const motionQuery = matchMedia("(prefers-reduced-motion: reduce)");
+  if (motionQuery.matches) {
     return;
   }
 
+  const canvas = document.querySelector<HTMLCanvasElement>(".background-automaton");
+  const ctx = canvas?.getContext("2d");
+  if (!canvas || !ctx) {
+    return;
+  }
+
+  const wasm = await loadBackgroundWasm();
   const rule = randomRule();
   const palette = paletteForRule(rule);
-  let reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
   let width = 0;
   let height = 0;
   let dpr = 1;
@@ -181,7 +238,6 @@ async function mountCellularBackground(): Promise<void> {
     width = innerWidth;
     height = innerHeight;
     dpr = Math.min(devicePixelRatio, BG_MAX_DPR);
-    reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
     cellSize = clamp(Math.round(width / BG_TARGET_COLS), BG_MIN_CELL_SIZE, BG_MAX_CELL_SIZE);
     const columns = ceilDiv(width, cellSize);
     const rows = ceilDiv(height, cellSize);
@@ -199,16 +255,19 @@ async function mountCellularBackground(): Promise<void> {
   };
 
   const frame = (time: number) => {
+    if (motionQuery.matches) {
+      ctx.clearRect(0, 0, width, height);
+      return;
+    }
     if (lastTime === 0) {
       lastTime = time;
     }
     const delta = Math.min(time - lastTime, 1000);
     lastTime = time;
     accumulated += delta;
-    const stepMs = reducedMotion ? BG_REDUCED_STEP_MS : BG_BASE_STEP_MS;
-    while (accumulated >= stepMs) {
+    while (accumulated >= BG_BASE_STEP_MS) {
       wasm.step();
-      accumulated -= stepMs;
+      accumulated -= BG_BASE_STEP_MS;
     }
     render();
     requestAnimationFrame(frame);
@@ -219,6 +278,7 @@ async function mountCellularBackground(): Promise<void> {
   requestAnimationFrame(frame);
 }
 
-startBackgroundAfterPaint(() => {
-  void mountCellularBackground();
+mountLanguageSwitcher();
+scheduleOptionalWork(() => {
+  void mountCellularBackground().catch(() => undefined);
 });

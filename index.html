@@ -1,303 +1,94 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="がーと / gaato のホームページ"
-    />
-    <meta name="theme-color" content="#f7f5ee" />
-    <link rel="icon" href="/favicon.ico" sizes="any" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="manifest" href="/site.webmanifest" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>がーと / gaato</title>
-    <style>
-      :root {
-        --bg: #f7f5ee;
-        --border: rgba(33, 31, 27, 0.18);
-        --text: #211f1b;
-        --muted: #686257;
-        --accent: #b1442f;
-      }
-
-      *,
-      *::before,
-      *::after {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      body {
-        font-family:
-          -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans",
-          "Yu Gothic", sans-serif;
-        min-height: 100vh;
-        position: relative;
-        background:
-          radial-gradient(circle at 28% 0%, rgba(177, 68, 47, 0.16), transparent 34rem),
-          radial-gradient(circle at 76% 18%, rgba(45, 103, 92, 0.14), transparent 28rem),
-          linear-gradient(180deg, rgba(247, 245, 238, 0.78), rgba(247, 245, 238, 0.94)),
-          var(--bg);
-        color: var(--text);
-        line-height: 1.64;
-        overflow-x: hidden;
-      }
-
-      body::before {
-        content: "";
-        position: fixed;
-        inset: 0;
-        pointer-events: none;
-        background:
-          linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.4)),
-          radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.08), transparent 32%);
-        z-index: 1;
-      }
-
-      .background-automaton {
-        position: fixed;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        opacity: 0.96;
-        z-index: 0;
-      }
-
-      #app {
-        max-width: 680px;
-        margin: 0 auto;
-        padding: 36px 20px 72px;
-        position: relative;
-        z-index: 2;
-      }
-
-      .page {
-        display: grid;
-        gap: 34px;
-      }
-
-      .topbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 16px;
-      }
-
-      .eyebrow {
-        color: var(--muted);
-        font-size: 0.75rem;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-      }
-
-      .lang-switcher {
-        display: flex;
-        gap: 8px;
-      }
-
-      .lang-switcher button {
-        background: transparent;
-        border: 0;
-        color: var(--muted);
-        padding: 6px 8px;
-        min-width: 2.75rem;
-        cursor: pointer;
-        font-size: 0.95rem;
-        line-height: 1;
-        border-radius: 999px;
-      }
-
-      .lang-switcher button[data-active="true"] {
-        color: var(--accent);
-        background: rgba(177, 68, 47, 0.08);
-        text-decoration: underline;
-        text-underline-offset: 0.2em;
-      }
-
-      .panel {
-        padding: 0;
-      }
-
-      .panel + .panel {
-        border-top: 1px solid var(--border);
-        padding-top: 24px;
-      }
-
-      h1 {
-        font-size: clamp(2.4rem, 9vw, 5.4rem);
-        letter-spacing: -0.07em;
-        line-height: 0.92;
-        margin-bottom: 12px;
-      }
-
-      .handle {
-        color: var(--accent);
-        font-size: 0.95rem;
-        letter-spacing: 0.08em;
-        margin-bottom: 22px;
-      }
-
-      .summary {
-        display: grid;
-        gap: 6px;
-        color: var(--muted);
-      }
-
-      .summary p {
-        font-size: 1.06rem;
-      }
-
-      .summary p,
-      .link-note {
-        max-width: 58ch;
-        text-wrap: pretty;
-      }
-
-      .section-title {
-        font-size: 1rem;
-        margin-bottom: 12px;
-      }
-
-      .links {
-        list-style: none;
-      }
-
-      .link-note {
-        color: var(--muted);
-        font-size: 0.88rem;
-      }
-
-      .links {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 12px 18px;
-      }
-
-      .link-card {
-        display: block;
-        color: inherit;
-        text-decoration: none;
-        padding: 10px 0;
-        border-top: 1px solid var(--border);
-      }
-
-      .link-label-row {
-        display: flex;
-        align-items: baseline;
-        gap: 8px;
-        margin-bottom: 4px;
-      }
-
-      .link-label {
-        font-size: 1rem;
-      }
-
-      .link-arrow {
-        color: var(--accent);
-      }
-
-      @media (max-width: 760px) {
-        #app {
-          padding: 24px 16px 40px;
-        }
-
-        .topbar {
-          flex-direction: column;
-          align-items: flex-start;
-        }
-
-        .links {
-          grid-template-columns: 1fr;
-        }
-      }
-    </style>
+    <meta name="description" content="がーと / gaato のホームページ">
+    <meta name="theme-color" content="#f7f5ee">
+    <link rel="canonical" href="https://gaato.net/">
+    <link rel="alternate" hreflang="ja" href="https://gaato.net/?lang=ja">
+    <link rel="alternate" hreflang="en" href="https://gaato.net/?lang=en">
+    <link rel="alternate" hreflang="id" href="https://gaato.net/?lang=id">
+    <link rel="alternate" hreflang="x-default" href="https://gaato.net/">
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="stylesheet" href="/styles.css">
+    <script type="module" src="/main.ts"></script>
   </head>
   <body>
-    <main id="app">
-      <div class="page">
-        <div class="topbar">
-          <div class="eyebrow-block">
-            <p class="eyebrow">gaato.net</p>
-          </div>
-          <div class="lang-switcher" aria-hidden="true">
-            <button data-active="true">ja</button>
-            <button>en</button>
-            <button>id</button>
-          </div>
-        </div>
-        <div class="panel hero">
-          <h1>がーと / gaato</h1>
-          <p class="handle">gaato.net</p>
-          <div class="summary">
-            <p>数学と技術と語学とVTuberが好きです。</p>
-          </div>
-        </div>
-        <div class="panel">
-          <h2 class="section-title">Links</h2>
-          <ul class="links">
-            <li>
-              <a class="link-card" href="https://github.com/gaato" rel="noopener noreferrer">
-                <div class="link-label-row">
-                  <p class="link-label">GitHub</p>
-                  <p class="link-arrow">↗</p>
-                </div>
-                <p class="link-note">コードと実験</p>
-              </a>
-            </li>
-            <li>
-              <a class="link-card" href="https://x.com/gaato11" rel="noopener noreferrer">
-                <div class="link-label-row">
-                  <p class="link-label">X / Twitter</p>
-                  <p class="link-arrow">↗</p>
-                </div>
-                <p class="link-note">オタク活動</p>
-              </a>
-            </li>
-            <li>
-              <a class="link-card" href="https://note.com/gaato" rel="noopener noreferrer">
-                <div class="link-label-row">
-                  <p class="link-label">note</p>
-                  <p class="link-arrow">↗</p>
-                </div>
-                <p class="link-note">記事</p>
-              </a>
-            </li>
-            <li>
-              <a class="link-card" href="https://zenn.dev/gaato" rel="noopener noreferrer">
-                <div class="link-label-row">
-                  <p class="link-label">Zenn</p>
-                  <p class="link-arrow">↗</p>
-                </div>
-                <p class="link-note">技術メモ</p>
-              </a>
-            </li>
-            <li>
-              <a class="link-card" href="https://mathlog.info/users/368" rel="noopener noreferrer">
-                <div class="link-label-row">
-                  <p class="link-label">Mathlog</p>
-                  <p class="link-arrow">↗</p>
-                </div>
-                <p class="link-note">数学</p>
-              </a>
-            </li>
-            <li>
-              <a class="link-card" href="https://build.opensuse.org/users/gaato" rel="noopener noreferrer">
-                <div class="link-label-row">
-                  <p class="link-label">openSUSE Build Service</p>
-                  <p class="link-arrow">↗</p>
-                </div>
-                <p class="link-note">openSUSE packaging</p>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
+    <canvas class="background-automaton" aria-hidden="true"></canvas>
+    <main class="page" aria-label="gaato.net">
+      <header class="topbar">
+        <p class="eyebrow">gaato.net</p>
+        <nav class="lang-switcher" aria-label="Language">
+          <button type="button" lang="ja" data-lang-button="ja" aria-current="true">ja</button>
+          <button type="button" lang="en" data-lang-button="en">en</button>
+          <button type="button" lang="id" data-lang-button="id">id</button>
+        </nav>
+      </header>
+
+      <article class="content">
+        <section class="locale-panel" lang="ja" data-lang-panel="ja">
+          <header class="hero">
+            <h1>がーと / gaato</h1>
+            <p class="handle">gaato.net</p>
+            <p class="summary">数学と技術と語学とVTuberが好きです。</p>
+          </header>
+          <nav class="links-section" aria-labelledby="links-title-ja">
+            <h2 id="links-title-ja">Links</h2>
+            <ul class="links">
+              <li><a href="https://github.com/gaato" rel="me noopener noreferrer"><span>GitHub</span><small>コードと実験</small></a></li>
+              <li><a href="https://x.com/gaato11" rel="me noopener noreferrer"><span>X / Twitter</span><small>オタク活動</small></a></li>
+              <li><a href="https://note.com/gaato" rel="me noopener noreferrer"><span>note</span><small>記事</small></a></li>
+              <li><a href="https://zenn.dev/gaato" rel="me noopener noreferrer"><span>Zenn</span><small>技術メモ</small></a></li>
+              <li><a href="https://mathlog.info/users/368" rel="me noopener noreferrer"><span>Mathlog</span><small>数学</small></a></li>
+              <li><a href="https://build.opensuse.org/users/gaato" rel="me noopener noreferrer"><span>openSUSE Build Service</span><small>openSUSE packaging</small></a></li>
+            </ul>
+          </nav>
+        </section>
+
+        <section class="locale-panel" lang="en" data-lang-panel="en" hidden>
+          <header class="hero">
+            <h1>がーと / gaato</h1>
+            <p class="handle">gaato.net</p>
+            <p class="summary">I like mathematics, technology, languages, and VTubers.</p>
+          </header>
+          <nav class="links-section" aria-labelledby="links-title-en">
+            <h2 id="links-title-en">Links</h2>
+            <ul class="links">
+              <li><a href="https://github.com/gaato" rel="me noopener noreferrer"><span>GitHub</span><small>Code and experiments</small></a></li>
+              <li><a href="https://x.com/gaato11" rel="me noopener noreferrer"><span>X / Twitter</span><small>Otaku activity</small></a></li>
+              <li><a href="https://note.com/gaato" rel="me noopener noreferrer"><span>note</span><small>Articles</small></a></li>
+              <li><a href="https://zenn.dev/gaato" rel="me noopener noreferrer"><span>Zenn</span><small>Technical notes</small></a></li>
+              <li><a href="https://mathlog.info/users/368" rel="me noopener noreferrer"><span>Mathlog</span><small>Mathematics</small></a></li>
+              <li><a href="https://build.opensuse.org/users/gaato" rel="me noopener noreferrer"><span>openSUSE Build Service</span><small>openSUSE packaging</small></a></li>
+            </ul>
+          </nav>
+        </section>
+
+        <section class="locale-panel" lang="id" data-lang-panel="id" hidden>
+          <header class="hero">
+            <h1>がーと / gaato</h1>
+            <p class="handle">gaato.net</p>
+            <p class="summary">Saya suka matematika, teknologi, bahasa, dan VTuber.</p>
+          </header>
+          <nav class="links-section" aria-labelledby="links-title-id">
+            <h2 id="links-title-id">Tautan</h2>
+            <ul class="links">
+              <li><a href="https://github.com/gaato" rel="me noopener noreferrer"><span>GitHub</span><small>Kode dan eksperimen</small></a></li>
+              <li><a href="https://x.com/gaato11" rel="me noopener noreferrer"><span>X / Twitter</span><small>Aktivitas otaku</small></a></li>
+              <li><a href="https://note.com/gaato" rel="me noopener noreferrer"><span>note</span><small>Artikel</small></a></li>
+              <li><a href="https://zenn.dev/gaato" rel="me noopener noreferrer"><span>Zenn</span><small>Catatan teknis</small></a></li>
+              <li><a href="https://mathlog.info/users/368" rel="me noopener noreferrer"><span>Mathlog</span><small>Matematika</small></a></li>
+              <li><a href="https://build.opensuse.org/users/gaato" rel="me noopener noreferrer"><span>openSUSE Build Service</span><small>Packaging openSUSE</small></a></li>
+            </ul>
+          </nav>
+        </section>
+      </article>
     </main>
-    <script type="module" src="/main.ts"></script>
   </body>
 </html>

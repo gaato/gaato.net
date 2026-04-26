@@ -3,14 +3,21 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "patch:luna": "node scripts/patch-luna.mjs",
-    "prepare:moon": "bash scripts/prepare-moon.sh",
     "build:wasm": "moon build --target wasm-gc --release src/background",
-    "dev": "bun run prepare:moon && vite",
-    "build": "bun run prepare:moon && bun run build:wasm && moon build --release && vite build"
+    "check:moon": "moon check --target wasm-gc src/background",
+    "typecheck": "tsc --noEmit",
+    "dev": "bun run build:wasm && vite",
+    "preview": "vite preview",
+    "build": "bun run build:wasm && vite build",
+    "validate:html": "node scripts/validate-html.mjs",
+    "check:a11y": "pa11y-ci http://127.0.0.1:4173/ http://127.0.0.1:4173/?lang=en http://127.0.0.1:4173/?lang=id",
+    "check:size": "node scripts/check-size.mjs",
+    "check": "bun run typecheck && bun run check:moon && bun run build && bun run validate:html && bun run check:size"
   },
   "devDependencies": {
+    "pa11y-ci": "^4.0.0",
+    "typescript": "^5.9.0",
     "vite": "^6.0.0",
-    "vite-plugin-moonbit": "^0.1.0"
+    "vnu-jar": "^24.10.17"
   }
 }
