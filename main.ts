@@ -112,8 +112,15 @@ function randomRule(): AutomatonRule {
   const rules: AutomatonRule[] = [
     { birth: [3], survive: [2, 3] },
     { birth: [3, 6], survive: [2, 3] },
-    { birth: [3], survive: [1, 2, 3, 4, 5] },
+    { birth: [2], survive: [] },
+    { birth: [2], survive: [0] },
+    { birth: [3], survive: [0, 1, 2, 3, 4, 5, 6, 7, 8] },
+    { birth: [3, 4], survive: [3, 4] },
     { birth: [3, 6, 7, 8], survive: [3, 4, 6, 7, 8] },
+    { birth: [1, 3, 5, 7], survive: [1, 3, 5, 7] },
+    { birth: [3, 5, 6, 7, 8], survive: [5, 6, 7, 8] },
+    { birth: [3, 4, 5], survive: [4, 5, 6, 7] },
+    { birth: [3, 6, 8], survive: [2, 4, 5] },
     { birth: [4, 6, 7, 8], survive: [3, 5, 6, 7, 8] },
   ];
   return rules[Math.floor(Math.random() * rules.length)] ?? rules[0];
@@ -138,8 +145,8 @@ function seededUnit(seed: number): number {
 function paletteForRule(rule: AutomatonRule): AutomatonPalette {
   const birthSum = sum(rule.birth);
   const surviveSum = sum(rule.survive);
-  const birthDensity = rule.birth.length / 8;
-  const surviveDensity = rule.survive.length / 8;
+  const birthDensity = rule.birth.length / 9;
+  const surviveDensity = rule.survive.length / 9;
   const birthAverage = normalizedAverage(rule.birth);
   const surviveAverage = normalizedAverage(rule.survive);
   const activity = clamp(birthDensity * 0.58 + surviveDensity * 0.42, 0, 1);
