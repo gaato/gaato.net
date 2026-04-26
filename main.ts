@@ -3,18 +3,24 @@ import wasmUrl from "./_build/wasm-gc/release/build/background/background.wasm?u
 type Lang = "ja" | "en" | "id";
 
 type BackgroundWasm = {
-  setup(columns: number, rows: number, birthMask: number, surviveMask: number, seed: number): void;
+  setup(columns: number, rows: number, seed: number): void;
   resize(columns: number, rows: number): void;
   step(): void;
   get_columns(): number;
   get_rows(): number;
   get_alive(index: number): number;
   get_energy(index: number): number;
-};
-
-type AutomatonRule = {
-  birth: number[];
-  survive: number[];
+  get_birth_mask(): number;
+  get_survive_mask(): number;
+  get_initial_alive_per_1000(): number;
+  get_palette_red(): number;
+  get_palette_green(): number;
+  get_palette_blue(): number;
+  get_palette_red_gain(): number;
+  get_palette_green_gain(): number;
+  get_palette_blue_gain(): number;
+  get_palette_alpha_base(): number;
+  get_palette_alpha_gain(): number;
 };
 
 type AutomatonPalette = {
@@ -36,6 +42,7 @@ const BG_MAX_CELL_SIZE = 18;
 const BG_TARGET_COLS = 72;
 const LANG_PANEL_SELECTOR = "[data-lang-panel]";
 const LANG_LINK_SELECTOR = "[data-lang-link]";
+const AUTOMATON_RULE_SELECTOR = "[data-automaton-rule]";
 
 function clamp(value: number, lower: number, upper: number): number {
   return Math.min(Math.max(value, lower), upper);
@@ -108,62 +115,39 @@ function mountLanguageSwitcher(): void {
   applyLang(detectInitialLang());
 }
 
-function randomRule(): AutomatonRule {
-  const rules: AutomatonRule[] = [
-    { birth: [3], survive: [2, 3] },
-    { birth: [3, 6], survive: [2, 3] },
-    { birth: [2], survive: [] },
-    { birth: [2], survive: [0] },
-    { birth: [3, 4], survive: [3, 4] },
-    { birth: [1, 3, 5, 7], survive: [1, 3, 5, 7] },
-    { birth: [3, 4, 5], survive: [4, 5, 6, 7] },
-    { birth: [3, 6, 8], survive: [2, 4, 5] },
-  ];
-  return rules[Math.floor(Math.random() * rules.length)] ?? rules[0];
-}
-
-function maskFor(values: number[]): number {
-  return values.reduce((mask, value) => mask | (1 << value), 0);
-}
-
-function sum(values: number[]): number {
-  return values.reduce((total, value) => total + value, 0);
-}
-
-function normalizedAverage(values: number[]): number {
-  return values.length === 0 ? 0 : sum(values) / (values.length * 8);
-}
-
-function seededUnit(seed: number): number {
-  return (seed % 97) / 96;
-}
-
-function paletteForRule(rule: AutomatonRule): AutomatonPalette {
-  const birthSum = sum(rule.birth);
-  const surviveSum = sum(rule.survive);
-  const birthDensity = rule.birth.length / 9;
-  const surviveDensity = rule.survive.length / 9;
-  const birthAverage = normalizedAverage(rule.birth);
-  const surviveAverage = normalizedAverage(rule.survive);
-  const activity = clamp(birthDensity * 0.58 + surviveDensity * 0.42, 0, 1);
-  const contrast = clamp(Math.abs(birthAverage - surviveAverage), 0, 1);
-  const stability = clamp(1 - contrast * 0.82, 0, 1);
-  const warmSeed = seededUnit(
-    birthSum * 37 + surviveSum * 19 + rule.birth.length * 53 + rule.survive.length * 29,
-  );
-  const coolSeed = seededUnit(
-    birthSum * 17 + surviveSum * 31 + rule.birth.length * 11 + rule.survive.length * 47,
-  );
+function readPalette(wasm: BackgroundWasm): AutomatonPalette {
   return {
-    red: clamp(14 + 84 * warmSeed + 34 * contrast, 0, 255),
-    green: clamp(58 + 52 * stability + 28 * activity, 0, 255),
-    blue: clamp(68 + 78 * coolSeed + 18 * (1 - activity), 0, 255),
-    redGain: clamp(12 + 44 * (1 - surviveAverage) + 20 * warmSeed, 0, 255),
-    greenGain: clamp(24 + 42 * stability + 16 * activity, 0, 255),
-    blueGain: clamp(22 + 48 * (1 - contrast) + 18 * coolSeed, 0, 255),
-    alphaBase: clamp(0.11 + activity * 0.04, 0.08, 0.2),
-    alphaGain: clamp(0.24 + contrast * 0.09 + stability * 0.05, 0.18, 0.4),
+    red: wasm.get_palette_red(),
+    green: wasm.get_palette_green(),
+    blue: wasm.get_palette_blue(),
+    redGain: wasm.get_palette_red_gain(),
+    greenGain: wasm.get_palette_green_gain(),
+    blueGain: wasm.get_palette_blue_gain(),
+    alphaBase: wasm.get_palette_alpha_base(),
+    alphaGain: wasm.get_palette_alpha_gain(),
   };
+}
+
+function maskDigits(mask: number): string {
+  let digits = "";
+  for (let value = 0; value <= 8; value += 1) {
+    if (((mask >> value) & 1) === 1) {
+      digits += value.toString();
+    }
+  }
+  return digits;
+}
+
+function formatLifeLikeRule(wasm: BackgroundWasm): string {
+  return `B${maskDigits(wasm.get_birth_mask())}/S${maskDigits(wasm.get_survive_mask())}`;
+}
+
+function renderAutomatonRule(wasm: BackgroundWasm): void {
+  const rule = formatLifeLikeRule(wasm);
+  const density = wasm.get_initial_alive_per_1000() / 10;
+  document.querySelector<HTMLElement>(AUTOMATON_RULE_SELECTOR)?.replaceChildren(
+    document.createTextNode(`${rule} / ${density}%`),
+  );
 }
 
 async function loadBackgroundWasm(): Promise<BackgroundWasm> {
@@ -185,8 +169,16 @@ async function mountCellularBackground(): Promise<void> {
   }
 
   const wasm = await loadBackgroundWasm();
-  const rule = randomRule();
-  const palette = paletteForRule(rule);
+  let palette: AutomatonPalette = {
+    red: 0,
+    green: 0,
+    blue: 0,
+    redGain: 0,
+    greenGain: 0,
+    blueGain: 0,
+    alphaBase: 0,
+    alphaGain: 0,
+  };
   let width = 0;
   let height = 0;
   let dpr = 1;
@@ -237,7 +229,9 @@ async function mountCellularBackground(): Promise<void> {
       wasm.resize(columns, rows);
     } else {
       const seed = Math.floor(Math.random() * 0x7fffffff) || 1;
-      wasm.setup(columns, rows, maskFor(rule.birth), maskFor(rule.survive), seed);
+      wasm.setup(columns, rows, seed);
+      palette = readPalette(wasm);
+      renderAutomatonRule(wasm);
       initialized = true;
     }
     render();
@@ -269,5 +263,7 @@ async function mountCellularBackground(): Promise<void> {
 
 mountLanguageSwitcher();
 scheduleOptionalWork(() => {
-  void mountCellularBackground().catch(() => undefined);
+  void mountCellularBackground().catch((error: unknown) => {
+    console.warn("Failed to mount cellular automaton background.", error);
+  });
 });

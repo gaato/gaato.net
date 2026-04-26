@@ -80,12 +80,12 @@ a {
   justify-content: space-between;
 }
 
-.eyebrow {
+.automaton-rule {
   margin: 0;
   color: var(--muted);
   font-size: 0.75rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  min-block-size: 1.25rem;
 }
 
 .lang-switcher {
@@ -136,13 +136,6 @@ h1 {
   font-size: clamp(2.4rem, 9vw, 5.4rem);
   letter-spacing: -0.07em;
   line-height: 0.92;
-}
-
-.handle {
-  margin-block-end: 22px;
-  color: var(--accent);
-  font-size: 0.95rem;
-  letter-spacing: 0.08em;
 }
 
 .summary {

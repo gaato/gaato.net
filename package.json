@@ -5,6 +5,8 @@
   "scripts": {
     "build:wasm": "moon build --target wasm-gc --release src/background",
     "check:moon": "moon check --target wasm-gc src/background",
+    "check:rules": "moon check --target native src/rule_scan",
+    "score:rules": "moon run --target native --release src/rule_scan",
     "typecheck": "tsc --noEmit",
     "dev": "bun run build:wasm && vite",
     "preview": "vite preview",
@@ -12,7 +14,7 @@
     "validate:html": "node scripts/validate-html.mjs",
     "check:a11y": "pa11y-ci http://127.0.0.1:4173/ http://127.0.0.1:4173/?lang=en http://127.0.0.1:4173/?lang=id",
     "check:size": "node scripts/check-size.mjs",
-    "check": "bun run typecheck && bun run check:moon && bun run build && bun run validate:html && bun run check:size"
+    "check": "bun run typecheck && bun run check:moon && bun run check:rules && bun run build && bun run validate:html && bun run check:size"
   },
   "devDependencies": {
     "pa11y-ci": "^4.0.0",

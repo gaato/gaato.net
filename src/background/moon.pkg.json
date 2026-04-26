@@ -9,7 +9,18 @@
         "get_columns",
         "get_rows",
         "get_alive",
-        "get_energy"
+        "get_energy",
+        "get_birth_mask",
+        "get_survive_mask",
+        "get_initial_alive_per_1000",
+        "get_palette_red",
+        "get_palette_green",
+        "get_palette_blue",
+        "get_palette_red_gain",
+        "get_palette_green_gain",
+        "get_palette_blue_gain",
+        "get_palette_alpha_base",
+        "get_palette_alpha_gain"
       ]
     }
   }
