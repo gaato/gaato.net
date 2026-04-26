@@ -13,6 +13,7 @@
         "get_birth_mask",
         "get_survive_mask",
         "get_initial_alive_per_1000",
+        "get_rule_index",
         "get_palette_red",
         "get_palette_green",
         "get_palette_blue",
