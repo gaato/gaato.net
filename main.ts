@@ -114,14 +114,10 @@ function randomRule(): AutomatonRule {
     { birth: [3, 6], survive: [2, 3] },
     { birth: [2], survive: [] },
     { birth: [2], survive: [0] },
-    { birth: [3], survive: [0, 1, 2, 3, 4, 5, 6, 7, 8] },
     { birth: [3, 4], survive: [3, 4] },
-    { birth: [3, 6, 7, 8], survive: [3, 4, 6, 7, 8] },
     { birth: [1, 3, 5, 7], survive: [1, 3, 5, 7] },
-    { birth: [3, 5, 6, 7, 8], survive: [5, 6, 7, 8] },
     { birth: [3, 4, 5], survive: [4, 5, 6, 7] },
     { birth: [3, 6, 8], survive: [2, 4, 5] },
-    { birth: [4, 6, 7, 8], survive: [3, 5, 6, 7, 8] },
   ];
   return rules[Math.floor(Math.random() * rules.length)] ?? rules[0];
 }
