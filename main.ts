@@ -59,11 +59,6 @@ function scheduleOptionalWork(callback: () => void): void {
 
 function setActivePanel(panel: HTMLElement, active: boolean): void {
   panel.hidden = !active;
-  if (active) {
-    panel.setAttribute("data-active-lang-panel", "");
-  } else {
-    panel.removeAttribute("data-active-lang-panel");
-  }
 }
 
 function setActiveLangLink(link: HTMLAnchorElement, active: boolean): void {
