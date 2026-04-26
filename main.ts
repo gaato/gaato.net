@@ -71,7 +71,13 @@ function detectInitialLang(): Lang {
 function applyLang(lang: Lang): void {
   document.documentElement.lang = lang;
   for (const panel of document.querySelectorAll<HTMLElement>("[data-lang-panel]")) {
-    panel.hidden = panel.dataset.langPanel !== lang;
+    const active = panel.dataset.langPanel === lang;
+    panel.hidden = !active;
+    if (active) {
+      panel.setAttribute("data-active-lang-panel", "");
+    } else {
+      panel.removeAttribute("data-active-lang-panel");
+    }
   }
   for (const link of document.querySelectorAll<HTMLAnchorElement>("[data-lang-link]")) {
     const active = link.dataset.langLink === lang;
