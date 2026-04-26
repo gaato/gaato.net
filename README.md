@@ -3,6 +3,8 @@
 [![Deploy](https://img.shields.io/github/actions/workflow/status/gaato/gaato.net/deploy.yml?branch=main&label=deploy)](https://github.com/gaato/gaato.net/actions/workflows/deploy.yml)
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fgaato.net&label=website)](https://gaato.net)
 [![HTML](https://img.shields.io/w3c-validation/html?targetUrl=https%3A%2F%2Fgaato.net&label=html)](https://validator.nu/?doc=https%3A%2F%2Fgaato.net)
+[![HTTP Observatory](https://img.shields.io/mozilla-observatory/grade/gaato.net?label=observatory)](https://developer.mozilla.org/en-US/observatory/analyze?host=gaato.net)
+[![DeepWiki](https://img.shields.io/badge/DeepWiki-gaato%2Fgaato.net-blue)](https://deepwiki.com/gaato/gaato.net)
 ![Bun](https://img.shields.io/badge/bun-1.3-black?logo=bun)
 ![Vite](https://img.shields.io/badge/vite-8.0.10-646CFF?logo=vite&logoColor=white)
 ![MoonBit](https://img.shields.io/badge/moonbit-latest-blue)
