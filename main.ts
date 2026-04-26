@@ -68,41 +68,23 @@ function detectInitialLang(): Lang {
   return "ja";
 }
 
-function setUrlLang(lang: Lang): void {
-  const url = new URL(location.href);
-  url.searchParams.set("lang", lang);
-  history.replaceState(null, "", url);
-}
-
-function applyLang(lang: Lang, updateUrl: boolean): void {
+function applyLang(lang: Lang): void {
   document.documentElement.lang = lang;
   for (const panel of document.querySelectorAll<HTMLElement>("[data-lang-panel]")) {
     panel.hidden = panel.dataset.langPanel !== lang;
   }
-  for (const button of document.querySelectorAll<HTMLButtonElement>("[data-lang-button]")) {
-    const active = button.dataset.langButton === lang;
+  for (const link of document.querySelectorAll<HTMLAnchorElement>("[data-lang-link]")) {
+    const active = link.dataset.langLink === lang;
     if (active) {
-      button.setAttribute("aria-current", "true");
+      link.setAttribute("aria-current", "true");
     } else {
-      button.removeAttribute("aria-current");
+      link.removeAttribute("aria-current");
     }
-  }
-  if (updateUrl) {
-    setUrlLang(lang);
   }
 }
 
 function mountLanguageSwitcher(): void {
-  const initialLang = detectInitialLang();
-  applyLang(initialLang, new URLSearchParams(location.search).has("lang"));
-
-  for (const button of document.querySelectorAll<HTMLButtonElement>("[data-lang-button]")) {
-    const lang = normalizeLang(button.dataset.langButton);
-    if (!lang) {
-      continue;
-    }
-    button.addEventListener("click", () => applyLang(lang, true));
-  }
+  applyLang(detectInitialLang());
 }
 
 function randomRule(): AutomatonRule {
@@ -168,12 +150,7 @@ async function loadBackgroundWasm(): Promise<BackgroundWasm> {
 
 function scheduleOptionalWork(callback: () => void): void {
   const start = () => {
-    const requestIdleCallback = globalThis.requestIdleCallback;
-    if (requestIdleCallback) {
-      requestIdleCallback(callback, { timeout: 1200 });
-    } else {
-      requestAnimationFrame(() => requestAnimationFrame(callback));
-    }
+    requestAnimationFrame(callback);
   };
 
   if (document.readyState === "loading") {
