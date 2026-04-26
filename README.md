@@ -1,13 +1,22 @@
 # gaato.net
 
+[![Deploy](https://img.shields.io/github/actions/workflow/status/gaato/gaato.net/deploy.yml?branch=main&label=deploy)](https://github.com/gaato/gaato.net/actions/workflows/deploy.yml)
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Fgaato.net&label=website)](https://gaato.net)
+[![HTML](https://img.shields.io/w3c-validation/html?targetUrl=https%3A%2F%2Fgaato.net&label=html)](https://validator.nu/?doc=https%3A%2F%2Fgaato.net)
+![Bun](https://img.shields.io/badge/bun-1.3-black?logo=bun)
+![Vite](https://img.shields.io/badge/vite-8.0.10-646CFF?logo=vite&logoColor=white)
+![MoonBit](https://img.shields.io/badge/moonbit-latest-blue)
+
 Personal website built as a standards-first static HTML document, with an optional MoonBit/WASM background island, and deployed to Cloudflare Pages.
 
 ## Setup
 
-Install the following tools first:
+Install the pinned toolchain first:
 
-- [MoonBit](https://www.moonbitlang.com/)
-- [Bun](https://bun.sh/)
+```sh
+mise trust
+mise install
+```
 
 Then install dependencies:
 
