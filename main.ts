@@ -13,6 +13,7 @@ type BackgroundWasm = {
   get_birth_mask(): number;
   get_survive_mask(): number;
   get_initial_alive_per_1000(): number;
+  get_rule_index(): number;
   get_palette_red(): number;
   get_palette_green(): number;
   get_palette_blue(): number;
@@ -43,6 +44,21 @@ const BG_TARGET_COLS = 72;
 const LANG_PANEL_SELECTOR = "[data-lang-panel]";
 const LANG_LINK_SELECTOR = "[data-lang-link]";
 const AUTOMATON_RULE_SELECTOR = "[data-automaton-rule]";
+const AUTOMATON_RULE_NAMES = [
+  "Conway's Life",
+  "HighLife",
+  "DryLife",
+  "EightLife",
+  "DotLife",
+  "2x2",
+  "Pseudo Life",
+  "HoneyLife",
+  "Pedestrian Life",
+  "Catagolue OCA",
+  "LowDeath",
+  "OCA",
+  "Amoeba",
+];
 
 function clamp(value: number, lower: number, upper: number): number {
   return Math.min(Math.max(value, lower), upper);
@@ -145,8 +161,10 @@ function formatLifeLikeRule(wasm: BackgroundWasm): string {
 function renderAutomatonRule(wasm: BackgroundWasm): void {
   const rule = formatLifeLikeRule(wasm);
   const density = wasm.get_initial_alive_per_1000() / 10;
+  const name = AUTOMATON_RULE_NAMES[wasm.get_rule_index()];
+  const label = name ? `${name} · ${rule} / ${density}%` : `${rule} / ${density}%`;
   document.querySelector<HTMLElement>(AUTOMATON_RULE_SELECTOR)?.replaceChildren(
-    document.createTextNode(`${rule} / ${density}%`),
+    document.createTextNode(label),
   );
 }
 

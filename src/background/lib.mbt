@@ -4,6 +4,7 @@ priv struct AutomatonState {
   mut birth_mask : Int
   mut survive_mask : Int
   mut initial_alive_per_1000 : Int
+  mut rule_index : Int
   mut palette_red : Double
   mut palette_green : Double
   mut palette_blue : Double
@@ -157,7 +158,9 @@ fn apply_palette(s : AutomatonState) -> Unit {
 }
 
 fn select_rule(s : AutomatonState) -> Unit {
-  let rule = rules[random_index(s, rules.length())]
+  let selected_index = random_index(s, rules.length())
+  let rule = rules[selected_index]
+  s.rule_index = selected_index
   s.birth_mask = rule.birth_mask
   s.survive_mask = rule.survive_mask
   s.initial_alive_per_1000 = rule.initial_alive_per_1000
@@ -240,6 +243,7 @@ pub fn setup(
     birth_mask: 8,
     survive_mask: 12,
     initial_alive_per_1000: 190,
+    rule_index: 0,
     palette_red: 0.0,
     palette_green: 0.0,
     palette_blue: 0.0,
@@ -397,6 +401,10 @@ pub fn get_survive_mask() -> Int {
 
 pub fn get_initial_alive_per_1000() -> Int {
   match state.val { Some(s) => s.initial_alive_per_1000; None => 0 }
+}
+
+pub fn get_rule_index() -> Int {
+  match state.val { Some(s) => s.rule_index; None => 0 }
 }
 
 pub fn get_palette_red() -> Double {
