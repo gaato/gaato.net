@@ -1,49 +1,27 @@
-import wasmUrl from "./_build/wasm-gc/release/build/background/background.wasm?url";
-
-type Lang = "ja" | "en" | "id";
-
 type BackgroundWasm = {
   setup(columns: number, rows: number, seed: number): void;
   resize(columns: number, rows: number): void;
   step(): void;
   get_columns(): number;
   get_rows(): number;
-  get_alive(index: number): number;
   get_energy(index: number): number;
   get_birth_mask(): number;
   get_survive_mask(): number;
   get_initial_alive_per_1000(): number;
   get_rule_index(): number;
-  get_palette_red(): number;
-  get_palette_green(): number;
-  get_palette_blue(): number;
-  get_palette_red_gain(): number;
-  get_palette_green_gain(): number;
-  get_palette_blue_gain(): number;
-  get_palette_alpha_base(): number;
-  get_palette_alpha_gain(): number;
+  get_cell_red(index: number): number;
+  get_cell_green(index: number): number;
+  get_cell_blue(index: number): number;
+  get_cell_alpha(index: number): number;
 };
 
-type AutomatonPalette = {
-  red: number;
-  green: number;
-  blue: number;
-  redGain: number;
-  greenGain: number;
-  blueGain: number;
-  alphaBase: number;
-  alphaGain: number;
-};
-
-const LANGS: Lang[] = ["ja", "en", "id"];
 const BG_MAX_DPR = 2.0;
 const BG_BASE_STEP_MS = 140;
 const BG_MIN_CELL_SIZE = 10;
 const BG_MAX_CELL_SIZE = 18;
 const BG_TARGET_COLS = 72;
-const LANG_PANEL_SELECTOR = "[data-lang-panel]";
-const LANG_LINK_SELECTOR = "[data-lang-link]";
 const AUTOMATON_RULE_SELECTOR = "[data-automaton-rule]";
+const BACKGROUND_WASM_URL = "/assets/background.wasm";
 const AUTOMATON_RULE_NAMES = [
   "Conway's Life",
   "HighLife",
@@ -80,70 +58,6 @@ function scheduleOptionalWork(callback: () => void): void {
   }
 }
 
-function setActivePanel(panel: HTMLElement, active: boolean): void {
-  panel.hidden = !active;
-}
-
-function setActiveLangLink(link: HTMLAnchorElement, active: boolean): void {
-  if (active) {
-    link.setAttribute("aria-current", "true");
-  } else {
-    link.removeAttribute("aria-current");
-  }
-}
-
-function normalizeLang(value: string | null | undefined): Lang | null {
-  const normalized = value?.toLowerCase();
-  if (!normalized) {
-    return null;
-  }
-  return LANGS.find((lang) => normalized === lang || normalized.startsWith(`${lang}-`)) ?? null;
-}
-
-function detectInitialLang(): Lang {
-  const params = new URLSearchParams(location.search);
-  const queryLang = normalizeLang(params.get("lang"));
-  if (queryLang) {
-    return queryLang;
-  }
-
-  const candidates = navigator.languages.length > 0 ? navigator.languages : [navigator.language];
-  for (const candidate of candidates) {
-    const lang = normalizeLang(candidate);
-    if (lang) {
-      return lang;
-    }
-  }
-  return "ja";
-}
-
-function applyLang(lang: Lang): void {
-  document.documentElement.lang = lang;
-  for (const panel of document.querySelectorAll<HTMLElement>(LANG_PANEL_SELECTOR)) {
-    setActivePanel(panel, panel.dataset.langPanel === lang);
-  }
-  for (const link of document.querySelectorAll<HTMLAnchorElement>(LANG_LINK_SELECTOR)) {
-    setActiveLangLink(link, link.dataset.langLink === lang);
-  }
-}
-
-function mountLanguageSwitcher(): void {
-  applyLang(detectInitialLang());
-}
-
-function readPalette(wasm: BackgroundWasm): AutomatonPalette {
-  return {
-    red: wasm.get_palette_red(),
-    green: wasm.get_palette_green(),
-    blue: wasm.get_palette_blue(),
-    redGain: wasm.get_palette_red_gain(),
-    greenGain: wasm.get_palette_green_gain(),
-    blueGain: wasm.get_palette_blue_gain(),
-    alphaBase: wasm.get_palette_alpha_base(),
-    alphaGain: wasm.get_palette_alpha_gain(),
-  };
-}
-
 function maskDigits(mask: number): string {
   let digits = "";
   for (let value = 0; value <= 8; value += 1) {
@@ -169,7 +83,7 @@ function renderAutomatonRule(wasm: BackgroundWasm): void {
 }
 
 async function loadBackgroundWasm(): Promise<BackgroundWasm> {
-  const response = fetch(wasmUrl);
+  const response = fetch(BACKGROUND_WASM_URL);
   const result = await WebAssembly.instantiateStreaming(response, {});
   return result.instance.exports as BackgroundWasm;
 }
@@ -187,16 +101,6 @@ async function mountCellularBackground(): Promise<void> {
   }
 
   const wasm = await loadBackgroundWasm();
-  let palette: AutomatonPalette = {
-    red: 0,
-    green: 0,
-    blue: 0,
-    redGain: 0,
-    greenGain: 0,
-    blueGain: 0,
-    alphaBase: 0,
-    alphaGain: 0,
-  };
   let width = 0;
   let height = 0;
   let dpr = 1;
@@ -217,12 +121,7 @@ async function mountCellularBackground(): Promise<void> {
           continue;
         }
         const inset = cellSize * 0.08;
-        const glow = wasm.get_alive(index) === 1 ? value : value * 0.72;
-        const red = Math.round(palette.red + glow * palette.redGain);
-        const green = Math.round(palette.green + glow * palette.greenGain);
-        const blue = Math.round(palette.blue + glow * palette.blueGain);
-        const alpha = palette.alphaBase + glow * palette.alphaGain;
-        ctx.fillStyle = `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+        ctx.fillStyle = `rgba(${wasm.get_cell_red(index)}, ${wasm.get_cell_green(index)}, ${wasm.get_cell_blue(index)}, ${wasm.get_cell_alpha(index)})`;
         ctx.fillRect(
           column * cellSize + inset,
           row * cellSize + inset,
@@ -248,7 +147,6 @@ async function mountCellularBackground(): Promise<void> {
     } else {
       const seed = Math.floor(Math.random() * 0x7fffffff) || 1;
       wasm.setup(columns, rows, seed);
-      palette = readPalette(wasm);
       renderAutomatonRule(wasm);
       initialized = true;
     }
@@ -279,7 +177,6 @@ async function mountCellularBackground(): Promise<void> {
   requestAnimationFrame(frame);
 }
 
-mountLanguageSwitcher();
 scheduleOptionalWork(() => {
   void mountCellularBackground().catch((error: unknown) => {
     console.warn("Failed to mount cellular automaton background.", error);

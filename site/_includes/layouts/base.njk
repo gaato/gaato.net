@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="{{ lang }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ title }}</title>
+    <meta name="description" content="{{ description }}">
+    <meta name="theme-color" content="{{ site.themeColor }}">
+    <link rel="canonical" href="{{ page.url | absoluteUrl }}">
+    {%- for alternate in alternates %}
+    <link rel="alternate" hreflang="{{ alternate.lang }}" href="{{ alternate.url | absoluteUrl }}">
+    {%- endfor %}
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="stylesheet" href="/styles.css">
+    <script type="module" src="/assets/main.js"></script>
+  </head>
+  <body>
+    <canvas class="background-automaton" aria-hidden="true"></canvas>
+    <main class="page" aria-label="gaato.net">
+      <header class="topbar">
+        <p class="automaton-rule" data-automaton-rule></p>
+        <nav class="lang-switcher" aria-label="Language">
+          {%- for language in site.languages %}
+          <a href="{{ language.home }}" lang="{{ language.code }}" {%- if language.code == lang %} aria-current="true"{% endif %}>{{ language.label }}</a>
+          {%- endfor %}
+        </nav>
+      </header>
+      {{ content | safe }}
+    </main>
+  </body>
+</html>

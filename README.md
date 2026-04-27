@@ -5,10 +5,11 @@
 [![HTTP Observatory](https://img.shields.io/mozilla-observatory/grade/gaato.net?label=observatory)](https://developer.mozilla.org/en-US/observatory/analyze?host=gaato.net)
 [![DeepWiki](https://img.shields.io/badge/DeepWiki-gaato%2Fgaato.net-blue)](https://deepwiki.com/gaato/gaato.net)
 ![Bun](https://img.shields.io/badge/bun-1.3-black?logo=bun)
-![Vite](https://img.shields.io/badge/vite-8.0.10-646CFF?logo=vite&logoColor=white)
+![Eleventy](https://img.shields.io/badge/eleventy-3.1.5-black?logo=eleventy)
+![Lychee](https://img.shields.io/badge/lychee-0.24.1-green)
 ![MoonBit](https://img.shields.io/badge/moonbit-latest-blue)
 
-Personal website built as a standards-first static HTML document, with an optional MoonBit/WASM background island, and deployed to Cloudflare Pages.
+Personal website built with Eleventy-generated static HTML, an optional MoonBit/WASM background island, and Cloudflare Pages.
 
 ## Setup
 
@@ -33,7 +34,9 @@ Start the local development server:
 bun run dev
 ```
 
-The page content lives in `index.html`. JavaScript is used only for progressive enhancement: language switching and the optional animated background. MoonBit is limited to the background WASM core in `src/background`.
+The page content lives under `site/`. JavaScript is used only for progressive enhancement: the optional animated background. MoonBit is limited to the background WASM core in `src/background`.
+
+This project uses Bun as the package manager and script runner. Node.js is still required for Node-based CLIs such as Pa11y CI and Wrangler.
 
 ## Build
 
@@ -53,7 +56,7 @@ bun run check
 
 ## Deploy
 
-Pushes to `main` deploy to Cloudflare Pages through GitHub Actions.
+Pull requests deploy Cloudflare Pages preview deployments through GitHub Actions. Pushes to `main` deploy the production branch.
 
 ## License
 

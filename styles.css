@@ -127,6 +127,7 @@ a {
 
 h1,
 h2,
+h3,
 p {
   margin: 0;
 }
@@ -195,6 +196,135 @@ h1 {
   text-wrap: pretty;
 }
 
+.standards-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px 24px;
+  align-items: center;
+  margin-block-start: 28px;
+  padding-block-start: 24px;
+  border-block-start: 1px solid var(--border);
+}
+
+.standards-section h2 {
+  margin-block-end: 8px;
+  font-size: 1rem;
+}
+
+.standards-section p {
+  max-inline-size: 58ch;
+  color: var(--muted);
+  font-size: 0.88rem;
+  text-wrap: pretty;
+}
+
+.standards-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.standards-badges a {
+  display: block;
+  border-radius: 19px;
+  line-height: 0;
+}
+
+.standards-badges a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.standards-badges img {
+  display: block;
+  block-size: auto;
+  max-inline-size: 100%;
+}
+
+.post-header {
+  display: grid;
+  gap: 14px;
+  margin-block-end: 30px;
+}
+
+.post-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.post-meta a {
+  color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+.taxonomy-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.taxonomy-list a {
+  display: inline-block;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.2;
+  text-decoration: none;
+}
+
+.post-body {
+  display: grid;
+  gap: 1em;
+  max-inline-size: 68ch;
+}
+
+.post-body p {
+  text-wrap: pretty;
+}
+
+.post-list .hero {
+  margin-block-end: 28px;
+}
+
+.entries {
+  display: grid;
+  gap: 22px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.entries article {
+  display: grid;
+  gap: 6px;
+  padding-block-start: 16px;
+  border-block-start: 1px solid var(--border);
+}
+
+.entries h2 {
+  font-size: 1.25rem;
+  line-height: 1.25;
+}
+
+.entries h2 a {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+.entries p:not(.post-meta) {
+  color: var(--muted);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .background-automaton {
     display: none;
@@ -214,5 +344,13 @@ h1 {
 
   .links {
     grid-template-columns: 1fr;
+  }
+
+  .standards-section {
+    grid-template-columns: 1fr;
+  }
+
+  .standards-badges {
+    justify-content: flex-start;
   }
 }
