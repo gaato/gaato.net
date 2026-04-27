@@ -1,0 +1,22 @@
+---
+layout: layouts/base.njk
+---
+<article class="content post" aria-labelledby="post-title">
+  <header class="post-header">
+    <p class="post-meta">
+      <time datetime="{{ date | htmlDate }}">{{ date | readableDate(lang) }}</time>
+      <a href="/{{ lang }}/posts/categories/{{ category }}/">{{ site.categories[category][lang] }}</a>
+    </p>
+    <h1 id="post-title">{{ title }}</h1>
+    {%- if tags %}
+    <ul class="taxonomy-list" aria-label="Tags">
+      {%- for tag in tags %}
+      <li><a href="/{{ lang }}/posts/tags/{{ tag | slug }}/">{{ tag }}</a></li>
+      {%- endfor %}
+    </ul>
+    {%- endif %}
+  </header>
+  <div class="post-body">
+    {{ content | safe }}
+  </div>
+</article>

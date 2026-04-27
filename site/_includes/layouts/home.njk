@@ -1,0 +1,40 @@
+---
+layout: layouts/base.njk
+---
+<article class="content" aria-labelledby="site-title">
+  <header class="hero">
+    <h1 id="site-title">{{ home[lang].title }}</h1>
+  </header>
+
+  <p class="summary">{{ home[lang].summary }}</p>
+
+  <nav class="links-section" aria-labelledby="links-title">
+    <h2 id="links-title">{{ home[lang].linksTitle }}</h2>
+    <ul class="links">
+      <li>
+        <a href="/{{ lang }}/posts/">
+          <span>{{ home[lang].postsLabel }}</span>
+          <small>{{ home[lang].postsDescription }}</small>
+        </a>
+      </li>
+      {%- for link in home[lang].links %}
+      <li><a href="{{ link[2] }}" rel="me noopener noreferrer"><span>{{ link[0] }}</span><small>{{ link[1] }}</small></a></li>
+      {%- endfor %}
+    </ul>
+  </nav>
+
+  <section class="standards-section" aria-labelledby="standards-title">
+    <div>
+      <h2 id="standards-title">{{ home[lang].standardsTitle }}</h2>
+      <p>{{ home[lang].standardsDescription }}</p>
+    </div>
+    <div class="standards-badges">
+      <a href="https://internet.nl/">
+        <img src="/assets/internetnl-website-test-100.svg" width="204" height="38" alt="Internet.nl 100% score in website test">
+      </a>
+      <a href="https://internet.nl/">
+        <img src="/assets/internetnl-email-test-100.svg" width="204" height="39" alt="Internet.nl 100% score in email test">
+      </a>
+    </div>
+  </section>
+</article>

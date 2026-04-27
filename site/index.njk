@@ -1,0 +1,31 @@
+---
+layout: layouts/base.njk
+lang: ja
+title: "がーと / gaato"
+description: "がーと / gaato のホームページ"
+alternates:
+  - lang: ja
+    url: /ja/
+  - lang: en
+    url: /en/
+  - lang: id
+    url: /id/
+  - lang: x-default
+    url: /
+---
+<article class="content" aria-labelledby="site-title">
+  <header class="hero">
+    <h1 id="site-title">がーと / gaato</h1>
+  </header>
+
+  <p class="summary">Language</p>
+
+  <nav class="links-section" aria-labelledby="language-title">
+    <h2 id="language-title">Language</h2>
+    <ul class="links">
+      {%- for language in site.languages %}
+      <li><a href="{{ language.home }}" lang="{{ language.code }}"><span>{{ language.name }}</span><small>{{ language.home }}</small></a></li>
+      {%- endfor %}
+    </ul>
+  </nav>
+</article>

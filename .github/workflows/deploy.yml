@@ -2,6 +2,8 @@ name: Deploy to Cloudflare Pages
 
 on:
   workflow_dispatch:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
   push:
     branches: [main]
 
@@ -14,7 +16,9 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: hustcer/setup-moonbit@v1
+      - uses: jdx/mise-action@v3
+        with:
+          install_args: moonbit
 
       - uses: actions/setup-node@v6
         with:
@@ -45,7 +49,7 @@ jobs:
 
       - name: Start preview server
         run: |
-          bun run preview -- --host 127.0.0.1 --port 4173 > /tmp/gaato-net-preview.log 2>&1 &
+          bun run preview > /tmp/gaato-net-preview.log 2>&1 &
           for i in {1..30}; do
             if curl -fsS http://127.0.0.1:4173/ > /dev/null; then
               exit 0
@@ -60,10 +64,16 @@ jobs:
       - name: Check links
         uses: lycheeverse/lychee-action@v2
         with:
-          args: --no-progress --root-dir ${{ github.workspace }}/dist --accept 200,204,206,429 dist/index.html README.md dist/sitemap.xml dist/robots.txt dist/site.webmanifest
+          args: --no-progress --root-dir ${{ github.workspace }}/dist --accept 200,204,206,429 dist/index.html dist/ja/index.html README.md dist/sitemap.xml dist/robots.txt dist/site.webmanifest
 
       - name: Deploy to Cloudflare Pages
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: e7a568f5155a30c39bef74c957811587
-        run: bunx wrangler pages deploy dist --project-name=gaato-net
+          DEPLOY_BRANCH: ${{ github.head_ref || github.ref_name }}
+        run: |
+          bunx wrangler pages deploy dist \
+            --project-name=gaato-net \
+            --branch="$DEPLOY_BRANCH" \
+            --commit-hash="$GITHUB_SHA"

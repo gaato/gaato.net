@@ -375,14 +375,6 @@ pub fn get_rows() -> Int {
   match state.val { Some(s) => s.rows; None => 0 }
 }
 
-pub fn get_alive(index : Int) -> Int {
-  match state.val {
-    Some(s) =>
-      if index >= 0 && index < s.current.length() { s.current[index] } else { 0 }
-    None => 0
-  }
-}
-
 pub fn get_energy(index : Int) -> Double {
   match state.val {
     Some(s) =>
@@ -407,34 +399,58 @@ pub fn get_rule_index() -> Int {
   match state.val { Some(s) => s.rule_index; None => 0 }
 }
 
-pub fn get_palette_red() -> Double {
-  match state.val { Some(s) => s.palette_red; None => 0.0 }
+pub fn get_cell_red(index : Int) -> Int {
+  match state.val {
+    Some(s) =>
+      if index >= 0 && index < s.energy.length() {
+        let value = s.energy[index]
+        let glow = if s.current[index] == 1 { value } else { value * 0.72 }
+        (s.palette_red + glow * s.palette_red_gain).round().to_int()
+      } else {
+        0
+      }
+    None => 0
+  }
 }
 
-pub fn get_palette_green() -> Double {
-  match state.val { Some(s) => s.palette_green; None => 0.0 }
+pub fn get_cell_green(index : Int) -> Int {
+  match state.val {
+    Some(s) =>
+      if index >= 0 && index < s.energy.length() {
+        let value = s.energy[index]
+        let glow = if s.current[index] == 1 { value } else { value * 0.72 }
+        (s.palette_green + glow * s.palette_green_gain).round().to_int()
+      } else {
+        0
+      }
+    None => 0
+  }
 }
 
-pub fn get_palette_blue() -> Double {
-  match state.val { Some(s) => s.palette_blue; None => 0.0 }
+pub fn get_cell_blue(index : Int) -> Int {
+  match state.val {
+    Some(s) =>
+      if index >= 0 && index < s.energy.length() {
+        let value = s.energy[index]
+        let glow = if s.current[index] == 1 { value } else { value * 0.72 }
+        (s.palette_blue + glow * s.palette_blue_gain).round().to_int()
+      } else {
+        0
+      }
+    None => 0
+  }
 }
 
-pub fn get_palette_red_gain() -> Double {
-  match state.val { Some(s) => s.palette_red_gain; None => 0.0 }
-}
-
-pub fn get_palette_green_gain() -> Double {
-  match state.val { Some(s) => s.palette_green_gain; None => 0.0 }
-}
-
-pub fn get_palette_blue_gain() -> Double {
-  match state.val { Some(s) => s.palette_blue_gain; None => 0.0 }
-}
-
-pub fn get_palette_alpha_base() -> Double {
-  match state.val { Some(s) => s.palette_alpha_base; None => 0.0 }
-}
-
-pub fn get_palette_alpha_gain() -> Double {
-  match state.val { Some(s) => s.palette_alpha_gain; None => 0.0 }
+pub fn get_cell_alpha(index : Int) -> Double {
+  match state.val {
+    Some(s) =>
+      if index >= 0 && index < s.energy.length() {
+        let value = s.energy[index]
+        let glow = if s.current[index] == 1 { value } else { value * 0.72 }
+        s.palette_alpha_base + glow * s.palette_alpha_gain
+      } else {
+        0.0
+      }
+    None => 0.0
+  }
 }

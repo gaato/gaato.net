@@ -1,5 +1,9 @@
+[plugins]
+"vfox:moonbit" = "https://github.com/3w36zj6/mise-moonbit"
+
 [tools]
 bun = "1.3"
 node = "24"
 java = "temurin-21"
 moonbit = "latest"
+"github:lycheeverse/lychee" = "lychee-v0.24.1"
