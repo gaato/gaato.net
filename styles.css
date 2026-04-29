@@ -195,6 +195,32 @@ h1 {
   text-wrap: pretty;
 }
 
+.standards-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-block-start: 24px;
+  padding-block-start: 24px;
+  border-block-start: 1px solid var(--border);
+}
+
+.standards-badges a {
+  display: block;
+  border-radius: 19px;
+  line-height: 0;
+}
+
+.standards-badges a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.standards-badges img {
+  display: block;
+  block-size: auto;
+  max-inline-size: 100%;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .background-automaton {
     display: none;
