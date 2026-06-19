@@ -1,7 +1,8 @@
-name: Deploy to Cloudflare Pages
+name: Deploy to Cloudflare Workers
 
 on:
   workflow_dispatch:
+  pull_request:
   push:
     branches: [main]
 
@@ -62,8 +63,30 @@ jobs:
         with:
           args: --no-progress --root-dir ${{ github.workspace }}/dist --accept 200,204,206,429 dist/index.html README.md dist/sitemap.xml dist/robots.txt dist/site.webmanifest
 
-      - name: Deploy to Cloudflare Pages
+      - name: Deploy preview to Cloudflare Workers
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: e7a568f5155a30c39bef74c957811587
-        run: bunx wrangler pages deploy dist --project-name=gaato-net
+          WORKER_NAME: gaato-net-pr-${{ github.event.number }}
+        run: |
+          bunx wrangler deploy --env preview --name "$WORKER_NAME"
+          {
+            echo "### Workers preview"
+            echo ""
+            echo "Worker: \`$WORKER_NAME\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Deploy production to Cloudflare Workers
+        if: github.event_name != 'pull_request'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: e7a568f5155a30c39bef74c957811587
+        run: |
+          bunx wrangler deploy --env=""
+          {
+            echo "### Workers production"
+            echo ""
+            echo "Worker: \`gaato-net\`"
+            echo "Production route is managed by the iac repository."
+          } >> "$GITHUB_STEP_SUMMARY"

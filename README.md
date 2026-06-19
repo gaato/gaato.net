@@ -8,7 +8,7 @@
 ![Vite](https://img.shields.io/badge/vite-8.0.10-646CFF?logo=vite&logoColor=white)
 ![MoonBit](https://img.shields.io/badge/moonbit-latest-blue)
 
-Personal website built as a standards-first static HTML document, with an optional MoonBit/WASM background island, and deployed to Cloudflare Pages.
+Personal website built as a standards-first static HTML document, with an optional MoonBit/WASM background island, and deployed to Cloudflare Workers Static Assets.
 
 ## Setup
 
@@ -53,7 +53,7 @@ bun run check
 
 ## Deploy
 
-Pushes to `main` deploy to Cloudflare Pages through GitHub Actions.
+Pushes to `main` deploy to Cloudflare Workers Static Assets through GitHub Actions. Pull requests deploy a preview Worker named after the pull request number.
 
 ## License
 
