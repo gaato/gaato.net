@@ -15,7 +15,6 @@ priv struct AutomatonState {
   mut palette_alpha_gain : Double
   mut seed : Int
   mut generation : Int
-  mut stagnant_generations : Int
   mut current : Array[Int]
   mut next : Array[Int]
   mut energy : Array[Double]
@@ -191,7 +190,6 @@ fn seed_background(s : AutomatonState) -> Unit {
 fn reseed_background(s : AutomatonState) -> Unit {
   seed_background(s)
   inject_noise(s, 2160)
-  s.stagnant_generations = 0
 }
 
 fn inject_noise(s : AutomatonState, strength_per_100k : Int) -> Unit {
@@ -254,7 +252,6 @@ pub fn setup(
     palette_alpha_gain: 0.0,
     seed,
     generation: 0,
-    stagnant_generations: 0,
     current: make_int_array(safe_columns * safe_rows),
     next: make_int_array(safe_columns * safe_rows),
     energy: make_double_array(safe_columns * safe_rows),
@@ -303,7 +300,6 @@ pub fn step() -> Unit {
   match state.val {
     Some(s) => {
       let mut alive_count = 0
-      let mut changed_count = 0
       for row = 0; row < s.rows; row = row + 1 {
         for column = 0; column < s.columns; column = column + 1 {
           let index = row * s.columns + column
@@ -326,9 +322,6 @@ pub fn step() -> Unit {
             0
           }
           s.next[index] = next_alive
-          if next_alive != s.current[index] {
-            changed_count += 1
-          }
           let previous_energy = s.energy[index]
           s.energy[index] = if next_alive == 1 {
             min_double(1.0, previous_energy + 0.18)
@@ -339,22 +332,12 @@ pub fn step() -> Unit {
         }
       }
       let total = s.columns * s.rows
-      if changed_count < total * 2 / 100 {
-        s.stagnant_generations += 1
-      } else {
-        s.stagnant_generations = 0
-      }
       let mut did_reseed = false
-      if s.generation > 24 && s.stagnant_generations >= 12 {
-        reseed_background(s)
-        did_reseed = true
-      } else if s.generation > 24 && alive_count > total * 70 / 100 {
+      if s.generation > 24 && alive_count > total * 70 / 100 {
         reseed_background(s)
         did_reseed = true
       } else if alive_count > total * 50 / 100 {
         thin_next_generation(s, 700)
-      } else if alive_count < total * 5 / 100 {
-        inject_noise(s, 360)
       }
       if !did_reseed {
         let current = s.current
