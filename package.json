@@ -8,6 +8,7 @@
     "check:rules": "moon check --target native src/rule_scan",
     "score:rules": "moon run --target native --release src/rule_scan",
     "check:toolchain": "node scripts/check-toolchain.mjs",
+    "wrangler": "wrangler",
     "typecheck": "tsc --noEmit",
     "dev": "bun run build:wasm && vite",
     "preview": "vite preview",
@@ -21,10 +22,14 @@
     "pa11y-ci": "4.1.0",
     "typescript": "6.0.3",
     "vite": "8.0.10",
-    "vnu-jar": "26.4.16"
+    "vnu-jar": "26.4.16",
+    "wrangler": "^4.103.0"
   },
   "trustedDependencies": [
+    "esbuild",
     "puppeteer",
+    "sharp",
+    "workerd",
     "vnu-jar"
   ]
 }
