@@ -35,9 +35,12 @@ jobs:
       - run: bun install --frozen-lockfile
 
       - name: Install Puppeteer Chrome
+        env:
+          PUPPETEER_CACHE_DIR: ${{ runner.temp }}/puppeteer
         run: |
-          rm -rf "$HOME/.cache/puppeteer/chrome"
+          rm -rf "$PUPPETEER_CACHE_DIR"
           bun run puppeteer browsers install chrome
+          echo "PUPPETEER_CACHE_DIR=$PUPPETEER_CACHE_DIR" >> "$GITHUB_ENV"
 
       - run: bun run typecheck
 
