@@ -63,6 +63,8 @@ jobs:
 
       - run: bun run check:a11y
 
+      - run: bun run check:smoke
+
       - name: Check links
         uses: lycheeverse/lychee-action@v2
         with:

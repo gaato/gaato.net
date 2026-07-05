@@ -5,10 +5,11 @@
 [![HTTP Observatory](https://img.shields.io/mozilla-observatory/grade/gaato.net?label=observatory)](https://developer.mozilla.org/en-US/observatory/analyze?host=gaato.net)
 [![DeepWiki](https://img.shields.io/badge/DeepWiki-gaato%2Fgaato.net-blue)](https://deepwiki.com/gaato/gaato.net)
 ![Bun](https://img.shields.io/badge/bun-1.3-black?logo=bun)
-![Vite](https://img.shields.io/badge/vite-8.0.10-646CFF?logo=vite&logoColor=white)
+![Astra](https://img.shields.io/badge/astra-0.22-3a6f6a)
+![Vite](https://img.shields.io/badge/vite-preview-646CFF?logo=vite&logoColor=white)
 ![MoonBit](https://img.shields.io/badge/moonbit-latest-blue)
 
-Personal website built as a standards-first static HTML document, with an optional MoonBit/WASM background island, and deployed to Cloudflare Workers Static Assets.
+Personal website built as Astra-rendered static HTML, with an optional MoonBit/WASM background island, and deployed to Cloudflare Workers Static Assets.
 
 ## Setup
 
@@ -33,7 +34,9 @@ Start the local development server:
 bun run dev
 ```
 
-The page content lives in `index.html`. JavaScript is used only for progressive enhancement: language switching and the optional animated background. MoonBit is limited to the background WASM core in `src/background`.
+Public site content (posts and pages) lives in `content/`. Astra renders the Markdown first, then `scripts/build-site.mjs` wraps the output in the site shell and writes plain files to `dist/`.
+
+JavaScript is used only for progressive enhancement. Reading pages does not require client-side JavaScript; the home-page cellular automaton is optional and backed by the MoonBit WASM core in `src/background`.
 
 ## Build
 
