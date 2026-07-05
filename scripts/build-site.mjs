@@ -73,17 +73,26 @@ function extractContent(url) {
   const rawPath = rawPathFromUrl(url);
   const html = readFileSync(rawPath, "utf8");
   const $ = cheerio.load(html);
-  const content = $(".post-content.markdown-body").first().html()
-    ?? $(".doc-content.markdown-body").first().html()
-    ?? $(".main-content[data-pagefind-body]").first().html()
-    ?? $(".home-content[data-pagefind-body]").first().html()
-    ?? $("main").first().html()
-    ?? "";
-  const trimmed = content.trim();
-  if (!trimmed) {
-    throw new Error(`no content extracted from ${rawPath} for ${url}; Astra markup may have changed`);
+  const selectors = [
+    ".post-content.markdown-body",
+    ".doc-content.markdown-body",
+    ".main-content[data-pagefind-body]",
+    ".home-content[data-pagefind-body]",
+  ];
+  for (const selector of selectors) {
+    const nodes = $(selector);
+    if (nodes.length > 1) {
+      throw new Error(`ambiguous content selector ${selector} in ${rawPath}: matched ${nodes.length} nodes`);
+    }
+    if (nodes.length === 1) {
+      const trimmed = (nodes.html() ?? "").trim();
+      if (!trimmed) {
+        throw new Error(`empty content selector ${selector} in ${rawPath} for ${url}`);
+      }
+      return trimmed;
+    }
   }
-  return trimmed;
+  throw new Error(`no content extracted from ${rawPath} for ${url}; Astra markup may have changed`);
 }
 
 function escapeHtml(value) {
@@ -205,9 +214,20 @@ function renderArticle(page, content) {
 
 function renderHome(page, content, posts) {
   const latest = posts.slice(0, 5).map((post) => postCard(post, 3)).join("");
-  const automaton = (content.match(/<gaato-automaton[\s\S]*?<\/gaato-automaton>/)?.[0] ?? "")
-    .replace(/\s+luna:[a-z-]+="[^"]*"/g, "");
-  const intro = content.replace(/<gaato-automaton[\s\S]*?<\/gaato-automaton>/, "").trim();
+  const $ = cheerio.load(content, null, false);
+  const automata = $("gaato-automaton");
+  if (automata.length > 1) {
+    throw new Error(`expected at most one gaato-automaton on ${page.url}, found ${automata.length}`);
+  }
+  const automatonNode = automata.first();
+  if (automatonNode.length === 1) {
+    for (const attr of Object.keys(automatonNode.attr() ?? {})) {
+      if (attr.startsWith("luna:")) automatonNode.removeAttr(attr);
+    }
+  }
+  const automaton = automatonNode.length === 1 ? $.html(automatonNode) : "";
+  automata.remove();
+  const intro = $.root().html().trim();
   const body = `<section class="hero">
     <div>
       <h1>がーと / gaato</h1>
