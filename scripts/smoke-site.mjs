@@ -8,6 +8,9 @@ const checks = [
   { path: "/posts/", scripts: 0, viewport: { width: 1280, height: 900 } },
   { path: "/tags/", scripts: 0, dark: true, viewport: { width: 1280, height: 900 } },
   { path: "/posts/rc-s380-blank-tag/", scripts: 0, viewport: { width: 1280, height: 900 } },
+  { path: "/posts/rc-s380-blank-tag/", scripts: 0, viewport: { width: 390, height: 844, deviceScaleFactor: 2 } },
+  { path: "/posts/debian-woody-hurd-vm/", scripts: 0, viewport: { width: 390, height: 844, deviceScaleFactor: 2 } },
+  { path: "/posts/godot-package-lag-opensuse/", scripts: 0, viewport: { width: 390, height: 844, deviceScaleFactor: 2 } },
   { path: "/404.html", scripts: 0, viewport: { width: 1280, height: 900 } },
 ];
 

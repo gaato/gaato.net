@@ -158,7 +158,9 @@ h3 {
 .listing-header > p,
 .article-header > p,
 .prose {
-  max-inline-size: var(--measure);
+  inline-size: 100%;
+  min-inline-size: 0;
+  max-inline-size: min(100%, var(--measure));
 }
 
 .hero-copy p,
@@ -327,9 +329,11 @@ h3 {
   padding: 0.12em 0.35em;
   background: var(--surface-soft);
   font-size: 0.92em;
+  overflow-wrap: anywhere;
 }
 
 .prose pre {
+  max-inline-size: 100%;
   overflow-x: auto;
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -341,9 +345,12 @@ h3 {
 }
 
 .prose pre code {
+  display: block;
+  min-inline-size: max-content;
   padding: 0;
   background: none;
   font-size: inherit;
+  overflow-wrap: normal;
 }
 
 .prose blockquote {
