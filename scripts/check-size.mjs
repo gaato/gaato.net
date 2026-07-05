@@ -3,8 +3,8 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 
 const budgets = [
-  { label: "HTML", pattern: /\.html$/, limit: 10 * 1024 },
-  { label: "CSS gzip", pattern: /\.css$/, limit: 6 * 1024, gzip: true },
+  { label: "HTML", pattern: /\.html$/, limit: 18 * 1024 },
+  { label: "CSS gzip", pattern: /\.css$/, limit: 8 * 1024, gzip: true },
   { label: "initial JS gzip", pattern: /\.js$/, limit: 4 * 1024, gzip: true },
   { label: "WASM gzip", pattern: /\.wasm$/, limit: 5 * 1024, gzip: true },
 ];

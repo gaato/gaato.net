@@ -1,6 +1,7 @@
 // Curated Life-like rules in Golly/RLE B.../S... order.
 // Initial densities are selected with `bun run score:rules`, then kept conservative when browser runs looked risky.
 
+///|
 let rules : Array[AutomatonRule] = [
   bs([3], [2, 3], 180), // Conway's Life: B3/S23
   bs([3, 6], [2, 3], 140), // HighLife: B36/S23

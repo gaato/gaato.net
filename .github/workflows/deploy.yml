@@ -63,10 +63,12 @@ jobs:
 
       - run: bun run check:a11y
 
+      - run: bun run check:smoke
+
       - name: Check links
         uses: lycheeverse/lychee-action@v2
         with:
-          args: --no-progress --root-dir ${{ github.workspace }}/dist --accept 200,204,206,429 dist/index.html README.md dist/sitemap.xml dist/robots.txt dist/site.webmanifest
+          args: --no-progress --root-dir ${{ github.workspace }}/dist --exclude '^https://gaato\.net/' --accept 200,204,206,429 dist/**/*.html README.md dist/robots.txt dist/site.webmanifest
 
       - name: Deploy preview to Cloudflare Workers
         if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository

@@ -1,7 +1,0 @@
-{
-  "name": "internal/gaato-net",
-  "version": "0.0.1",
-  "deps": {},
-  "source": "src",
-  "preferred-target": "wasm-gc"
-}

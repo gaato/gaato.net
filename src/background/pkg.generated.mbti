@@ -1,0 +1,52 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "internal/gaato-net/background"
+
+// Values
+pub fn get_alive(Int) -> Int
+
+pub fn get_birth_mask() -> Int
+
+pub fn get_columns() -> Int
+
+pub fn get_energy(Int) -> Double
+
+pub fn get_initial_alive_per_1000() -> Int
+
+pub fn get_palette_alpha_base() -> Double
+
+pub fn get_palette_alpha_gain() -> Double
+
+pub fn get_palette_blue() -> Double
+
+pub fn get_palette_blue_gain() -> Double
+
+pub fn get_palette_green() -> Double
+
+pub fn get_palette_green_gain() -> Double
+
+pub fn get_palette_red() -> Double
+
+pub fn get_palette_red_gain() -> Double
+
+pub fn get_rows() -> Int
+
+pub fn get_rule_index() -> Int
+
+pub fn get_survive_mask() -> Int
+
+pub fn resize(Int, Int) -> Unit
+
+pub fn seed_at(Int, Int) -> Unit
+
+pub fn setup(Int, Int, Int) -> Unit
+
+pub fn step() -> Unit
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits
+

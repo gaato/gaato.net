@@ -1,9 +1,11 @@
+///|
 priv struct Rule {
   name : String
   birth_mask : Int
   survive_mask : Int
 }
 
+///|
 priv struct RunStats {
   score : Double
   mean_density : Double
@@ -11,18 +13,31 @@ priv struct RunStats {
   repeat_rate : Double
 }
 
+///|
 priv struct RuleScore {
   name : String
   mut density_per_1000 : Int
   mut stats : RunStats
 }
 
+///|
 let board_size : Int = 64
-let burn_in_steps : Int = 256
-let measure_steps : Int = 768
-let recent_hash_count : Int = 8
-let density_candidates_per_1000 : Array[Int] = [5, 10, 20, 30, 50, 80, 100, 140, 180, 250, 350, 500]
 
+///|
+let burn_in_steps : Int = 256
+
+///|
+let measure_steps : Int = 768
+
+///|
+let recent_hash_count : Int = 8
+
+///|
+let density_candidates_per_1000 : Array[Int] = [
+  5, 10, 20, 30, 50, 80, 100, 140, 180, 250, 350, 500,
+]
+
+///|
 fn mask_for(values : Array[Int]) -> Int {
   let mut mask = 0
   for i = 0; i < values.length(); i = i + 1 {
@@ -31,18 +46,17 @@ fn mask_for(values : Array[Int]) -> Int {
   mask
 }
 
+///|
 fn rule(name : String, birth : Array[Int], survive : Array[Int]) -> Rule {
-  {
-    name,
-    birth_mask: mask_for(birth),
-    survive_mask: mask_for(survive),
-  }
+  { name, birth_mask: mask_for(birth), survive_mask: mask_for(survive) }
 }
 
+///|
 fn mask_contains(mask : Int, value : Int) -> Bool {
   ((mask >> value) & 1) == 1
 }
 
+///|
 fn make_int_array(length : Int, value : Int) -> Array[Int] {
   let arr : Array[Int] = []
   for i = 0; i < length; i = i + 1 {
@@ -51,20 +65,24 @@ fn make_int_array(length : Int, value : Int) -> Array[Int] {
   arr
 }
 
+///|
 fn next_random(state : Int) -> Int {
   (state * 173 + 139) % 1000003
 }
 
+///|
 fn seed_board(board : Array[Int], r : Rule, density_per_1000 : Int) -> Unit {
   let mut random = (
-    r.birth_mask * 2003 + r.survive_mask * 9176 + density_per_1000 * 37 + 1
-  ) % 1000003
+      r.birth_mask * 2003 + r.survive_mask * 9176 + density_per_1000 * 37 + 1
+    ) %
+    1000003
   for i = 0; i < board.length(); i = i + 1 {
     random = next_random(random)
     board[i] = if random % 1000 < density_per_1000 { 1 } else { 0 }
   }
 }
 
+///|
 fn step_board(current : Array[Int], next : Array[Int], r : Rule) -> Int {
   let mut changed = 0
   for y = 0; y < board_size; y = y + 1 {
@@ -73,8 +91,7 @@ fn step_board(current : Array[Int], next : Array[Int], r : Rule) -> Int {
     for x = 0; x < board_size; x = x + 1 {
       let left = if x == 0 { board_size - 1 } else { x - 1 }
       let right = if x + 1 == board_size { 0 } else { x + 1 }
-      let count =
-        current[up * board_size + left] +
+      let count = current[up * board_size + left] +
         current[up * board_size + x] +
         current[up * board_size + right] +
         current[y * board_size + left] +
@@ -95,6 +112,7 @@ fn step_board(current : Array[Int], next : Array[Int], r : Rule) -> Int {
   changed
 }
 
+///|
 fn swap_boards(current : Array[Int], next : Array[Int]) -> Unit {
   for i = 0; i < current.length(); i = i + 1 {
     let value = current[i]
@@ -103,6 +121,7 @@ fn swap_boards(current : Array[Int], next : Array[Int]) -> Unit {
   }
 }
 
+///|
 fn board_density(board : Array[Int]) -> Double {
   let mut live = 0
   for i = 0; i < board.length(); i = i + 1 {
@@ -111,6 +130,7 @@ fn board_density(board : Array[Int]) -> Double {
   live.to_double() / board.length().to_double()
 }
 
+///|
 fn board_hash(board : Array[Int]) -> Int {
   let mut hash = 216613
   for i = 0; i < board.length(); i = i + 1 {
@@ -119,6 +139,7 @@ fn board_hash(board : Array[Int]) -> Int {
   hash
 }
 
+///|
 fn has_recent_hash(recent : Array[Int], hash : Int) -> Bool {
   let mut found = false
   for i = 0; i < recent.length(); i = i + 1 {
@@ -129,18 +150,19 @@ fn has_recent_hash(recent : Array[Int], hash : Int) -> Bool {
   found
 }
 
+///|
 fn record_recent_hash(recent : Array[Int], hash : Int, index : Int) -> Unit {
   recent[index % recent.length()] = hash
 }
 
+///|
 fn pattern_diversity_2x2(board : Array[Int]) -> Double {
   let counts = make_int_array(16, 0)
   for y = 0; y < board_size; y = y + 1 {
     let down = if y + 1 == board_size { 0 } else { y + 1 }
     for x = 0; x < board_size; x = x + 1 {
       let right = if x + 1 == board_size { 0 } else { x + 1 }
-      let pattern =
-        board[y * board_size + x] +
+      let pattern = board[y * board_size + x] +
         2 * board[down * board_size + x] +
         4 * board[y * board_size + right] +
         8 * board[down * board_size + right]
@@ -156,12 +178,20 @@ fn pattern_diversity_2x2(board : Array[Int]) -> Double {
   (1.0 - concentration) / (15.0 / 16.0)
 }
 
+///|
 fn closeness(value : Double, target : Double, width : Double) -> Double {
   let distance = (value - target).abs()
   let score = 1.0 - distance / width
-  if score < 0.0 { 0.0 } else if score > 1.0 { 1.0 } else { score }
+  if score < 0.0 {
+    0.0
+  } else if score > 1.0 {
+    1.0
+  } else {
+    score
+  }
 }
 
+///|
 fn score_rule(r : Rule, density_per_1000 : Int) -> RunStats {
   let board_cells = board_size * board_size
   let current = make_int_array(board_cells, 0)
@@ -189,17 +219,23 @@ fn score_rule(r : Rule, density_per_1000 : Int) -> RunStats {
   let mean_density = density_total / measure_steps.to_double()
   let mean_activity = activity_total / measure_steps.to_double()
   let repeat_rate = repeat_count.to_double() / measure_steps.to_double()
-  let score = if mean_density < 0.002 || mean_density > 0.98 || mean_activity < 0.0005 {
+  let score = if mean_density < 0.002 ||
+    mean_density > 0.98 ||
+    mean_activity < 0.0005 {
     0.0
   } else {
     let density_score = closeness(mean_density, 0.22, 0.22)
     let activity_score = closeness(mean_activity, 0.07, 0.12)
     let diversity_score = closeness(pattern_diversity_2x2(current), 0.68, 0.42)
-    density_score * activity_score * (0.35 + 0.65 * diversity_score) * (1.0 - repeat_rate)
+    density_score *
+    activity_score *
+    (0.35 + 0.65 * diversity_score) *
+    (1.0 - repeat_rate)
   }
   { score, mean_density, mean_activity, repeat_rate }
 }
 
+///|
 fn best_density(r : Rule) -> RuleScore {
   let first_stats = score_rule(r, density_candidates_per_1000[0])
   let best : RuleScore = {
@@ -218,6 +254,7 @@ fn best_density(r : Rule) -> RuleScore {
   best
 }
 
+///|
 fn print_score(score : RuleScore) -> Unit {
   let status = if score.stats.score < 0.01 { "reject" } else { "keep" }
   println(
@@ -225,6 +262,7 @@ fn print_score(score : RuleScore) -> Unit {
   )
 }
 
+///|
 fn print_density_sweep(r : Rule) -> Unit {
   println("rule\tdensity\tscore\tmean_density\tmean_activity\trepeat_rate")
   for i = 0; i < density_candidates_per_1000.length(); i = i + 1 {
@@ -236,6 +274,7 @@ fn print_density_sweep(r : Rule) -> Unit {
   }
 }
 
+///|
 fn main {
   let rules : Array[Rule] = [
     rule("B3/S23", [3], [2, 3]),
@@ -269,7 +308,9 @@ fn main {
   if args.length() > 1 && args[1] == "b34" {
     print_density_sweep(rule("B34/S34", [3, 4], [3, 4]))
   } else {
-    println("rule\tstatus\tbest_density\tscore\tmean_density\tmean_activity\trepeat_rate")
+    println(
+      "rule\tstatus\tbest_density\tscore\tmean_density\tmean_activity\trepeat_rate",
+    )
     for i = 0; i < rules.length(); i = i + 1 {
       print_score(best_density(rules[i]))
     }
