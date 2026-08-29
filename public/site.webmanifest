@@ -1,12 +1,12 @@
 {
-  "name": "gaato.net",
+  "name": "がーと / gaato",
   "short_name": "gaato",
-  "description": "The homepage of がーと / gaato",
+  "description": "がーと / gaato のホームページ。",
   "start_url": "/",
   "scope": "/",
   "display": "minimal-ui",
-  "background_color": "#f7f5ee",
-  "theme_color": "#f7f5ee",
+  "background_color": "#f4f1e8",
+  "theme_color": "#f4f1e8",
   "icons": [
     {
       "src": "/icon-192.png",

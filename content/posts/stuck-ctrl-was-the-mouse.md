@@ -1,7 +1,8 @@
 ---
 title: Ctrlが押しっぱなしになる犯人はマウスだった
-description: KDE Waylandの修飾キー異常を疑っていたら、evdevの押下状態がLogitech G304を指していた話。
+description: KDE WaylandでCtrl+Cが押されたままになり、evdevを調べるとLogitech G304がキーを保持していた。
 date: "2026-07-06"
+updated: "2026-08-29"
 author: gaato
 tags:
   - linux
@@ -9,30 +10,34 @@ tags:
 layout: blog-post
 ---
 
-5月ごろから、たまに修飾キーが押しっぱなしになったような挙動が出ていました。クリックの挙動が変になる。`c` だけ文字が打てなくなる。キーボードをつなぎ直しても直らないのに、再起動すると直る。
+5月ごろから、たまに修飾キーが押しっぱなしになったような動作が起きていました。
 
-環境は KDE Plasma の Wayland セッションです。なので最初に疑ったのも、それらしい層でした。KWin が修飾キーの状態を抱え込んでいるのか、KAccess の固定キー機能か、fcitx5 か。候補はどれももっともらしくて、`fcitx5 -r` や KAccess の再起動のような対処も一通り考えました。
+- クリックの動作が変になる
+- `c` が入力できない
+- キーボードを接続し直しても直らない
+- 再起動すると直る
 
-転機は、また発生したときに再起動しなかったことです。ローカルでは文字が打てないので SSH で入りました。おかげで、壊れた状態を保存したまま調べられました。
+環境は KDE Plasma の Wayland セッションです。KWin、KAccess の固定キー、fcitx5 などを疑っていました。
 
-決め手はカーネル側の evdev の押下状態です。
+もう一度発生したとき、今回は再起動せずに別の端末から SSH で入りました。evdev の押下状態を調べると、こうなっていました。
 
-```
+```text
 /dev/input/event18 Logitech G304 pressed: KEY_LEFTCTRL, KEY_C
 ```
 
-`KEY_LEFTCTRL` と `KEY_C` を押しっぱなしにしていたのは、キーボードではなくマウスでした。使っている HHKB 側は何も押していません。`c` だけ打てなくなっていたのは、ずっと `Ctrl+C` が押されていたからでした。
+`KEY_LEFTCTRL` と `KEY_C` を保持していたのは HHKB ではなくマウスの Logitech G304 でした。キーボードを抜いても直らなかったわけです。
 
-マウスがキーを押すのは、変な話ではありません。udev から見ると G304 は `ID_INPUT_MOUSE=1` と `ID_INPUT_KEYBOARD=1` の両方を持っています。ゲーミングマウスはボタンにキー入力を割り当てられるので、HID としてはキーボードでもあるわけです。
+udev 上でも、G304 には `ID_INPUT_MOUSE=1` と `ID_INPUT_KEYBOARD=1` の両方が付いていました。ボタンへキー入力を割り当てられるので、入力デバイスとしてはキーボードでもあります。
 
-復旧は、セッションの再起動ではなく、該当する USB インターフェイスだけの再バインドで済みました。
+該当する USB インターフェイスを一度 unbind して、bind し直すと復旧しました。
 
-```sh
-sudo sh -c 'echo -n 1-12:1.2 > /sys/bus/usb/drivers/usbhid/unbind; sleep 1; echo -n 1-12:1.2 > /sys/bus/usb/drivers/usbhid/bind'
+```fish
+set iface 1-12:1.2
+printf %s $iface | sudo tee /sys/bus/usb/drivers/usbhid/unbind >/dev/null
+sleep 1
+printf %s $iface | sudo tee /sys/bus/usb/drivers/usbhid/bind >/dev/null
 ```
 
-`1-12:1.2` はそのときのパスです。ポートや再起動で変わるので、使い回す前に `/proc/bus/input/devices` で確認し直す必要があります。
+`1-12:1.2` はそのときの値です。USB ポートや再起動で変わるので、`/proc/bus/input/devices` と sysfs を見て G304 のインターフェイスであることを確認してから使います。違う値を unbind すると、そのデバイスが一時的に使えなくなります。
 
-原因の側は、まだ断定できていません。solaar や input-remapper のようなソフト側のリマッパは動いていなかったので、残る候補はマウスのオンボードプロファイルか、レシーバ側の状態です。とりあえずオンボードプロファイルを無効にして様子を見ています。
-
-この件で覚えておきたいのは一つだけです。再起動で直る入力異常は、直す前に evdev の状態を見る。上の層から疑い始めるのは自然だけど、決め手は下の層にありました。
+solaar や input-remapper のようなリマッパは動いていませんでした。マウスのオンボードプロファイルが原因なのか、レシーバや firmware の状態なのかは分かっていません。ひとまずオンボードプロファイルを無効にして様子を見ています。

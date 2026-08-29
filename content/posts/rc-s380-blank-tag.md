@@ -1,7 +1,8 @@
 ---
-title: RC-S380で空のNFCタグを読むまで
-description: lsusbには見えるのにツールから使えないNFCリーダーを、権限、カーネルドライバの順にほどいた話。
+title: openSUSE TumbleweedでRC-S380をnfcpyから使う
+description: RC-S380にuaccessで権限を付け、port100を一時的にunbindしてnfcpyから開いた。
 date: "2026-07-06"
+updated: "2026-08-29"
 author: gaato
 tags:
   - linux
@@ -9,39 +10,49 @@ tags:
 layout: blog-post
 ---
 
-手元に Sony の NFC リーダー RC-S380 があります。6月に、openSUSE Tumbleweed のデスクトップからこれを使えるようにして、上に置いてあったタグを読むところまでやりました。
+Sony の NFC リーダー RC-S380 を openSUSE Tumbleweed につなぎました。`lsusb` にはいます。
 
-`lsusb` では最初から見えています。
-
-```
+```text
 Bus 001 Device 010: ID 054c:06c3 Sony Corp. RC-S380
 ```
 
-でも `pcsc_scan` はリーダーを待ち続けるし、`nfc-list` も見つけてくれません。USB として見えていることと、ツールから使えることは別の話でした。
+`pcsc_scan` はリーダーを待ち続け、`nfc-list` からも見つかりませんでした。今回は nfcpy を試します。Python パッケージは環境へ入れず、`uv run --with` で実行しました。
 
-PC/SC はあきらめて、nfcpy を試すことにしました。Python 環境を汚したくなかったので `uv run --with` の一時環境です。
-
-```sh
+```fish
 uv run --with nfcpy --with pyusb --with libusb1 \
   python -c 'import nfc; clf = nfc.ContactlessFrontend("usb:054c:06c3"); print(clf); clf.close()'
 ```
 
-最初の失敗は `PermissionError` でした。デバイスノードに触る権限がありません。ここで `MODE="0666"` にしてしまうのは避けて、udev の `uaccess` を使いました。ログイン中のユーザーにだけ ACL が付く形です。
+最初は `PermissionError` になりました。`/etc/udev/rules.d/99-sony-rcs380.rules` に次のルールを置き、ログイン中のユーザーへ `uaccess` で権限を付けました。
 
-```
+```udev
 SUBSYSTEM=="usb", ATTR{idVendor}=="054c", ATTR{idProduct}=="06c3", TAG+="uaccess"
 ```
 
-ルールを置いて `udevadm control --reload-rules` と `udevadm trigger` をやり、`getfacl` で自分の ACL が付いたのを確認しました。
-
-すると今度はエラーが変わって `Device or resource busy` になりました。権限の問題は解けて、別の誰かが先にデバイスを掴んでいます。`lsusb -t` を見ると `Driver=port100`。カーネルに RC-S380 用のドライバがいて、そっちがバインドしていました。
-
-```sh
-echo -n 1-10:1.0 | sudo tee /sys/bus/usb/drivers/port100/unbind
+```fish
+sudo udevadm control --reload-rules
+sudo udevadm trigger
 ```
 
-これで nfcpy がリーダーを開けるようになりました。インターフェイスのパスは環境と接続のたびに変わるので、これも使い回す前に `lsusb -t` で確認し直すものです。
+`getfacl` でデバイスノードの ACL を確認してもう一度開くと、今度は `Device or resource busy` になりました。
 
-肝心のタグは、Type 2 の NFC タグでした。NDEF フォーマット済みで中身は空、容量は 137 バイト、読み書き可能。`GET_VERSION` がタイムアウトしたので、IC の正確な型番までは分かりません。UID の先頭バイトから製造元の見当くらいは付くけれど、それ以上を UID だけで断定しないほうがいいです。
+`lsusb -t` を見ると RC-S380 のインターフェイスに `Driver=port100` と出ています。nfcpy を使っている間だけ、カーネルの `port100` ドライバから外しました。
 
-振り返ると、失敗が三層に分かれていたのがこの作業の分かりやすいところでした。見えない（ツールの経路が違う）、開けない（権限）、開けない（ドライバが先に掴んでいる）。エラーメッセージが `PermissionError` から `EBUSY` に変わった時点で、一段進んだと分かる。そういう進み方でした。
+```fish
+set iface 1-10:1.0
+printf %s $iface | sudo tee /sys/bus/usb/drivers/port100/unbind >/dev/null
+```
+
+`1-10:1.0` はこのときの値です。USB ポートや接続順で変わるので、そのまま使わず `lsusb -t` で確認します。
+
+unbind 後は nfcpy から開けました。手元のタグは Type 2 Tag として読めて、NDEF フォーマット済み、メッセージは空、容量 137 バイト、読み書き可能という状態でした。
+
+`GET_VERSION` はタイムアウトしました。タグの IC が何かは特定できていません。
+
+作業が終わったら、同じインターフェイスを `port100` に戻します。
+
+```fish
+printf %s $iface | sudo tee /sys/bus/usb/drivers/port100/bind >/dev/null
+```
+
+途中で USB を抜いた場合はパスが消えるので、この `bind` は失敗します。その場合は挿し直せば `port100` が再び bind されました。

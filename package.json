@@ -1,39 +1,46 @@
 {
-  "name": "gaato-net",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "build:wasm": "moon build --target wasm-gc --release src/background",
-    "check:moon": "moon check --target wasm-gc src/background",
-    "check:rules": "moon check --target native src/rule_scan",
-    "score:rules": "moon run --target native --release src/rule_scan",
-    "check:toolchain": "node scripts/check-toolchain.mjs",
-    "wrangler": "wrangler",
-    "typecheck": "tsc --noEmit",
-    "dev": "bun run build && vite preview --host 127.0.0.1",
-    "preview": "vite preview",
-    "build": "bun run build:wasm && node scripts/build-site.mjs",
-    "validate:html": "node scripts/validate-html.mjs",
-    "check:a11y": "pa11y-ci http://127.0.0.1:4173/ http://127.0.0.1:4173/posts/ http://127.0.0.1:4173/tags/ http://127.0.0.1:4173/posts/rc-s380-blank-tag/",
-    "check:smoke": "node scripts/smoke-site.mjs",
-    "check:size": "node scripts/check-size.mjs",
-    "check": "bun run check:toolchain && bun run typecheck && bun run check:moon && bun run check:rules && bun run build && bun run validate:html && bun run check:size"
-  },
-  "devDependencies": {
-    "@luna_ui/astra": "^0.22.0",
-    "cheerio": "^1.1.2",
-    "pa11y-ci": "^4.1.0",
-    "typescript": "^6.0.3",
-    "vite": "^8.0.16",
-    "vnu-jar": "^26.4.16",
-    "wrangler": "^4.103.0",
-    "yaml": "^2.9.0"
-  },
-  "trustedDependencies": [
-    "esbuild",
-    "puppeteer",
-    "sharp",
-    "workerd",
-    "vnu-jar"
-  ]
+	"name": "gaato-net",
+	"private": true,
+	"version": "0.2.0",
+	"type": "module",
+	"scripts": {
+		"dev": "vite dev --host 127.0.0.1",
+		"build": "vite build",
+		"preview": "vite preview --host 127.0.0.1",
+		"prepare": "svelte-kit sync || echo ''",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"test": "vitest run",
+		"check:artifacts": "bun scripts/check-artifacts.ts",
+		"test:e2e": "playwright test",
+		"prepare:preview-headers": "bun scripts/prepare-preview-headers.ts",
+		"verify": "bun run check && bun run test && bun run build && bun run check:artifacts && bun run test:e2e",
+		"writing:update": "bun scripts/update-writing.ts",
+		"wrangler": "wrangler"
+	},
+	"devDependencies": {
+		"@axe-core/playwright": "^4.13.0",
+		"@playwright/test": "^1.62.1",
+		"@sveltejs/adapter-static": "^3.0.10",
+		"@sveltejs/kit": "^2.70.3",
+		"@sveltejs/vite-plugin-svelte": "^7.3.0",
+		"@types/node": "^24.13.3",
+		"fast-xml-parser": "^5.11.1",
+		"marked": "^16.4.2",
+		"svelte": "^5.57.0",
+		"svelte-check": "^4.7.6",
+		"typescript": "^6.0.3",
+		"vite": "^8.2.2",
+		"vitest": "^4.1.11",
+		"wrangler": "^4.127.1",
+		"yaml": "^2.9.0"
+	},
+	"overrides": {
+		"cookie": "^0.7.2",
+		"nanoid": "^3.3.18",
+		"postcss": "^8.5.26"
+	},
+	"trustedDependencies": [
+		"esbuild",
+		"workerd"
+	]
 }

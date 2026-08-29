@@ -1,91 +1,100 @@
-name: Deploy to Cloudflare Workers
+name: Verify and deploy
 
 on:
-  workflow_dispatch:
   pull_request:
+    branches: [main]
   push:
     branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gaato-net-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  CI: "true"
 
 jobs:
-  deploy:
+  verify:
+    name: Verify production artifact
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      deployments: write
+    timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v6
-
-      - uses: hustcer/setup-moonbit@v1
-
-      - uses: actions/setup-node@v6
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          node-version: "24"
+          persist-credentials: false
 
-      - uses: actions/setup-java@v5
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
         with:
-          distribution: temurin
-          java-version: "21"
+          bun-version: "1.3.14"
 
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: "1.3"
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
 
-      - run: bun run check:toolchain
+      - name: Install Chromium
+        run: bunx playwright install --with-deps chromium
 
-      - run: bun install --frozen-lockfile
-
-      - id: setup-chrome
-        uses: browser-actions/setup-chrome@v2
-
-      - run: echo "PUPPETEER_EXECUTABLE_PATH=${{ steps.setup-chrome.outputs.chrome-path }}" >> "$GITHUB_ENV"
-
-      - run: bun run typecheck
-
-      - run: bun run check:moon
-
-      - run: bun run build
-
-      - run: bun run validate:html
-
-      - run: bun run check:size
-
-      - name: Start preview server
-        run: |
-          bun run preview -- --host 127.0.0.1 --port 4173 > /tmp/gaato-net-preview.log 2>&1 &
-          for i in {1..30}; do
-            if curl -fsS http://127.0.0.1:4173/ > /dev/null; then
-              exit 0
-            fi
-            sleep 1
-          done
-          cat /tmp/gaato-net-preview.log
-          exit 1
-
-      - run: bun run check:a11y
-
-      - run: bun run check:smoke
+      - name: Run checks and browser tests
+        run: bun run verify
 
       - name: Check links
-        uses: lycheeverse/lychee-action@v2
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
         with:
-          args: --no-progress --root-dir ${{ github.workspace }}/dist --exclude '^https://gaato\.net/' --accept 200,204,206,429 dist/**/*.html README.md dist/robots.txt dist/site.webmanifest
+          fail: true
+          args: >-
+            --no-progress
+            --root-dir ${{ github.workspace }}/dist
+            --exclude '^https://gaato\.net/'
+            --accept 200,204,206,429
+            'dist/**/*.html'
+            dist/feed.xml
+            dist/sitemap.xml
+            dist/robots.txt
+            dist/site.webmanifest
+            README.md
 
-      - name: Deploy preview to Cloudflare Workers
-        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: e7a568f5155a30c39bef74c957811587
-          WORKER_NAME: gaato-net-pr-${{ github.event.number }}
-        run: |
-          bun run wrangler deploy --env preview --name "$WORKER_NAME"
-          {
-            echo "### Workers preview"
-            echo ""
-            echo "Worker: \`$WORKER_NAME\`"
-          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload same-repository PR artifact
+        if: >-
+          github.event_name == 'pull_request' &&
+          github.event.pull_request.head.repo.full_name == github.repository
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: pr-preview-dist
+          path: dist/
+          if-no-files-found: error
+          retention-days: 1
+
+  deploy-production:
+    name: Deploy production
+    needs: verify
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: "1.3.14"
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build production artifact
+        run: bun run build
 
       - name: Deploy production to Cloudflare Workers
-        if: github.event_name != 'pull_request'
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: e7a568f5155a30c39bef74c957811587
@@ -93,7 +102,7 @@ jobs:
           bun run wrangler deploy --env=""
           {
             echo "### Workers production"
-            echo ""
+            echo
             echo "Worker: \`gaato-net\`"
-            echo "Production route is managed by the iac repository."
+            echo "The production route is managed by the iac repository."
           } >> "$GITHUB_STEP_SUMMARY"

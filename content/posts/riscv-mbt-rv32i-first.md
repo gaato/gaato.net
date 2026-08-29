@@ -1,52 +1,41 @@
 ---
-title: ブラウザでLinuxを動かす前にRV32Iから始める
-description: MoonBit製RISC-Vエミュレータを、最初からLinuxブートではなく小さいISAマイルストーンに分けた話。
+title: MoonBitでRISC-Vエミュレータを書き始めた
+description: 小さなRV32Iの命令列から始め、riscv-testsとQEMUで実装を確認できるところまで進めた。
 date: "2026-07-06"
+updated: "2026-08-29"
 author: gaato
 tags:
   - moonbit
   - riscv
-  - ai
 layout: blog-post
 ---
 
-`riscv-mbt` は、MoonBit で書いている RISC-V エミュレータです。
+[`riscv-mbt`](https://github.com/gaato/riscv-mbt) という RISC-V エミュレータを MoonBit で書き始めました。
 
-最初の欲望は分かりやすいものでした。MoonBit で RV64GC のエミュレータを書いて、ブラウザ上で Linux をブートする。言うだけなら最高です。こういうのは、目標だけ置くとだいたい気持ちよくなって終わります。
+目標は RV64GC で Linux を動かし、ブラウザからも使えるようにすることです。いきなりそこへ行くのは無理なので、最初は RV32I の小さい命令列を動かすところから始めました。
 
-途中で、少し言い方を変えました。
+最初に作ったのは `CpuState`、`Bus`、命令の decode と execute、そして1命令ずつ実行する `Runner` です。手で並べた命令を実行して、レジスタとメモリの結果を `moon test` で見ました。未実装命令は何もしないのではなく trap させています。
 
-> でもプロジェクトの目的を単にMoonBit製のRISC-Vエミュレーターとして、最終的な副産物としてLinuxをブート、とするのもいいかもしれないですね
+RV32I が一通り動いたあと、upstream の `riscv-tests` を使い始めました。
 
-この変更は地味ですが、かなり大きかったです。Linux ブートが主目的だと、最初の一歩が大きすぎる。エミュレータとして進めるなら、`RV32I` を最初のマイルストーンにできます。
-
-> まずはRV32Iを一つのマイルストーンにして、少しずつ拡張をマイルストーンにしましょう
-
-この時点で、AI に頼むこともコードだけではなくなりました。
-
-> というのを、後でAIがわかりやすいような仕組みを作るところまでやってください
-
-つまり、実装より先に、後から読み直せる足場を作る。`README.md`、`docs/current.md`、`docs/roadmap.md`、`docs/milestones/`、`docs/tasks/`、`docs/adr/`、`AGENTS.md`。人間向けのドキュメントというより、未来の自分と未来のエージェントが、毎回プロジェクトの前提を決め直さないためのファイル群です。
-
-この手の side project は、途中で忘れます。忘れたあとに戻ってきたとき、「何ができていて、次に何をするのか」が1ファイルで分からないと、その日は復帰だけで終わる。AI エージェントを使うならなおさらです。毎回コンテキストを長文で渡すより、リポジトリの中に読ませる順番を置いておくほうがいい。
-
-最初の検査対象も、夢ではなく小さい実行可能なものにしました。`moon test` と `riscv-tests` を通す、という形です。
-
-```sh
-moon test
+```fish
 ./scripts/build-riscv-tests-official.sh
+moon test
 ```
 
-`RV32I` を最初の境界にして、`riscv-tests` の official subset を読み、QEMU と照らせるところは照らす。ブラウザは後です。Linux も後です。まず、整数命令をちゃんと動かす。
+ここで、命令を実装しただけでは公式テストを動かせないことが分かりました。ELF をリンクされたアドレスへ置く処理、`env/p` が使う最低限の CSR と trap、テスト結果を書き込む `tohost` の監視も必要でした。
 
-その後、プロジェクトは捨てずに続きました。公開前に見た README には、`RV32IMC`、official `riscv-tests`、RV64、Linux boot platform integration、browser delivery milestone まで並んでいます。公開している smoke demo もあります。
+エミュレータ側で失敗したときに、ビルドした ELF 自体が悪いのかを分けるため、同じ `rv32ui-p-*` を `qemu-system-riscv32` でも実行しました。
 
-```text
-https://gaato.github.io/riscv-mbt/
+```fish
+./scripts/cross-check-official-rv32ui-with-qemu.pl
 ```
 
-もちろん、これで完成ではありません。手元の checkout ではまだ先の作業が続いています。post-Linux の互換性、`F`/`D`、vector extension まわりの整理など、まだ終わっていないところはあります。
+QEMU では `tohost` を monitor socket から監視しています。これは毎回のテストに必要なものではなく、公式バイナリを最初に通すときの比較用です。
 
-それでも、最初に Linux ブートを副産物に降格したのは正しかったと思います。大きいデモを捨てたわけではありません。順番を変えただけです。
+その後は RV64、S-mode、Sv39、OpenSBI、Linux、ブラウザの Wasm ホストまで進みました。2026年8月29日の checkout では、Alpine の rootfs を動かす作業と RV64GC の仕様適合を進めています。最初に書いていた命令数やテスト通過数はすぐ古くなったので、この記事には残さないことにしました。
 
-このリポジトリでは、派手なスクリーンショットより先に `docs/current.md` を置いたのが効きました。地味です。でも、戻ってきたときに助かるのはそっちでした。
+今の状態は [`docs/current.md`](https://github.com/gaato/riscv-mbt/blob/main/docs/current.md) にあります。ブラウザ版も公開しています。
+
+- [riscv-mbt](https://github.com/gaato/riscv-mbt)
+- [browser demo](https://gaato.github.io/riscv-mbt/)
