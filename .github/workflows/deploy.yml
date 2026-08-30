@@ -50,6 +50,7 @@ jobs:
             --no-progress
             --root-dir ${{ github.workspace }}/dist
             --exclude '^https://gaato\.net/'
+            --exclude '^https://build\.opensuse\.org/'
             --accept 200,204,206,429
             'dist/**/*.html'
             dist/feed.xml
