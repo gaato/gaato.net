@@ -246,8 +246,7 @@ for (const [route, file] of routeFiles) {
 			'Cloudflare Web Analytics script policy',
 			hasTag(metadata, {
 				'http-equiv': /content-security-policy/iu,
-				content:
-					/script-src[^;]*https:\/\/static\.cloudflareinsights\.com\/beacon\.min\.js(?:\s|;|$)/u
+				content: /script-src[^;]*https:\/\/static\.cloudflareinsights\.com(?:\s|;|$)/u
 			})
 		],
 		[

@@ -27,10 +27,7 @@ export default defineConfig({
 					'img-src': ['self', 'data:'],
 					'manifest-src': ['self'],
 					'object-src': ['none'],
-					'script-src': [
-						'self',
-						'https://static.cloudflareinsights.com/beacon.min.js'
-					],
+					'script-src': ['self', 'https://static.cloudflareinsights.com'],
 					'style-src': ['self'],
 					'style-src-attr': [
 						'unsafe-hashes',
