@@ -242,6 +242,21 @@ for (const [route, file] of routeFiles) {
 			hasTag(metadata, { name: 'theme-color', media: /prefers-color-scheme:\s*dark/iu, content: /\S/u })
 		],
 		['content security policy', hasTag(metadata, { 'http-equiv': /content-security-policy/iu, content: /\S/u })],
+		[
+			'Cloudflare Web Analytics script policy',
+			hasTag(metadata, {
+				'http-equiv': /content-security-policy/iu,
+				content:
+					/script-src[^;]*https:\/\/static\.cloudflareinsights\.com\/beacon\.min\.js(?:\s|;|$)/u
+			})
+		],
+		[
+			'first-party analytics endpoint policy',
+			hasTag(metadata, {
+				'http-equiv': /content-security-policy/iu,
+				content: /connect-src[^;]*'self'(?:\s|;|$)/u
+			})
+		],
 		['canonical link', hasTag(links, { rel: 'canonical', href: canonical })],
 		['manifest link', hasTag(links, { rel: 'manifest', href: /(?:^|\/)site\.webmanifest$/u })],
 		[
