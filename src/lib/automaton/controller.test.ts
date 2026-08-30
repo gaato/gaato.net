@@ -40,11 +40,9 @@ describe('automaton activity conditions', () => {
 		available: true,
 		initialized: true,
 		documentVisible: true,
-		renderVisible: true,
 		reducedMotion: false,
 		forcedColors: false,
-		paused: false,
-		suspended: false
+		paused: false
 	};
 
 	test('runs only when every activity condition permits it', () => {

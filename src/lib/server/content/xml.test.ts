@@ -34,8 +34,6 @@ describe('XML documents', () => {
 		expect(urls.map((entry) => entry.loc)).toEqual([
 			'https://gaato.net/',
 			'https://gaato.net/articles/',
-			'https://gaato.net/lab/cellular-automaton/',
-			'https://gaato.net/lab/event-pt/',
 			'https://gaato.net/articles/a-post/'
 		]);
 		expect(urls.at(-1)?.lastmod).toBe('2026-08-28');

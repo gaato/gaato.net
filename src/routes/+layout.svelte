@@ -6,11 +6,10 @@
 
 	let { children } = $props();
 	let paused = $state(false);
-	const backgroundSuspended = $derived(page.url.pathname.startsWith('/lab/cellular-automaton'));
 </script>
 
 <a class="skip-link" href="#content">Skip to content</a>
-<AutomatonBackground bind:paused suspended={backgroundSuspended} />
+<AutomatonBackground bind:paused />
 
 <div class="site-frame">
 	<header class="site-header">
@@ -20,6 +19,7 @@
 				href="/articles/"
 				aria-current={page.url.pathname.startsWith('/articles/') ? 'page' : undefined}>Articles</a
 			>
+			<a href="https://lab.gaato.net/">Lab</a>
 		</nav>
 	</header>
 
@@ -38,18 +38,16 @@
 				<a href="https://github.com/gaato/gaato.net">Source</a>
 			</nav>
 		</div>
-		{#if !backgroundSuspended}
-			<button
-				type="button"
-				class="background-toggle"
-				aria-pressed={paused}
-				data-testid="automaton-background-toggle"
-				lang="en"
-				onclick={() => (paused = !paused)}
-			>
-				{paused ? 'Resume background' : 'Pause background'}
-			</button>
-		{/if}
+		<button
+			type="button"
+			class="background-toggle"
+			aria-pressed={paused}
+			data-testid="automaton-background-toggle"
+			lang="en"
+			onclick={() => (paused = !paused)}
+		>
+			{paused ? 'Resume background' : 'Pause background'}
+		</button>
 	</footer>
 </div>
 

@@ -10,9 +10,7 @@ const canonicalOrigin = 'https://gaato.net';
 const routeFiles = new Map<string, string>([
 	['/', 'index.html'],
 	['/articles/', 'articles/index.html'],
-	...postSlugs.map((slug) => [`/articles/${slug}/`, `articles/${slug}/index.html`] as const),
-	['/lab/cellular-automaton/', 'lab/cellular-automaton/index.html'],
-	['/lab/event-pt/', 'lab/event-pt/index.html']
+	...postSlugs.map((slug) => [`/articles/${slug}/`, `articles/${slug}/index.html`] as const)
 ]);
 const legacyRedirectFiles = new Map<string, string>([
 	['posts/index.html', '/articles/'],
@@ -334,10 +332,7 @@ for (const file of expectedHtml) {
 	}
 }
 
-for (const [file, budget] of [
-	['index.html', 50 * 1024],
-	['lab/event-pt/index.html', 75 * 1024]
-] as const) {
+for (const [file, budget] of [['index.html', 50 * 1024]] as const) {
 	if (!files.includes(file)) continue;
 	const js = await routeAssetSize(file, 'js');
 	console.log(`${file}: ${js.bytes} bytes gzip JavaScript (${js.files.length} files)`);

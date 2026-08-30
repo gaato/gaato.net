@@ -13,8 +13,7 @@ export type DirectorySectionId =
 	| 'maintain'
 	| 'contributed'
 	| 'part-of'
-	| 'play'
-	| 'experiment';
+	| 'play';
 
 export const sectionOrder: readonly DirectorySectionId[] = [
 	'speak',
@@ -22,8 +21,7 @@ export const sectionOrder: readonly DirectorySectionId[] = [
 	'maintain',
 	'contributed',
 	'part-of',
-	'play',
-	'experiment'
+	'play'
 ];
 
 export const sectionLabels: Readonly<Record<DirectorySectionId, string>> = {
@@ -32,8 +30,7 @@ export const sectionLabels: Readonly<Record<DirectorySectionId, string>> = {
 	maintain: 'I maintain',
 	contributed: 'I contributed to',
 	'part-of': 'I’ve been part of',
-	play: 'I play',
-	experiment: 'I experiment with'
+	play: 'I play'
 };
 
 export const directoryEntries: Readonly<
@@ -102,20 +99,6 @@ export const directoryEntries: Readonly<
 	play: [
 		{ id: 'geoguessr', label: 'GeoGuessr' },
 		{ id: 'holodori', label: 'hololive Dreams', lang: 'en' }
-	],
-	experiment: [
-		{
-			id: 'cellular-automaton',
-			label: 'Cellular Automaton',
-			href: '/lab/cellular-automaton/',
-			lang: 'en'
-		},
-		{
-			id: 'event-pt',
-			label: 'hololive Dreams: Event Pt',
-			href: '/lab/event-pt/',
-			lang: 'en'
-		}
 	]
 };
 

@@ -1,52 +1,35 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { AutomatonCanvasController } from '$lib/automaton/controller';
-	import { AUTOMATON_RULES, findAutomatonRule } from '$lib/automaton/rules';
-	import {
-		automatonRuleState,
-		AUTOMATON_RULE_CHANGE_EVENT
-	} from '$lib/automaton/rule-state';
+	import { AutomatonBackgroundController } from '$lib/automaton/controller';
+	import { AUTOMATON_RULES } from '$lib/automaton/rules';
 	import {
 		readPausePreference,
 		writePausePreference,
 		type StorageLike
 	} from '$lib/automaton/storage';
 
-	interface Props {
+	type Props = {
 		paused?: boolean;
-		suspended?: boolean;
-		ruleId?: string;
-		seed?: number;
-	}
+	};
 
-	let {
-		paused = $bindable(false),
-		suspended = false,
-		ruleId,
-		seed
-	}: Props = $props();
-
+	let { paused = $bindable(false) }: Props = $props();
 	let host: HTMLDivElement;
 	let canvas: HTMLCanvasElement;
-	let controller: AutomatonCanvasController | undefined;
+	let controller: AutomatonBackgroundController | undefined;
 	let pauseStorage: StorageLike | undefined;
 	let preferenceLoaded = $state(false);
 	let activeRuleId = $state(AUTOMATON_RULES[0].id);
 
 	$effect(() => {
 		const nextPaused = paused;
-		const nextSuspended = suspended;
 		controller?.setPaused(nextPaused);
-		controller?.setSuspended(nextSuspended);
 		if (preferenceLoaded && pauseStorage) {
 			writePausePreference(pauseStorage, nextPaused);
 		}
 	});
 
 	onMount(() => {
-		let rule = findAutomatonRule(ruleId) ?? AUTOMATON_RULES[0];
-		rule = findAutomatonRule(ruleId) ?? automatonRuleState.getOrCreate();
-		automatonRuleState.set(rule);
+		const rule = randomRule();
 		activeRuleId = rule.id;
 
 		try {
@@ -57,34 +40,25 @@
 		}
 		preferenceLoaded = true;
 
-		controller = new AutomatonCanvasController({
+		controller = new AutomatonBackgroundController({
 			host,
 			canvas,
-			mode: 'background',
 			rule,
-			seed: seed ?? createSeed(),
-			paused,
-			suspended
+			seed: createSeed(),
+			paused
 		});
 		controller.start();
 
-		const handleRuleChange = (event: Event): void => {
-			const nextRuleId = (event as CustomEvent<unknown>).detail;
-			if (typeof nextRuleId !== 'string') return;
-			const nextRule = findAutomatonRule(nextRuleId);
-			if (!nextRule || nextRule.id === activeRuleId) return;
-			automatonRuleState.set(nextRule);
-			activeRuleId = nextRule.id;
-			controller?.setRule(nextRule);
-		};
-		window.addEventListener(AUTOMATON_RULE_CHANGE_EVENT, handleRuleChange);
-
 		return () => {
-			window.removeEventListener(AUTOMATON_RULE_CHANGE_EVENT, handleRuleChange);
 			controller?.destroy();
 			controller = undefined;
 		};
 	});
+
+	function randomRule() {
+		const value = Math.min(Math.max(Math.random(), 0), 1 - Number.EPSILON);
+		return AUTOMATON_RULES[Math.floor(value * AUTOMATON_RULES.length)];
+	}
 
 	function createSeed(): number {
 		if (typeof crypto !== 'undefined' && typeof crypto.getRandomValues === 'function') {
@@ -96,7 +70,6 @@
 
 <div
 	class="automaton-background"
-	class:suspended
 	aria-hidden="true"
 	data-testid="automaton-background"
 	data-rule={activeRuleId}
@@ -120,10 +93,6 @@
 		display: block;
 		inline-size: 100%;
 		block-size: 100%;
-	}
-
-	.automaton-background.suspended {
-		visibility: hidden;
 	}
 
 	@media (forced-colors: active) {

@@ -1,10 +1,5 @@
 import { expect, test } from '@playwright/test';
-import {
-	backgroundCanvas,
-	canvasFingerprint,
-	labCanvas,
-	waitForCanvasPaint
-} from './helpers';
+import { backgroundCanvas, canvasFingerprint, waitForCanvasPaint } from './helpers';
 
 test('the background canvas is painted and follows the system color scheme', async ({ page }, testInfo) => {
 	test.skip(testInfo.project.name !== 'desktop-chromium', 'color scheme behavior only needs one browser profile');
@@ -158,55 +153,4 @@ test('forced colors hides only the decorative background', async ({ page }) => {
 	expect(hidden).toBe(true);
 	await expect(page.locator('main')).toBeVisible();
 	await expect(page.getByRole('link', { name: 'Articles', exact: true })).toBeVisible();
-});
-
-test('the Lab accepts arbitrary rules and exposes deterministic native controls', async ({ page }) => {
-	await page.goto('/lab/cellular-automaton/');
-	await expect(page.getByTestId('automaton-background')).toHaveCSS('visibility', 'hidden');
-	const canvas = labCanvas(page);
-	await waitForCanvasPaint(canvas);
-	const rule = page.getByTestId('automaton-rule');
-	await expect(rule).toHaveValue(/B[0-8]*\/S[0-8]*/u);
-
-	const toggle = page.getByTestId('automaton-toggle');
-	if ((await toggle.getAttribute('aria-pressed')) !== 'true') await toggle.click();
-	await expect(toggle).toHaveAttribute('aria-pressed', 'true');
-
-	const initial = await canvasFingerprint(canvas);
-	await page.getByTestId('automaton-step').click();
-	await expect.poll(async () => (await canvasFingerprint(canvas)).hash).not.toBe(initial.hash);
-
-	const stepped = await canvasFingerprint(canvas);
-	await page.getByTestId('automaton-seed').click();
-	await expect.poll(async () => (await canvasFingerprint(canvas)).hash).not.toBe(stepped.hash);
-
-	const seeded = await canvasFingerprint(canvas);
-	await page.getByTestId('automaton-reset').click();
-	await expect.poll(async () => (await canvasFingerprint(canvas)).hash).not.toBe(seeded.hash);
-
-	await rule.fill('B9/S23');
-	await page.getByRole('button', { name: 'Apply' }).click();
-	await expect(rule).toHaveAttribute('aria-invalid', 'true');
-	await expect(page.getByText('Use B…/S… notation with digits from 0 through 8.')).toBeVisible();
-
-	await rule.fill('b82 / s755');
-	await page.getByRole('button', { name: 'Apply' }).click();
-	await expect(rule).toHaveValue('B28/S57');
-	await expect(page.getByText('Custom B28/S57', { exact: true })).toBeVisible();
-	await expect(page.getByTestId('automaton-background')).toHaveAttribute('data-rule', 'B28/S57');
-	await page.getByRole('link', { name: 'Home', exact: true }).click();
-	await expect(page).toHaveURL(/\/$/u);
-	await expect(page.getByTestId('automaton-background')).toHaveAttribute('data-rule', 'B28/S57');
-});
-
-test('forced colors disables the visual Lab with an explicit explanation', async ({ page }) => {
-	await page.emulateMedia({ forcedColors: 'active' });
-	await page.goto('/lab/cellular-automaton/');
-	await expect(page.getByText('Cellular automaton is unavailable in forced-colors mode.')).toBeVisible();
-	await expect(page.getByTestId('automaton-rule')).toBeDisabled();
-	await expect(page.getByTestId('automaton-toggle')).toBeDisabled();
-	await expect(page.getByTestId('automaton-step')).toBeDisabled();
-	await expect(page.getByTestId('automaton-reset')).toBeDisabled();
-	await expect(page.getByTestId('automaton-seed')).toBeDisabled();
-	await expect(page.locator('.automaton-canvas')).toBeHidden();
 });

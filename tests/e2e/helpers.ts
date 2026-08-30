@@ -5,8 +5,6 @@ export const pageRoutes = [
 	'/',
 	'/articles/',
 	...postSlugs.map((slug) => `/articles/${slug}/`),
-	'/lab/cellular-automaton/',
-	'/lab/event-pt/',
 	'/404'
 ] as const;
 
@@ -33,12 +31,6 @@ export function backgroundCanvas(page: Page): Locator {
 		.locator(
 			'canvas[data-testid="automaton-background"], [data-testid="automaton-background"] canvas'
 		)
-		.first();
-}
-
-export function labCanvas(page: Page): Locator {
-	return page
-		.locator('canvas[data-testid="automaton-lab"], [data-testid="automaton-lab"] canvas')
 		.first();
 }
 

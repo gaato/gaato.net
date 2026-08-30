@@ -39,8 +39,6 @@ bun run writing:update
 - `/`
 - `/articles/`
 - `/articles/<slug>/`
-- `/lab/cellular-automaton/`
-- `/lab/event-pt/`
 - `/feed.xml`
 - `/sitemap.xml`
 - `/404`（成果物は `dist/404.html`）

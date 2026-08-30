@@ -55,12 +55,7 @@ export function buildFeedXml(posts: readonly LocalPost[]): string {
 	].join('\n');
 }
 
-const staticSitemapPaths = [
-	'/',
-	'/articles/',
-	'/lab/cellular-automaton/',
-	'/lab/event-pt/'
-] as const;
+const staticSitemapPaths = ['/', '/articles/'] as const;
 
 export function buildSitemapXml(posts: readonly LocalPost[]): string {
 	const staticEntries = staticSitemapPaths.map(

@@ -44,6 +44,14 @@ test('an unknown route serves the noindex 404 page with a 404 status', async ({ 
 	problems.assertNone();
 });
 
+test('unpublished local Lab paths remain ordinary 404s', async ({ request }) => {
+	for (const path of ['/lab/cellular-automaton/', '/lab/event-pt/']) {
+		const response = await request.get(path, { maxRedirects: 0 });
+		expect(response.status(), path).toBe(404);
+		expect(new URL(response.url()).pathname, path).toBe(path);
+	}
+});
+
 test('the feed is served with the RSS media type', async ({ request }) => {
 	const response = await request.get('/feed.xml');
 	expect(response.status()).toBe(200);
@@ -58,6 +66,17 @@ test('the footer links to the source repository', async ({ page }) => {
 		'href',
 		'https://github.com/gaato/gaato.net'
 	);
+});
+
+test('the primary navigation links to the separate Lab site', async ({ page }) => {
+	await page.goto('/', { waitUntil: 'networkidle' });
+
+	const primary = page.getByRole('navigation', { name: 'Primary' });
+	await expect(primary.getByRole('link', { name: 'Lab', exact: true })).toHaveAttribute(
+		'href',
+		'https://lab.gaato.net/'
+	);
+	await expect(page.locator('section#experiment')).toHaveCount(0);
 });
 
 test('the home page links representative upstream contributions', async ({ page }) => {
