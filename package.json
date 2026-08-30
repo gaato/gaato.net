@@ -11,10 +11,12 @@
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"test": "vitest run",
+		"audit": "bun audit --audit-level=high",
 		"check:artifacts": "bun scripts/check-artifacts.ts",
+		"check:licenses": "bun scripts/check-third-party-notices.ts",
 		"test:e2e": "playwright test",
 		"prepare:preview-headers": "bun scripts/prepare-preview-headers.ts",
-		"verify": "bun run check && bun run test && bun run build && bun run check:artifacts && bun run test:e2e",
+		"verify": "bun run check && bun run test && bun run build && bun run check:licenses && bun run check:artifacts && bun run test:e2e",
 		"writing:update": "bun scripts/update-writing.ts",
 		"wrangler": "wrangler"
 	},

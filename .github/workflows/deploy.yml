@@ -36,6 +36,9 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
+      - name: Audit dependencies
+        run: bun run audit
+
       - name: Install Chromium
         run: bunx playwright install --with-deps chromium
 
@@ -58,6 +61,8 @@ jobs:
             dist/robots.txt
             dist/site.webmanifest
             README.md
+            NOTICE.md
+            public/THIRD_PARTY_NOTICES.txt
 
       - name: Upload same-repository PR artifact
         if: >-

@@ -186,12 +186,19 @@ if (JSON.stringify(actualHtml) !== JSON.stringify(expectedHtml)) {
 	fail(`Unexpected HTML outputs. Expected ${expectedHtml.join(', ')}; got ${actualHtml.join(', ')}`);
 }
 
-for (const required of ['feed.xml', 'sitemap.xml', 'robots.txt', 'site.webmanifest', '_headers']) {
+for (const required of [
+	'THIRD_PARTY_NOTICES.txt',
+	'feed.xml',
+	'sitemap.xml',
+	'robots.txt',
+	'site.webmanifest',
+	'_headers'
+]) {
 	if (!files.includes(required)) fail(`Missing required output: ${required}`);
 }
 
 for (const file of files) {
-	if (['.md', '.mbt', '.wasm'].includes(extname(file))) fail(`Source/runtime artifact must not ship: ${file}`);
+	if (['.map', '.md', '.mbt', '.wasm'].includes(extname(file))) fail(`Source/runtime artifact must not ship: ${file}`);
 }
 for (const forbidden of ['assets/party_inko.gif', 'assets/round2-index-transitions.css']) {
 	if (files.includes(forbidden)) fail(`Comparison-only asset must not ship: ${forbidden}`);
@@ -279,6 +286,16 @@ if (files.includes('404.html')) {
 	}
 	if (!hasTag(metadata, { 'http-equiv': /content-security-policy/iu, content: /\S/u })) {
 		fail('404.html is missing the content security policy');
+	}
+}
+
+if (files.includes('THIRD_PARTY_NOTICES.txt')) {
+	const [sourceNotices, builtNotices] = await Promise.all([
+		readFile(resolve('public/THIRD_PARTY_NOTICES.txt'), 'utf8'),
+		readOutput('THIRD_PARTY_NOTICES.txt')
+	]);
+	if (sourceNotices !== builtNotices) {
+		fail('Built third-party notices differ from public/THIRD_PARTY_NOTICES.txt');
 	}
 }
 

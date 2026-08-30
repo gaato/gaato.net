@@ -9,3 +9,5 @@ The following material is not covered by the Blue Oak Model License applied to t
 - names, logos, trademarks, and service marks belonging to their respective owners.
 
 Attribution and source links are provided alongside material where practical. The presence of material in this repository does not imply that Gakuto Furuya can grant additional rights in it.
+
+Notices for third-party software included in the deployed site are listed in [THIRD_PARTY_NOTICES.txt](public/THIRD_PARTY_NOTICES.txt).
