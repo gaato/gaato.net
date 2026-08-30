@@ -22,7 +22,7 @@ describe('XML documents', () => {
 		const xml = buildFeedXml([post]);
 		const parsed = new XMLParser().parse(xml);
 		expect(parsed.rss.channel.item.title).toBe('A & B <test>');
-		expect(parsed.rss.channel.item.link).toBe('https://gaato.net/posts/a-post/');
+		expect(parsed.rss.channel.item.link).toBe('https://gaato.net/articles/a-post/');
 		expect(xml).not.toContain(post.html);
 		expect(xml).toContain('Short &lt;description&gt; &amp; nothing more.');
 	});
@@ -33,10 +33,10 @@ describe('XML documents', () => {
 		const urls = parsed.urlset.url as Array<{ loc: string; lastmod?: string }>;
 		expect(urls.map((entry) => entry.loc)).toEqual([
 			'https://gaato.net/',
-			'https://gaato.net/writing/',
+			'https://gaato.net/articles/',
 			'https://gaato.net/lab/cellular-automaton/',
 			'https://gaato.net/lab/event-pt/',
-			'https://gaato.net/posts/a-post/'
+			'https://gaato.net/articles/a-post/'
 		]);
 		expect(urls.at(-1)?.lastmod).toBe('2026-08-28');
 	});

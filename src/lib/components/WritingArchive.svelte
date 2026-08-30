@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { WritingItem } from '$lib/content/writing-types';
+	import PageHeader from './PageHeader.svelte';
 	import WritingList from './WritingList.svelte';
 
 	let { items }: { items: readonly WritingItem[] } = $props();
@@ -15,9 +16,7 @@
 	);
 </script>
 
-<header class="archive-title">
-	<h1 lang="en">Writing</h1>
-</header>
+<PageHeader title="Articles" variant="compact" lang="en" />
 
 <div class="years">
 	{#each years as [year, yearItems]}
@@ -29,17 +28,6 @@
 </div>
 
 <style>
-	.archive-title {
-		margin-block-end: clamp(2.5rem, 7vw, 4.5rem);
-	}
-
-	h1 {
-		margin: 0;
-		font-size: clamp(2.75rem, 7vw, 5rem);
-		letter-spacing: -0.055em;
-		line-height: 1;
-	}
-
 	.years {
 		display: grid;
 		gap: 2.75rem;

@@ -4,6 +4,7 @@ import {
 	findAutomatonRule,
 	maskDigits,
 	maskFor,
+	parseAutomatonRule,
 	paletteForMasks,
 	ruleAllowsCell
 } from './rules';
@@ -65,5 +66,21 @@ describe('curated automaton rules', () => {
 		expect(findAutomatonRule('amoeba')).toBe(AUTOMATON_RULES[12]);
 		expect(findAutomatonRule('missing')).toBeUndefined();
 		expect(() => maskFor([9])).toThrow(RangeError);
+	});
+
+	test('parses and canonicalizes arbitrary Life-like rules', () => {
+		const custom = parseAutomatonRule(' b82 / s755 ');
+
+		expect(custom).toMatchObject({
+			id: 'B28/S57',
+			name: 'Custom',
+			notation: 'B28/S57',
+			birthMask: maskFor([2, 8]),
+			surviveMask: maskFor([5, 7])
+		});
+		expect(parseAutomatonRule('B36/S23')).toBe(AUTOMATON_RULES[1]);
+		expect(parseAutomatonRule('B/S')).toMatchObject({ notation: 'B/S' });
+		expect(parseAutomatonRule('rule 30')).toBeUndefined();
+		expect(parseAutomatonRule('B9/S23')).toBeUndefined();
 	});
 });

@@ -2,27 +2,27 @@ import { readdir, readFile, stat } from 'node:fs/promises';
 import { extname, posix, resolve } from 'node:path';
 import { gzipSync } from 'node:zlib';
 import { XMLParser, XMLValidator } from 'fast-xml-parser';
+import { publishedLocalPostSlugs as postSlugs } from '../src/lib/content/local-post-manifest';
 
 const outputDirectory = resolve('dist');
 const canonicalOrigin = 'https://gaato.net';
-const postSlugs = [
-	'cloudflare-workers-static-assets-cutover',
-	'debian-woody-hurd-vm',
-	'rc-s380-blank-tag',
-	'riscv-mbt-rv32i-first',
-	'stuck-ctrl-was-the-mouse'
-] as const;
 
 const routeFiles = new Map<string, string>([
 	['/', 'index.html'],
-	['/writing/', 'writing/index.html'],
-	...postSlugs.map((slug) => [`/posts/${slug}/`, `posts/${slug}/index.html`] as const),
+	['/articles/', 'articles/index.html'],
+	...postSlugs.map((slug) => [`/articles/${slug}/`, `articles/${slug}/index.html`] as const),
 	['/lab/cellular-automaton/', 'lab/cellular-automaton/index.html'],
 	['/lab/event-pt/', 'lab/event-pt/index.html']
 ]);
-const expectedHtml = [...routeFiles.values(), '404.html'].sort();
+const legacyRedirectFiles = new Map<string, string>([
+	['posts/index.html', '/articles/'],
+	...postSlugs.map(
+		(slug) => [`posts/${slug}/index.html`, `/articles/${slug}/`] as const
+	)
+]);
+const expectedHtml = [...routeFiles.values(), ...legacyRedirectFiles.keys(), '404.html'].sort();
 const expectedSitemapUrls = [...routeFiles.keys()].map((route) => `${canonicalOrigin}${route}`).sort();
-const expectedPostUrls = postSlugs.map((slug) => `${canonicalOrigin}/posts/${slug}/`).sort();
+const expectedPostUrls = postSlugs.map((slug) => `${canonicalOrigin}/articles/${slug}/`).sort();
 const failures: string[] = [];
 
 function fail(message: string): void {
@@ -206,6 +206,7 @@ const forbiddenText = [
 	{ label: 'raw post source path', pattern: /content\/posts\//u },
 	{ label: 'raw Markdown front matter', pattern: /layout:\s*blog-post/u },
 	{ label: 'raw Markdown code fence', pattern: /```(?:\w+)?\r?\n/u },
+	{ label: 'CSP-incompatible embedded font', pattern: /data:font\//u },
 	{ label: 'Wasm runtime reference', pattern: /\.wasm(?:\b|[?#])/u }
 ];
 for (const file of files.filter((candidate) => textualExtensions.has(extname(candidate)))) {
@@ -243,7 +244,7 @@ for (const [route, file] of routeFiles) {
 			hasTag(links, { rel: 'alternate', type: 'application/rss+xml', href: /(?:^|\/)feed\.xml$/u })
 		]
 	];
-	if (route.startsWith('/posts/')) {
+	if (route.startsWith('/articles/') && route !== '/articles/') {
 		requiredMetadata.push(
 			['article publication time', hasTag(metadata, { property: 'article:published_time', content: /^\d{4}-\d{2}-\d{2}/u })],
 			['article modification time', hasTag(metadata, { property: 'article:modified_time', content: /^\d{4}-\d{2}-\d{2}/u })]
@@ -251,6 +252,17 @@ for (const [route, file] of routeFiles) {
 	}
 	for (const [label, present] of requiredMetadata) {
 		if (!present) fail(`${file} is missing ${label}`);
+	}
+}
+
+for (const [file, destination] of legacyRedirectFiles) {
+	if (!files.includes(file)) continue;
+	const html = await readOutput(file);
+	if (!html.includes(`location.href=${JSON.stringify(destination)}`)) {
+		fail(`${file} does not redirect with JavaScript to ${destination}`);
+	}
+	if (!hasTag(tags(html, 'meta'), { 'http-equiv': 'refresh', content: `0;url=${destination}` })) {
+		fail(`${file} does not redirect with meta refresh to ${destination}`);
 	}
 }
 

@@ -1,4 +1,11 @@
-export const writingSources = ['gaato.net', 'qiita', 'note', 'mathlog', 'zenn'] as const;
+export const writingSources = [
+	'gaato.net',
+	'qiita',
+	'note',
+	'mathlog',
+	'zenn',
+	'shinonome'
+] as const;
 
 export type WritingSource = (typeof writingSources)[number];
 

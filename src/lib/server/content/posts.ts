@@ -1,11 +1,8 @@
-import { marked } from 'marked';
+import { Marked } from 'marked';
+import markedKatex from 'marked-katex-extension';
 import { parse as parseYaml } from 'yaml';
+import { publishedLocalPostSlugs } from '$lib/content/local-post-manifest';
 import type { DateString } from '$lib/content/writing-types';
-import cloudflareWorkersPost from '../../../../content/posts/cloudflare-workers-static-assets-cutover.md?raw';
-import debianWoodyPost from '../../../../content/posts/debian-woody-hurd-vm.md?raw';
-import rcS380Post from '../../../../content/posts/rc-s380-blank-tag.md?raw';
-import riscvMbtPost from '../../../../content/posts/riscv-mbt-rv32i-first.md?raw';
-import stuckCtrlPost from '../../../../content/posts/stuck-ctrl-was-the-mouse.md?raw';
 
 export type LocalPost = {
 	readonly slug: string;
@@ -28,6 +25,15 @@ type Frontmatter = {
 };
 
 const datePattern = /^\d{4}-\d{2}-\d{2}$/u;
+const markdown = new Marked({ gfm: true });
+markdown.use(
+	markedKatex({
+		nonStandard: true,
+		output: 'mathml',
+		throwOnError: true,
+		trust: false
+	})
+);
 
 export function tokyoToday(now = new Date()): DateString {
 	return new Intl.DateTimeFormat('en-CA', {
@@ -68,7 +74,7 @@ export function parseLocalPost(
 	if (publishedDate > today) return null;
 
 	const updatedDate = asDate(data.updatedDate) ?? asDate(data.updated);
-	const html = (marked.parse(body, { async: false, gfm: true }) as string).replaceAll(
+	const html = (markdown.parse(body, { async: false }) as string).replaceAll(
 		'<pre>',
 		'<pre tabindex="0">'
 	);
@@ -85,23 +91,44 @@ export function parseLocalPost(
 	};
 }
 
-const postSources: Readonly<Record<string, string>> = {
-	'/content/posts/cloudflare-workers-static-assets-cutover.md': cloudflareWorkersPost,
-	'/content/posts/debian-woody-hurd-vm.md': debianWoodyPost,
-	'/content/posts/rc-s380-blank-tag.md': rcS380Post,
-	'/content/posts/riscv-mbt-rv32i-first.md': riscvMbtPost,
-	'/content/posts/stuck-ctrl-was-the-mouse.md': stuckCtrlPost
-};
+const postSources = import.meta.glob<string>('../../../../content/posts/*.md', {
+	eager: true,
+	query: '?raw',
+	import: 'default'
+});
+
+const parsedPosts = Object.entries(postSources)
+	.map(([path, source]) => parseLocalPost(source, path))
+	.filter((post): post is LocalPost => post !== null);
+const postsBySlug = new Map(parsedPosts.map((post) => [post.slug, post]));
+const manifestSlugs = new Set<string>(publishedLocalPostSlugs);
+const missingOrUnpublished = publishedLocalPostSlugs.filter((slug) => !postsBySlug.has(slug));
+const unlistedPublished = parsedPosts
+	.map((post) => post.slug)
+	.filter((slug) => !manifestSlugs.has(slug));
+
+if (missingOrUnpublished.length > 0 || unlistedPublished.length > 0) {
+	throw new Error(
+		[
+			'Local post manifest is out of sync.',
+			missingOrUnpublished.length > 0
+				? `Missing or unpublished: ${missingOrUnpublished.join(', ')}.`
+				: '',
+			unlistedPublished.length > 0
+				? `Published but unlisted: ${unlistedPublished.join(', ')}.`
+				: ''
+		]
+			.filter(Boolean)
+			.join(' ')
+	);
+}
 
 const posts = Object.freeze(
-	Object.entries(postSources)
-		.map(([path, source]) => parseLocalPost(source, path))
-		.filter((post): post is LocalPost => post !== null)
-		.sort(
-			(left, right) =>
-				right.publishedDate.localeCompare(left.publishedDate) ||
-				left.title.localeCompare(right.title, 'ja')
-		)
+	parsedPosts.sort(
+		(left, right) =>
+			right.publishedDate.localeCompare(left.publishedDate) ||
+			left.title.localeCompare(right.title, 'ja')
+	)
 );
 
 export function getLocalPosts(): readonly LocalPost[] {

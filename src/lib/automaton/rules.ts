@@ -141,9 +141,33 @@ export const AUTOMATON_RULES: readonly AutomatonRule[] = Object.freeze([
 ]);
 
 const RULES_BY_ID = new Map(AUTOMATON_RULES.map((rule) => [rule.id, rule]));
+const RULES_BY_NOTATION = new Map(AUTOMATON_RULES.map((rule) => [rule.notation, rule]));
+
+export function parseAutomatonRule(notation: string): AutomatonRule | undefined {
+	const compact = notation.replaceAll(/\s/gu, '').toUpperCase();
+	const match = /^B([0-8]*)\/S([0-8]*)$/u.exec(compact);
+	if (!match) return undefined;
+
+	const birthMask = maskFor([...match[1]].map(Number));
+	const surviveMask = maskFor([...match[2]].map(Number));
+	const canonical = `B${maskDigits(birthMask)}/S${maskDigits(surviveMask)}`;
+	const known = RULES_BY_NOTATION.get(canonical);
+	if (known) return known;
+
+	return Object.freeze({
+		id: canonical,
+		name: 'Custom',
+		notation: canonical,
+		birthMask,
+		surviveMask,
+		initialAlivePer1000: 180,
+		palette: Object.freeze(paletteForMasks(birthMask, surviveMask))
+	});
+}
 
 export function findAutomatonRule(id: string | null | undefined): AutomatonRule | undefined {
-	return id === null || id === undefined ? undefined : RULES_BY_ID.get(id);
+	if (id === null || id === undefined) return undefined;
+	return RULES_BY_ID.get(id) ?? parseAutomatonRule(id);
 }
 
 export function ruleAllowsCell(rule: AutomatonRule, alive: boolean, neighbors: number): boolean {

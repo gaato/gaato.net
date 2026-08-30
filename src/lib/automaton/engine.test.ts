@@ -6,6 +6,7 @@ import {
 	gridLength,
 	seedAt,
 	seedInitialGrid,
+	setCellAlive,
 	stepAutomaton
 } from './engine';
 import { AUTOMATON_RULES, ruleAllowsCell } from './rules';
@@ -120,6 +121,16 @@ describe('automaton engine', () => {
 		expect(changed).toContain(6);
 		expect(changed.every((index) => index >= 0 && index < 9)).toBe(true);
 		expect(changed.every((index) => cells[index] === 1 && energy[index] >= 0.5)).toBe(true);
+	});
+
+	test('sets one exact cell alive and wraps its coordinates', () => {
+		const cells = new Uint8Array(12);
+		const energy = new Float32Array(12);
+		const index = setCellAlive(cells, energy, 4, 3, -1, 3);
+
+		expect(index).toBe(3);
+		expect([...cells]).toEqual([0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0]);
+		expect(energy[index]).toBe(1);
 	});
 
 	test('does not thin dense generations or consume randomness while stepping', () => {

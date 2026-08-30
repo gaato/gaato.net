@@ -5,5 +5,5 @@
 	let { data } = $props();
 </script>
 
-<PageMeta title="Writing — gaato" description="がーと / gaato が書いた記事。" path="/writing/" />
+<PageMeta title="Articles — gaato" description="がーと / gaato が書いた記事。" path="/articles/" />
 <WritingArchive items={data.writing} />

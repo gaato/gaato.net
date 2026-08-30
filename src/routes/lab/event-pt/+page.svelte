@@ -5,7 +5,7 @@
 
 <PageMeta
 	title="イベントPt調整 — gaato"
-	description="ホロドリのなわとびで、目標Ptにちょうど到達する組み合わせを探します。"
+	description="hololive Dreamsのなわとびで、目標Ptにちょうど到達する組み合わせを探します。"
 	path="/lab/event-pt/"
 />
 <EventPt />

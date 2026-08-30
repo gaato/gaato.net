@@ -170,6 +170,25 @@ export function seedAt(
 	return [...changed];
 }
 
+/** Make one cell alive, wrapping at every edge. */
+export function setCellAlive(
+	cells: Uint8Array,
+	energy: Float32Array,
+	columns: number,
+	rows: number,
+	column: number,
+	row: number
+): number {
+	assertGrid(cells, columns, rows);
+	assertGrid(energy, columns, rows);
+	assertInteger(column, 'column');
+	assertInteger(row, 'row');
+	const index = wrap(row, rows) * columns + wrap(column, columns);
+	cells[index] = 1;
+	energy[index] = 1;
+	return index;
+}
+
 export interface AutomatonEngineOptions {
 	columns: number;
 	rows: number;
@@ -249,6 +268,17 @@ export class AutomatonEngine {
 			column,
 			row,
 			this.#random
+		);
+	}
+
+	setAlive(column: number, row: number): number {
+		return setCellAlive(
+			this.#current,
+			this.#energy,
+			this.#columns,
+			this.#rows,
+			column,
+			row
 		);
 	}
 

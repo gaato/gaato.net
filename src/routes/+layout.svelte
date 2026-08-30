@@ -14,17 +14,16 @@
 
 <div class="site-frame">
 	<header class="site-header">
-		<a class="site-name" href="/">gaato</a>
 		<nav aria-label="Primary" lang="en">
 			<a href="/" aria-current={page.url.pathname === '/' ? 'page' : undefined}>Home</a>
 			<a
-				href="/writing/"
-				aria-current={page.url.pathname === '/writing/' ? 'page' : undefined}>Writing</a
+				href="/articles/"
+				aria-current={page.url.pathname.startsWith('/articles/') ? 'page' : undefined}>Articles</a
 			>
 		</nav>
 	</header>
 
-	<main id="content" tabindex="-1">
+	<main id="content" class:home-page={page.url.pathname === '/'} tabindex="-1">
 		{@render children()}
 	</main>
 
@@ -50,6 +49,23 @@
 </div>
 
 <style>
+	.skip-link {
+		position: fixed;
+		inset-block-start: 0.75rem;
+		inset-inline-start: 0.75rem;
+		z-index: 9999;
+		padding: 0.65rem 0.9rem;
+		border: 1px solid var(--color-ink);
+		background: var(--color-surface);
+		color: var(--color-ink);
+		font-weight: 700;
+		transform: translateY(-180%);
+	}
+
+	.skip-link:focus {
+		transform: translateY(0);
+	}
+
 	.site-frame {
 		position: relative;
 		z-index: 1;
@@ -68,19 +84,9 @@
 	.site-header {
 		display: flex;
 		align-items: baseline;
-		justify-content: space-between;
 		gap: 1.5rem;
 		padding-block: 1.25rem;
 		border-block-end: 1px solid var(--color-line);
-	}
-
-	.site-name {
-		display: inline-flex;
-		align-items: center;
-		min-block-size: 2.75rem;
-		font-weight: 750;
-		letter-spacing: -0.02em;
-		text-decoration: none;
 	}
 
 	.site-header nav,
@@ -93,7 +99,7 @@
 	.site-header nav a {
 		display: inline-flex;
 		align-items: center;
-		min-block-size: 2.75rem;
+		min-block-size: var(--interactive-min-block-size);
 		color: var(--color-muted);
 		font-size: 0.9rem;
 		text-decoration: none;
@@ -108,6 +114,10 @@
 
 	main {
 		padding-block: clamp(2.75rem, 7vw, 6rem);
+	}
+
+	main.home-page {
+		padding-block-start: clamp(2rem, 4vw, 3rem);
 	}
 
 	.site-footer {
@@ -125,11 +135,11 @@
 		display: inline-flex;
 		align-items: center;
 		inline-size: fit-content;
-		min-block-size: 2.75rem;
+		min-block-size: var(--interactive-min-block-size);
 	}
 
 	.background-toggle {
-		min-block-size: 2.75rem;
+		min-block-size: var(--interactive-min-block-size);
 		padding: 0 0.25rem;
 		border: 0;
 		background: transparent;

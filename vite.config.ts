@@ -3,6 +3,11 @@ import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
+	build: {
+		assetsInlineLimit(filePath) {
+			return /\.(?:ttf|woff2?)$/u.test(filePath) ? false : undefined;
+		}
+	},
 	plugins: [
 		sveltekit({
 			adapter: adapter({

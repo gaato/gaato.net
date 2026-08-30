@@ -6,8 +6,8 @@
 	let { writing }: { writing: readonly WritingItem[] } = $props();
 </script>
 
-<header class="home-title">
-	<h1>がーと / gaato</h1>
+<header class="home-intro">
+	<h1 lang="en">I’m gaato. I put a lot of work into avoiding work.</h1>
 </header>
 
 <div class="directory">
@@ -17,7 +17,7 @@
 			<div>
 				{#if section === 'write'}
 					<WritingList items={writing} />
-					<p class="more"><a href="/writing/" lang="en">All writing</a></p>
+					<p class="more"><a href="/articles/" lang="en">All articles</a></p>
 				{:else}
 					<ul role="list">
 						{#each directoryEntries[section] as entry}
@@ -37,17 +37,23 @@
 </div>
 
 <style>
-	.home-title {
-		margin-block-end: clamp(2.75rem, 7vw, 5rem);
+	.home-intro {
+		display: grid;
+		align-content: center;
+		justify-items: center;
+		min-block-size: clamp(8rem, 14vw, 10rem);
+		margin-block-end: clamp(1.5rem, 3vw, 2.5rem);
 	}
 
 	h1 {
-		max-inline-size: 14ch;
+		max-inline-size: 48ch;
 		margin: 0;
-		font-size: clamp(2.75rem, 7vw, 5rem);
-		font-weight: 720;
-		letter-spacing: -0.055em;
-		line-height: 0.96;
+		font-size: clamp(1rem, 0.95rem + 0.3vw, 1.2rem);
+		font-weight: 400;
+		letter-spacing: 0;
+		line-height: 1.5;
+		text-align: center;
+		text-wrap: balance;
 	}
 
 	.directory {
@@ -76,7 +82,7 @@
 
 	li {
 		padding-block: 0.5rem;
-		border-block-end: 1px solid color-mix(in srgb, var(--color-line), transparent 45%);
+		border-block-end: 1px solid var(--color-line-subtle);
 	}
 
 	li:first-child {

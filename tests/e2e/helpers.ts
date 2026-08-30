@@ -1,17 +1,10 @@
 import { expect, type Locator, type Page } from '@playwright/test';
-
-export const postSlugs = [
-	'cloudflare-workers-static-assets-cutover',
-	'debian-woody-hurd-vm',
-	'rc-s380-blank-tag',
-	'riscv-mbt-rv32i-first',
-	'stuck-ctrl-was-the-mouse'
-] as const;
+import { publishedLocalPostSlugs as postSlugs } from '../../src/lib/content/local-post-manifest';
 
 export const pageRoutes = [
 	'/',
-	'/writing/',
-	...postSlugs.map((slug) => `/posts/${slug}/`),
+	'/articles/',
+	...postSlugs.map((slug) => `/articles/${slug}/`),
 	'/lab/cellular-automaton/',
 	'/lab/event-pt/',
 	'/404'

@@ -2,7 +2,7 @@
 title: Ctrlが押しっぱなしになる犯人はマウスだった
 description: KDE WaylandでCtrl+Cが押されたままになり、evdevを調べるとLogitech G304がキーを保持していた。
 date: "2026-07-06"
-updated: "2026-08-29"
+updated: "2026-08-30"
 author: gaato
 tags:
   - linux
@@ -19,7 +19,7 @@ layout: blog-post
 
 環境は KDE Plasma の Wayland セッションです。KWin、KAccess の固定キー、fcitx5 などを疑っていました。
 
-もう一度発生したとき、今回は再起動せずに別の端末から SSH で入りました。evdev の押下状態を調べると、こうなっていました。
+もう一度発生したとき、HHKB を抜いても直りませんでした。そこで、抜いたまま別の端末から SSH で入り、evdev の押下状態を調べました。
 
 ```text
 /dev/input/event18 Logitech G304 pressed: KEY_LEFTCTRL, KEY_C
@@ -40,4 +40,4 @@ printf %s $iface | sudo tee /sys/bus/usb/drivers/usbhid/bind >/dev/null
 
 `1-12:1.2` はそのときの値です。USB ポートや再起動で変わるので、`/proc/bus/input/devices` と sysfs を見て G304 のインターフェイスであることを確認してから使います。違う値を unbind すると、そのデバイスが一時的に使えなくなります。
 
-solaar や input-remapper のようなリマッパは動いていませんでした。マウスのオンボードプロファイルが原因なのか、レシーバや firmware の状態なのかは分かっていません。ひとまずオンボードプロファイルを無効にして様子を見ています。
+発生時、この PC では solaar や input-remapper のようなリマッパは動いていませんでした。原因は G304 本体に保存されていたオンボードプロファイルでした。オンボードプロファイルを無効にして解消しました。

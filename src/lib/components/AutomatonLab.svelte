@@ -4,12 +4,16 @@
 		AutomatonCanvasController,
 		type AutomatonRunState
 	} from '$lib/automaton/controller';
-	import { AUTOMATON_RULES, findAutomatonRule } from '$lib/automaton/rules';
 	import {
-		AUTOMATON_SESSION_RULE_CHANGE_EVENT,
-		getOrCreateSessionRule,
-		writeSessionRule
-	} from '$lib/automaton/storage';
+		AUTOMATON_RULES,
+		findAutomatonRule,
+		parseAutomatonRule,
+		type AutomatonRule
+	} from '$lib/automaton/rules';
+	import {
+		automatonRuleState,
+		AUTOMATON_RULE_CHANGE_EVENT
+	} from '$lib/automaton/rule-state';
 
 	interface Props {
 		initialRuleId?: string;
@@ -22,13 +26,13 @@
 	let canvasHost: HTMLDivElement;
 	let canvas: HTMLCanvasElement;
 	let controller: AutomatonCanvasController | undefined;
-	let selectedRuleId = $state(AUTOMATON_RULES[0].id);
+	let selectedRule = $state<AutomatonRule>(AUTOMATON_RULES[0]);
+	let ruleInput = $state(AUTOMATON_RULES[0].notation);
+	let ruleError = $state('');
 	let paused = $state(false);
 	let reducedMotion = $state(false);
 	let forcedColors = $state(false);
 	let available = $state(true);
-
-	const selectedRule = $derived(findAutomatonRule(selectedRuleId) ?? AUTOMATON_RULES[0]);
 
 	$effect(() => {
 		controller?.setSuspended(suspended);
@@ -37,13 +41,11 @@
 	onMount(() => {
 		let initialRule = findAutomatonRule(initialRuleId) ?? AUTOMATON_RULES[0];
 		if (!initialRuleId) {
-			try {
-				initialRule = getOrCreateSessionRule(window.sessionStorage);
-			} catch {
-				// Keep the fallback rule when session storage is unavailable.
-			}
+			initialRule = automatonRuleState.getOrCreate();
 		}
-		selectedRuleId = initialRule.id;
+		automatonRuleState.set(initialRule);
+		selectedRule = initialRule;
+		ruleInput = initialRule.notation;
 		controller = new AutomatonCanvasController({
 			host: canvasHost,
 			visibilityHost: host,
@@ -76,18 +78,33 @@
 		available = state.available;
 	}
 
-	function handleRuleChange(event: Event): void {
-		selectedRuleId = (event.currentTarget as HTMLSelectElement).value;
-		const rule = findAutomatonRule(selectedRuleId);
-		if (!rule) return;
-		controller?.setRule(rule);
-		try {
-			writeSessionRule(window.sessionStorage, rule);
-		} catch {
-			// The selected rule still applies when session storage is unavailable.
+	function handleRuleInput(event: Event): void {
+		const input = event.currentTarget as HTMLInputElement;
+		ruleInput = input.value;
+		ruleError = '';
+		input.setCustomValidity('');
+	}
+
+	function applyRule(event: SubmitEvent): void {
+		event.preventDefault();
+		const form = event.currentTarget as HTMLFormElement;
+		const input = form.elements.namedItem('rule') as HTMLInputElement;
+		const rule = parseAutomatonRule(ruleInput);
+		if (!rule) {
+			ruleError = 'Use B…/S… notation with digits from 0 through 8.';
+			input.setCustomValidity(ruleError);
+			input.reportValidity();
+			return;
 		}
+
+		input.setCustomValidity('');
+		ruleError = '';
+		ruleInput = rule.notation;
+		selectedRule = rule;
+		controller?.setRule(rule);
+		automatonRuleState.set(rule);
 		window.dispatchEvent(
-			new CustomEvent(AUTOMATON_SESSION_RULE_CHANGE_EVENT, { detail: rule.id })
+			new CustomEvent(AUTOMATON_RULE_CHANGE_EVENT, { detail: rule.id })
 		);
 	}
 
@@ -117,17 +134,28 @@
 >
 	<div class="automaton-controls" aria-label="Cellular automaton controls">
 		<label for="automaton-rule">Rule</label>
-		<select
-			id="automaton-rule"
-			data-testid="automaton-rule"
-			value={selectedRuleId}
-			onchange={handleRuleChange}
-			disabled={!available || forcedColors}
-		>
-			{#each AUTOMATON_RULES as rule}
-				<option value={rule.id}>{rule.name} {rule.notation}</option>
-			{/each}
-		</select>
+		<form class="rule-form" onsubmit={applyRule}>
+			<input
+				id="automaton-rule"
+				name="rule"
+				data-testid="automaton-rule"
+				value={ruleInput}
+				oninput={handleRuleInput}
+				aria-describedby={ruleError
+					? 'automaton-rule-help automaton-rule-error'
+					: 'automaton-rule-help'}
+				aria-invalid={ruleError ? 'true' : 'false'}
+				autocomplete="off"
+				autocapitalize="characters"
+				spellcheck="false"
+				disabled={!available || forcedColors}
+			/>
+			<button type="submit" disabled={!available || forcedColors}>Apply</button>
+		</form>
+		<p id="automaton-rule-help" class="rule-help">Life-like B/S notation, for example B3/S23.</p>
+		{#if ruleError}
+			<p id="automaton-rule-error" class="rule-error" aria-live="polite">{ruleError}</p>
+		{/if}
 		<div class="button-row">
 			<button
 				type="button"
@@ -183,7 +211,7 @@
 	.automaton-lab {
 		content-visibility: auto;
 		contain-intrinsic-block-size: auto 48rem;
-		border-block: 1px solid var(--color-line, #a5aaa5);
+		border-block: 1px solid var(--color-line);
 	}
 
 	.automaton-controls {
@@ -197,21 +225,18 @@
 	label,
 	output,
 	p {
-		font: 0.8125rem/1.5 ui-monospace, monospace;
+		font: 0.8125rem/1.5 var(--font-mono);
 	}
 
-	select,
-	button {
-		min-block-size: 2.75rem;
-		border: 1px solid var(--color-control-line, #777);
-		border-radius: 0;
-		background: var(--color-surface, Canvas);
-		color: var(--color-ink, CanvasText);
-		font: inherit;
+	.rule-form {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) max-content;
+		gap: 0.5rem;
 	}
 
-	select {
+	input {
 		inline-size: 100%;
+		min-inline-size: 0;
 		padding-inline: 0.5rem;
 	}
 
@@ -228,32 +253,25 @@
 	}
 
 	button:hover:not(:disabled) {
-		background: color-mix(in oklab, var(--color-accent, CanvasText) 10%, var(--color-surface, Canvas));
-	}
-
-	:where(select, button):focus-visible {
-		outline: 3px solid var(--color-accent, currentColor);
-		outline-offset: 2px;
-	}
-
-	button:disabled,
-	select:disabled {
-		cursor: not-allowed;
-		opacity: 0.55;
+		background: color-mix(in oklab, var(--color-accent) 10%, var(--color-surface));
 	}
 
 	output,
 	p {
 		grid-column: 2;
 		margin: 0;
-		color: var(--color-muted, #5d625e);
+		color: var(--color-muted);
+	}
+
+	.rule-error {
+		color: var(--color-error);
 	}
 
 	.automaton-canvas {
 		block-size: clamp(18rem, 60dvb, 42rem);
 		overflow: hidden;
-		border: 1px solid var(--color-line, #777);
-		background: var(--color-surface, transparent);
+		border: 1px solid var(--color-line);
+		background: var(--color-surface);
 	}
 
 	.automaton-canvas.forced-colors {

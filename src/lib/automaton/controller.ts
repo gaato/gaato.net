@@ -4,7 +4,6 @@ import type { AutomatonRule } from './rules';
 const STEP_INTERVAL_MS = 150;
 const MAX_DEVICE_PIXEL_RATIO = 2;
 const MAX_BACKING_PIXELS = 8_000_000;
-const BACKGROUND_SEED_DISTANCE = 72;
 const LAB_SEED_INTERVAL_MS = 45;
 const TAP_MOVEMENT_TOLERANCE = 10;
 const INTERACTIVE_SELECTOR =
@@ -64,8 +63,43 @@ interface PendingTap {
 	moved: boolean;
 }
 
+interface PendingBackgroundTouch extends PendingTap {
+	tapAllowed: boolean;
+}
+
 function clamp(value: number, minimum: number, maximum: number): number {
 	return Math.min(Math.max(value, minimum), maximum);
+}
+
+export interface GridPoint {
+	column: number;
+	row: number;
+}
+
+/** Return every grid cell crossed by a straight pointer segment. */
+export function rasterizeGridSegment(start: GridPoint, end: GridPoint): GridPoint[] {
+	const points: GridPoint[] = [];
+	let column = start.column;
+	let row = start.row;
+	const deltaColumn = Math.abs(end.column - start.column);
+	const deltaRow = Math.abs(end.row - start.row);
+	const stepColumn = start.column < end.column ? 1 : -1;
+	const stepRow = start.row < end.row ? 1 : -1;
+	let error = deltaColumn - deltaRow;
+
+	while (true) {
+		points.push({ column, row });
+		if (column === end.column && row === end.row) return points;
+		const doubledError = error * 2;
+		if (doubledError > -deltaRow) {
+			error -= deltaRow;
+			column += stepColumn;
+		}
+		if (doubledError < deltaColumn) {
+			error += deltaColumn;
+			row += stepRow;
+		}
+	}
 }
 
 export function calculateBackingScale(width: number, height: number, deviceScale: number): number {
@@ -117,8 +151,8 @@ export class AutomatonCanvasController {
 	#backingHeight = 0;
 	#backingScale = 0;
 	#cellSize = 10;
-	#lastBackgroundSeedX = Number.NaN;
-	#lastBackgroundSeedY = Number.NaN;
+	#lastBackgroundCell: GridPoint | undefined;
+	#pendingBackgroundTouch: PendingBackgroundTouch | undefined;
 	#lastLabSeedAt = 0;
 	#pendingTap: PendingTap | undefined;
 
@@ -191,6 +225,18 @@ export class AutomatonCanvasController {
 			window.addEventListener('pointermove', this.#handleBackgroundPointerMove, {
 				passive: true
 			});
+			window.addEventListener('touchstart', this.#handleBackgroundTouchStart, {
+				passive: true
+			});
+			window.addEventListener('touchmove', this.#handleBackgroundTouchMove, {
+				passive: true
+			});
+			window.addEventListener('touchend', this.#handleBackgroundTouchEnd, {
+				passive: true
+			});
+			window.addEventListener('touchcancel', this.#handleBackgroundTouchCancel, {
+				passive: true
+			});
 		} else {
 			this.#canvas.addEventListener('pointermove', this.#handleLabPointerMove, {
 				passive: true
@@ -229,6 +275,10 @@ export class AutomatonCanvasController {
 		document.removeEventListener('visibilitychange', this.#handleVisibilityChange);
 		window.removeEventListener('resize', this.#requestResize);
 		window.removeEventListener('pointermove', this.#handleBackgroundPointerMove);
+		window.removeEventListener('touchstart', this.#handleBackgroundTouchStart);
+		window.removeEventListener('touchmove', this.#handleBackgroundTouchMove);
+		window.removeEventListener('touchend', this.#handleBackgroundTouchEnd);
+		window.removeEventListener('touchcancel', this.#handleBackgroundTouchCancel);
 		this.#canvas.removeEventListener('pointermove', this.#handleLabPointerMove);
 		this.#canvas.removeEventListener('pointerdown', this.#handleLabPointerDown);
 		this.#canvas.removeEventListener('pointerup', this.#handleLabPointerUp);
@@ -497,24 +547,87 @@ export class AutomatonCanvasController {
 	};
 
 	#handleBackgroundPointerMove = (event: PointerEvent): void => {
-		if (event.pointerType !== 'mouse' || !this.#shouldAcceptBackgroundInput()) return;
+		if (event.pointerType !== 'mouse') return;
+		if (!this.#shouldAcceptBackgroundInput()) return;
 		if (event.target instanceof Element && event.target.closest(INTERACTIVE_SELECTOR)) {
-			this.#lastBackgroundSeedX = event.clientX;
-			this.#lastBackgroundSeedY = event.clientY;
+			this.#lastBackgroundCell = undefined;
 			return;
 		}
-		const deltaX = event.clientX - this.#lastBackgroundSeedX;
-		const deltaY = event.clientY - this.#lastBackgroundSeedY;
-		if (
-			Number.isFinite(this.#lastBackgroundSeedX) &&
-			deltaX * deltaX + deltaY * deltaY < BACKGROUND_SEED_DISTANCE ** 2
-		) {
-			return;
+		const current = this.#gridPointFromClientPoint(event.clientX, event.clientY);
+		if (!current || !this.#engine) return;
+		const start = this.#lastBackgroundCell ?? current;
+		for (const point of rasterizeGridSegment(start, current)) {
+			this.#engine.setAlive(point.column, point.row);
 		}
-		this.#lastBackgroundSeedX = event.clientX;
-		this.#lastBackgroundSeedY = event.clientY;
-		this.#seedFromClientPoint(event.clientX, event.clientY);
+		this.#lastBackgroundCell = current;
+		this.requestDraw();
 	};
+
+	#handleBackgroundTouchStart = (event: TouchEvent): void => {
+		if (event.touches.length !== 1 || !this.#shouldAcceptBackgroundInput()) {
+			this.#pendingBackgroundTouch = undefined;
+			return;
+		}
+		const touch = event.touches[0];
+		this.#pendingBackgroundTouch = {
+			pointerId: touch.identifier,
+			startX: touch.clientX,
+			startY: touch.clientY,
+			clientX: touch.clientX,
+			clientY: touch.clientY,
+			moved: false,
+			tapAllowed: !(event.target instanceof Element && event.target.closest(INTERACTIVE_SELECTOR))
+		};
+	};
+
+	#handleBackgroundTouchMove = (event: TouchEvent): void => {
+		const pending = this.#pendingBackgroundTouch;
+		if (!pending || !this.#shouldAcceptBackgroundInput()) return;
+		const touch = this.#findTouch(event.touches, pending.pointerId);
+		if (!touch) return;
+		const deltaX = touch.clientX - pending.startX;
+		const deltaY = touch.clientY - pending.startY;
+		const moved = deltaX ** 2 + deltaY ** 2 > TAP_MOVEMENT_TOLERANCE ** 2;
+		if (moved && this.#engine) {
+			const start = this.#gridPointFromClientPoint(
+				pending.moved ? pending.clientX : pending.startX,
+				pending.moved ? pending.clientY : pending.startY
+			);
+			const end = this.#gridPointFromClientPoint(touch.clientX, touch.clientY);
+			if (start && end) {
+				for (const point of rasterizeGridSegment(start, end)) {
+					this.#engine.setAlive(point.column, point.row);
+				}
+				this.requestDraw();
+			}
+		}
+		pending.clientX = touch.clientX;
+		pending.clientY = touch.clientY;
+		pending.moved ||= moved;
+	};
+
+	#handleBackgroundTouchEnd = (event: TouchEvent): void => {
+		const pending = this.#pendingBackgroundTouch;
+		if (!pending) return;
+		const touch = this.#findTouch(event.changedTouches, pending.pointerId);
+		if (!touch) return;
+		this.#pendingBackgroundTouch = undefined;
+		if (!pending.moved && pending.tapAllowed && this.#shouldAcceptBackgroundInput()) {
+			this.#setAliveFromClientPoint(touch.clientX, touch.clientY);
+		}
+	};
+
+	#handleBackgroundTouchCancel = (): void => {
+		this.#pendingBackgroundTouch = undefined;
+	};
+
+	#findTouch(touches: TouchList, identifier: number): Touch | undefined {
+		for (let index = 0; index < touches.length; index += 1) {
+			const touch = touches[index];
+			if (touch.identifier === identifier) return touch;
+		}
+		return undefined;
+	}
 
 	#handleLabPointerMove = (event: PointerEvent): void => {
 		if (
@@ -527,15 +640,7 @@ export class AutomatonCanvasController {
 			return;
 		}
 		if (event.pointerType !== 'mouse') {
-			if (this.#pendingTap?.pointerId === event.pointerId) {
-				this.#pendingTap.clientX = event.clientX;
-				this.#pendingTap.clientY = event.clientY;
-				const deltaX = event.clientX - this.#pendingTap.startX;
-				const deltaY = event.clientY - this.#pendingTap.startY;
-				if (deltaX ** 2 + deltaY ** 2 > TAP_MOVEMENT_TOLERANCE ** 2) {
-					this.#pendingTap.moved = true;
-				}
-			}
+			this.#updatePendingTap(event);
 			return;
 		}
 		if (this.#reducedMotion) {
@@ -585,18 +690,47 @@ export class AutomatonCanvasController {
 		if (this.#pendingTap?.pointerId === event.pointerId) this.#pendingTap = undefined;
 	};
 
+	#updatePendingTap(event: PointerEvent): void {
+		if (this.#pendingTap?.pointerId !== event.pointerId) return;
+		this.#pendingTap.clientX = event.clientX;
+		this.#pendingTap.clientY = event.clientY;
+		const deltaX = event.clientX - this.#pendingTap.startX;
+		const deltaY = event.clientY - this.#pendingTap.startY;
+		if (deltaX ** 2 + deltaY ** 2 > TAP_MOVEMENT_TOLERANCE ** 2) {
+			this.#pendingTap.moved = true;
+		}
+	}
+
 	#seedFromClientPoint(clientX: number, clientY: number): void {
 		if (!this.#engine) return;
-		const rect = this.#canvas.getBoundingClientRect();
-		const column = Math.floor((clientX - rect.left) / this.#cellSize);
-		const row = Math.floor((clientY - rect.top) / this.#cellSize);
-		this.#engine.seed(column, row);
+		const point = this.#gridPointFromClientPoint(clientX, clientY);
+		if (!point) return;
+		this.#engine.seed(point.column, point.row);
 		this.requestDraw();
 	}
 
+	#setAliveFromClientPoint(clientX: number, clientY: number): void {
+		if (!this.#engine) return;
+		const point = this.#gridPointFromClientPoint(clientX, clientY);
+		if (!point) return;
+		this.#engine.setAlive(point.column, point.row);
+		this.requestDraw();
+	}
+
+	#gridPointFromClientPoint(clientX: number, clientY: number): GridPoint | undefined {
+		if (!this.#engine) return undefined;
+		const rect = this.#canvas.getBoundingClientRect();
+		const column = Math.floor((clientX - rect.left) / this.#cellSize);
+		const row = Math.floor((clientY - rect.top) / this.#cellSize);
+		if (column < 0 || row < 0 || column >= this.#engine.columns || row >= this.#engine.rows) {
+			return undefined;
+		}
+		return { column, row };
+	}
+
 	#resetPointerHistory(): void {
-		this.#lastBackgroundSeedX = Number.NaN;
-		this.#lastBackgroundSeedY = Number.NaN;
+		this.#lastBackgroundCell = undefined;
+		this.#pendingBackgroundTouch = undefined;
 		this.#lastLabSeedAt = 0;
 		this.#pendingTap = undefined;
 	}

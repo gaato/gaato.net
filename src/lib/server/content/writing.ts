@@ -2,6 +2,7 @@ import mathlogSnapshot from '../../../../content/writing/mathlog.json';
 import noteSnapshot from '../../../../content/writing/note.json';
 import overridesData from '../../../../content/writing/overrides.json';
 import qiitaSnapshot from '../../../../content/writing/qiita.json';
+import shinonomeSnapshot from '../../../../content/writing/shinonome.json';
 import zennSnapshot from '../../../../content/writing/zenn.json';
 import {
 	writingSources,
@@ -17,7 +18,8 @@ const sourceOrder: Readonly<Record<WritingSource, number>> = {
 	qiita: 1,
 	note: 2,
 	mathlog: 3,
-	zenn: 4
+	zenn: 4,
+	shinonome: 5
 };
 
 const datePattern = /^\d{4}-\d{2}-\d{2}$/u;
@@ -89,7 +91,7 @@ const localItems: WritingItem[] = getLocalPosts().map((post) => ({
 	source: 'gaato.net',
 	sourceId: post.slug,
 	title: post.title,
-	url: `/posts/${post.slug}/`,
+	url: `/articles/${post.slug}/`,
 	publishedDate: post.publishedDate,
 	...(post.updatedDate === undefined ? {} : { updatedDate: post.updatedDate })
 }));
@@ -101,7 +103,8 @@ const items = Object.freeze(
 			...normalizeSnapshot(qiitaSnapshot),
 			...normalizeSnapshot(noteSnapshot),
 			...normalizeSnapshot(mathlogSnapshot),
-			...normalizeSnapshot(zennSnapshot)
+			...normalizeSnapshot(zennSnapshot),
+			...normalizeSnapshot(shinonomeSnapshot)
 		],
 		overridesData as WritingOverrides
 	)

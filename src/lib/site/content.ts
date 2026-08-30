@@ -12,6 +12,7 @@ export type DirectorySectionId =
 	| 'write'
 	| 'maintain'
 	| 'contributed'
+	| 'part-of'
 	| 'play'
 	| 'experiment';
 
@@ -20,6 +21,7 @@ export const sectionOrder: readonly DirectorySectionId[] = [
 	'write',
 	'maintain',
 	'contributed',
+	'part-of',
 	'play',
 	'experiment'
 ];
@@ -29,6 +31,7 @@ export const sectionLabels: Readonly<Record<DirectorySectionId, string>> = {
 	write: 'I write',
 	maintain: 'I maintain',
 	contributed: 'I contributed to',
+	'part-of': 'I’ve been part of',
 	play: 'I play',
 	experiment: 'I experiment with'
 };
@@ -51,22 +54,54 @@ export const directoryEntries: Readonly<
 		{ id: 'discord-mbt', label: 'discord.mbt', href: 'https://github.com/gaato/discord.mbt' }
 	],
 	contributed: [
-		{ id: 'sdbootutil', label: 'openSUSE/sdbootutil', href: 'https://github.com/openSUSE/sdbootutil' },
-		{ id: 'async', label: 'moonbitlang/async', href: 'https://github.com/moonbitlang/async' },
+		{
+			id: 'sdbootutil',
+			label: 'openSUSE/sdbootutil',
+			href: 'https://github.com/openSUSE/sdbootutil/pulls?q=is%3Apr+is%3Amerged+author%3Agaato'
+		},
+		{
+			id: 'async',
+			label: 'moonbitlang/async',
+			href: 'https://github.com/moonbitlang/async/pulls?q=is%3Apr+is%3Amerged+author%3Agaato'
+		},
 		{
 			id: 'aqua-registry',
 			label: 'aquaproj/aqua-registry',
-			href: 'https://github.com/aquaproj/aqua-registry'
+			href:
+				'https://github.com/aquaproj/aqua-registry/pulls?q=is%3Apr+is%3Amerged+author%3Agaato'
 		},
 		{
 			id: 'kholidays',
 			label: 'KDE Frameworks/kholidays',
-			href: 'https://invent.kde.org/frameworks/kholidays'
+			href:
+				'https://invent.kde.org/frameworks/kholidays/-/merge_requests/?sort=created_date&state=merged&author_username=gaato&first_page_size=20'
+		},
+		{
+			id: 'a',
+			label: 'purpleblueslime/a',
+			href: 'https://github.com/purpleblueslime/a/pulls?q=is%3Apr+is%3Amerged+author%3Agaato'
+		}
+	],
+	'part-of': [
+		{
+			id: 'project-o-to-o',
+			label: 'PROJECT O to O',
+			href: 'https://www.youtube.com/@PROJECT-O-to-O'
+		},
+		{
+			id: 'here-with-me',
+			label: 'HERE WITH ME',
+			href: 'https://www.youtube.com/watch?v=Aiana0rhZr0'
+		},
+		{
+			id: 'recreating-world',
+			label: 'Re:Creating World',
+			href: 'https://drive.google.com/file/d/1H7H9Hsneml1iW-A0rydfGuJzhu6Ux2Sn/view?usp=sharing'
 		}
 	],
 	play: [
 		{ id: 'geoguessr', label: 'GeoGuessr' },
-		{ id: 'holodori', label: 'ホロドリ', lang: 'ja' }
+		{ id: 'holodori', label: 'hololive Dreams', lang: 'en' }
 	],
 	experiment: [
 		{
@@ -77,9 +112,9 @@ export const directoryEntries: Readonly<
 		},
 		{
 			id: 'event-pt',
-			label: 'ホロドリ：イベントPt調整',
+			label: 'hololive Dreams: Event Pt',
 			href: '/lab/event-pt/',
-			lang: 'ja'
+			lang: 'en'
 		}
 	]
 };
@@ -87,8 +122,7 @@ export const directoryEntries: Readonly<
 export const elsewhere = [
 	{ label: 'GitHub', href: 'https://github.com/gaato' },
 	{ label: 'X @gaato__', href: 'https://x.com/gaato__' },
-	{ label: 'X @gaato11', href: 'https://x.com/gaato11' },
-	{ label: 'openSUSE Build Service', href: 'https://build.opensuse.org/users/gaato' }
+	{ label: 'X @gaato11', href: 'https://x.com/gaato11' }
 ] as const;
 
 export const sourceNames = {
@@ -96,9 +130,10 @@ export const sourceNames = {
 	qiita: 'Qiita',
 	note: 'note',
 	mathlog: 'Mathlog',
-	zenn: 'Zenn'
+	zenn: 'Zenn',
+	shinonome: 'Shinonome'
 } as const;
 
 export function writingHref(item: WritingItem): string {
-	return item.source === 'gaato.net' ? `/posts/${item.sourceId}/` : item.url;
+	return item.source === 'gaato.net' ? `/articles/${item.sourceId}/` : item.url;
 }

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { tick } from 'svelte';
+	import PageHeader from './PageHeader.svelte';
 	import {
 		MAX_JUMPS,
 		MAX_MAX_RUNS,
@@ -128,12 +129,11 @@
 </script>
 
 <section class="event-pt" aria-labelledby="event-pt-title">
-	<header class="tool-header">
-		<h1 id="event-pt-title">イベントPt調整</h1>
-		<p>
-			なわとびで目標Ptにちょうど到達する組み合わせを、プレイ回数が少ない順に最大3件探します。
-		</p>
-	</header>
+	<PageHeader
+		title="イベントPt調整"
+		description="なわとびで目標Ptにちょうど到達する組み合わせを、プレイ回数が少ない順に最大3件探します。"
+		titleId="event-pt-title"
+	/>
 
 	{#if errors.length > 0}
 		<div
@@ -280,7 +280,7 @@
 			<p class="result-summary">あと {formatInteger(result.delta)} Pt</p>
 			<div class="table-scroll">
 				<table>
-					<caption>目標Ptにちょうど到達する組み合わせ</caption>
+					<caption class="visually-hidden">目標Ptにちょうど到達する組み合わせ</caption>
 					<thead>
 						<tr><th scope="col">順位</th><th scope="col">組み合わせ</th><th scope="col">回数</th><th scope="col">跳躍合計</th></tr>
 					</thead>
@@ -307,40 +307,13 @@
 
 <style>
 	.event-pt {
-		--event-ink: var(--color-ink, CanvasText);
-		--event-muted: var(--color-muted, CanvasText);
-		--event-page: var(--color-page, Canvas);
-		--event-surface: var(--color-surface, Canvas);
-		--event-rule: var(--color-line, GrayText);
-		--event-control: var(--color-control-line, GrayText);
-		--event-accent: var(--color-accent, LinkText);
-		--event-error: var(--color-error, #9e2a2b);
 		inline-size: 100%;
 		min-inline-size: 0;
-		color: var(--event-ink);
 	}
 
-	.tool-header {
-		max-inline-size: 46rem;
-		margin-block-end: clamp(1.5rem, 4vw, 2.5rem);
-	}
-
-	h1,
 	h2,
 	p {
 		margin-block: 0;
-	}
-
-	h1 {
-		font-size: clamp(1.75rem, 5vw, 2.75rem);
-		line-height: 1.1;
-	}
-
-	.tool-header > p {
-		max-inline-size: 44rem;
-		margin-block-start: 0.75rem;
-		color: var(--event-muted);
-		line-height: 1.7;
 	}
 
 	.tool-layout {
@@ -355,7 +328,7 @@
 		min-inline-size: 0;
 		gap: 1.5rem;
 		padding-block: 1.5rem;
-		border-block: 1px solid var(--event-rule);
+		border-block: 1px solid var(--color-line);
 	}
 
 	fieldset {
@@ -368,7 +341,7 @@
 	legend {
 		margin-block-end: 0.75rem;
 		padding: 0;
-		color: var(--event-ink);
+		color: var(--color-ink);
 		font-size: 1rem;
 		font-weight: 700;
 	}
@@ -392,28 +365,9 @@
 	}
 
 	.control {
-		box-sizing: border-box;
 		inline-size: 100%;
-		min-block-size: 2.75rem;
-		border: 1px solid var(--event-control);
-		border-radius: 0;
 		padding: 0.55rem 0.7rem;
-		background: var(--event-surface);
-		color: var(--event-ink);
 		font-size: 1rem;
-	}
-
-	.control[aria-invalid='true'] {
-		border-color: var(--event-error);
-		border-inline-start-width: 0.25rem;
-	}
-
-	.control:focus-visible,
-	.calculate-button:focus-visible,
-	summary:focus-visible,
-	.passport-option:has(input:focus-visible) {
-		outline: 3px solid var(--event-accent);
-		outline-offset: 3px;
 	}
 
 	.passport-option {
@@ -421,7 +375,7 @@
 		gap: 0.7rem;
 		align-items: center;
 		align-self: end;
-		min-block-size: 2.75rem;
+		min-block-size: var(--interactive-min-block-size);
 		cursor: pointer;
 	}
 
@@ -429,11 +383,10 @@
 		inline-size: 1.25rem;
 		block-size: 1.25rem;
 		margin: 0;
-		accent-color: var(--event-accent);
 	}
 
 	details {
-		border-block-start: 1px solid var(--event-rule);
+		border-block-start: 1px solid var(--color-line);
 		padding-block-start: 1rem;
 	}
 
@@ -441,7 +394,6 @@
 		display: flex;
 		align-items: center;
 		inline-size: fit-content;
-		min-block-size: 2.75rem;
 		cursor: pointer;
 		font-weight: 700;
 	}
@@ -451,20 +403,18 @@
 	}
 
 	.calculate-button {
-		min-block-size: 2.75rem;
-		border: 1px solid var(--event-ink);
+		border: 1px solid var(--color-ink);
 		border-radius: 0;
 		padding: 0.65rem 1rem;
-		background: var(--event-ink);
-		color: var(--event-page);
+		background: var(--color-ink);
+		color: var(--color-page);
 		font-weight: 700;
-		cursor: pointer;
 	}
 
 	.reward-reference {
 		min-inline-size: 0;
 		padding-block: 1.5rem;
-		border-block: 1px solid var(--event-rule);
+		border-block: 1px solid var(--color-line);
 	}
 
 	.reward-reference h2,
@@ -482,7 +432,7 @@
 		justify-content: space-between;
 		gap: 1rem;
 		padding-block: 0.6rem;
-		border-block-start: 1px solid var(--event-rule);
+		border-block-start: 1px solid var(--color-line);
 	}
 
 	.reward-reference dd {
@@ -495,7 +445,7 @@
 	.empty-result,
 	.inference-note {
 		margin-block: 1rem 0;
-		color: var(--event-muted);
+		color: var(--color-muted);
 		font-size: 0.875rem;
 		line-height: 1.6;
 	}
@@ -504,12 +454,12 @@
 		min-inline-size: 0;
 		margin-block-start: 2rem;
 		padding-block-start: 1.5rem;
-		border-block-start: 1px solid var(--event-rule);
+		border-block-start: 1px solid var(--color-line);
 	}
 
 	.result-summary {
 		margin-block-end: 1rem;
-		color: var(--event-muted);
+		color: var(--color-muted);
 	}
 
 	.table-scroll {
@@ -521,13 +471,13 @@
 	table {
 		inline-size: 100%;
 		border-collapse: collapse;
-		color: var(--event-ink);
+		color: var(--color-ink);
 		font-variant-numeric: tabular-nums;
 	}
 
 	table :where(th, td) {
 		padding: 0.7rem 0.6rem;
-		border-block-start: 1px solid var(--event-rule);
+		border-block-start: 1px solid var(--color-line);
 		text-align: start;
 		vertical-align: top;
 		overflow-wrap: anywhere;
@@ -537,21 +487,13 @@
 		text-align: end;
 	}
 
-	table caption {
-		position: absolute;
-		clip-path: inset(50%);
-		inline-size: 1px;
-		block-size: 1px;
-		overflow: hidden;
-	}
-
 	.event-pt-errors {
 		margin-block-end: 1.25rem;
-		border: 1px solid var(--event-error);
+		border: 1px solid var(--color-error);
 		border-inline-start-width: 0.3rem;
 		padding: 1rem;
-		background: var(--event-surface);
-		color: var(--event-ink);
+		background: var(--color-surface);
+		color: var(--color-ink);
 	}
 
 	.event-pt-errors ul {
@@ -560,9 +502,9 @@
 	}
 
 	.result-warning {
-		border-inline-start: 0.3rem solid var(--event-error);
+		border-inline-start: 0.3rem solid var(--color-error);
 		padding: 0.8rem 1rem;
-		background: var(--event-surface);
+		background: var(--color-surface);
 	}
 
 	@media (max-width: 48rem) {

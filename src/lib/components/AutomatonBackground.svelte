@@ -3,8 +3,10 @@
 	import { AutomatonCanvasController } from '$lib/automaton/controller';
 	import { AUTOMATON_RULES, findAutomatonRule } from '$lib/automaton/rules';
 	import {
-		getOrCreateSessionRule,
-		AUTOMATON_SESSION_RULE_CHANGE_EVENT,
+		automatonRuleState,
+		AUTOMATON_RULE_CHANGE_EVENT
+	} from '$lib/automaton/rule-state';
+	import {
 		readPausePreference,
 		writePausePreference,
 		type StorageLike
@@ -43,11 +45,8 @@
 
 	onMount(() => {
 		let rule = findAutomatonRule(ruleId) ?? AUTOMATON_RULES[0];
-		try {
-			rule = findAutomatonRule(ruleId) ?? getOrCreateSessionRule(window.sessionStorage);
-		} catch {
-			// Keep the fallback rule when the storage object itself is unavailable.
-		}
+		rule = findAutomatonRule(ruleId) ?? automatonRuleState.getOrCreate();
+		automatonRuleState.set(rule);
 		activeRuleId = rule.id;
 
 		try {
@@ -74,13 +73,14 @@
 			if (typeof nextRuleId !== 'string') return;
 			const nextRule = findAutomatonRule(nextRuleId);
 			if (!nextRule || nextRule.id === activeRuleId) return;
+			automatonRuleState.set(nextRule);
 			activeRuleId = nextRule.id;
 			controller?.setRule(nextRule);
 		};
-		window.addEventListener(AUTOMATON_SESSION_RULE_CHANGE_EVENT, handleRuleChange);
+		window.addEventListener(AUTOMATON_RULE_CHANGE_EVENT, handleRuleChange);
 
 		return () => {
-			window.removeEventListener(AUTOMATON_SESSION_RULE_CHANGE_EVENT, handleRuleChange);
+			window.removeEventListener(AUTOMATON_RULE_CHANGE_EVENT, handleRuleChange);
 			controller?.destroy();
 			controller = undefined;
 		};

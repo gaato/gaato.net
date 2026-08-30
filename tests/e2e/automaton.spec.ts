@@ -42,6 +42,19 @@ test('reduced motion leaves a painted but stationary background', async ({ page 
 	expect(after).toEqual(before);
 });
 
+test('a full reload selects a new background rule', async ({ page }) => {
+	await page.addInitScript(() => {
+		const loadCount = Number(sessionStorage.getItem('gaato:test-rule-load') ?? '0');
+		sessionStorage.setItem('gaato:test-rule-load', String(loadCount + 1));
+		Math.random = () => (loadCount === 0 ? 0 : 0.999);
+	});
+	await page.goto('/');
+	await expect(page.getByTestId('automaton-background')).toHaveAttribute('data-rule', 'conway');
+
+	await page.reload();
+	await expect(page.getByTestId('automaton-background')).toHaveAttribute('data-rule', 'amoeba');
+});
+
 test('the user can pause the background and the choice survives navigation and reload', async ({ page }) => {
 	await page.goto('/');
 	const canvas = backgroundCanvas(page);
@@ -55,8 +68,8 @@ test('the user can pause the background and the choice survives navigation and r
 	await page.waitForTimeout(450);
 	expect(await canvasFingerprint(canvas)).toEqual(before);
 
-	await page.getByRole('link', { name: 'Writing', exact: true }).click();
-	await expect(page).toHaveURL(/\/writing\/$/u);
+	await page.getByRole('link', { name: 'Articles', exact: true }).click();
+	await expect(page).toHaveURL(/\/articles\/$/u);
 	await expect(page.getByTestId('automaton-background-toggle')).toHaveAttribute('aria-pressed', 'true');
 	await page.reload();
 	await expect(page.getByTestId('automaton-background-toggle')).toHaveAttribute('aria-pressed', 'true');
@@ -75,7 +88,53 @@ test('a mouse movement can add a seed without blocking page interaction', async 
 	await page.mouse.move(viewport!.width - 16, Math.floor(viewport!.height / 2));
 	await page.mouse.move(viewport!.width - 16, Math.floor(viewport!.height / 2) + 100, { steps: 3 });
 	await expect.poll(async () => (await canvasFingerprint(canvas)).hash).not.toBe(before.hash);
-	await expect(page.getByRole('link', { name: 'Writing', exact: true })).toBeVisible();
+	await expect(page.getByRole('link', { name: 'Articles', exact: true })).toBeVisible();
+});
+
+test('a mobile tap adds one background cell without blocking scrolling', async ({ page }, testInfo) => {
+	test.skip(testInfo.project.name !== 'mobile-chromium', 'touch input needs the mobile profile');
+	await page.goto('/');
+	const canvas = backgroundCanvas(page);
+	await waitForCanvasPaint(canvas);
+	await page.getByTestId('automaton-background-toggle').click();
+	await page.evaluate(() => scrollTo(0, 0));
+	const before = await canvasFingerprint(canvas);
+
+	await page.touchscreen.tap(Math.floor(page.viewportSize()!.width / 2), 160);
+	await expect.poll(async () => (await canvasFingerprint(canvas)).hash).not.toBe(before.hash);
+	await expect(page.getByRole('link', { name: 'Articles', exact: true })).toBeVisible();
+});
+
+test('a mobile swipe paints a continuous background trail while the page can scroll', async ({ page }, testInfo) => {
+	test.skip(testInfo.project.name !== 'mobile-chromium', 'touch input needs the mobile profile');
+	await page.goto('/');
+	const canvas = backgroundCanvas(page);
+	await waitForCanvasPaint(canvas);
+	await page.getByTestId('automaton-background-toggle').click();
+	await page.evaluate(() => scrollTo(0, 0));
+	const before = await canvasFingerprint(canvas);
+	const viewport = page.viewportSize();
+	expect(viewport).not.toBeNull();
+
+	const client = await page.context().newCDPSession(page);
+	const x = Math.floor(viewport!.width * 0.8);
+	const startY = Math.floor(viewport!.height * 0.72);
+	const endY = Math.floor(viewport!.height * 0.28);
+	await client.send('Input.dispatchTouchEvent', {
+		type: 'touchStart',
+		touchPoints: [{ x, y: startY, id: 1 }]
+	});
+	for (let step = 1; step <= 8; step += 1) {
+		const y = Math.round(startY + ((endY - startY) * step) / 8);
+		await client.send('Input.dispatchTouchEvent', {
+			type: 'touchMove',
+			touchPoints: [{ x, y, id: 1 }]
+		});
+	}
+	await client.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+
+	await expect.poll(async () => (await canvasFingerprint(canvas)).hash).not.toBe(before.hash);
+	await expect.poll(async () => page.evaluate(() => scrollY)).toBeGreaterThan(0);
 });
 
 test('forced colors hides only the decorative background', async ({ page }) => {
@@ -98,16 +157,16 @@ test('forced colors hides only the decorative background', async ({ page }) => {
 	});
 	expect(hidden).toBe(true);
 	await expect(page.locator('main')).toBeVisible();
-	await expect(page.getByRole('link', { name: 'Writing', exact: true })).toBeVisible();
+	await expect(page.getByRole('link', { name: 'Articles', exact: true })).toBeVisible();
 });
 
-test('the Lab exposes all rules and deterministic native controls', async ({ page }) => {
+test('the Lab accepts arbitrary rules and exposes deterministic native controls', async ({ page }) => {
 	await page.goto('/lab/cellular-automaton/');
 	await expect(page.getByTestId('automaton-background')).toHaveCSS('visibility', 'hidden');
 	const canvas = labCanvas(page);
 	await waitForCanvasPaint(canvas);
 	const rule = page.getByTestId('automaton-rule');
-	await expect(rule.locator('option')).toHaveCount(13);
+	await expect(rule).toHaveValue(/B[0-8]*\/S[0-8]*/u);
 
 	const toggle = page.getByTestId('automaton-toggle');
 	if ((await toggle.getAttribute('aria-pressed')) !== 'true') await toggle.click();
@@ -125,17 +184,19 @@ test('the Lab exposes all rules and deterministic native controls', async ({ pag
 	await page.getByTestId('automaton-reset').click();
 	await expect.poll(async () => (await canvasFingerprint(canvas)).hash).not.toBe(seeded.hash);
 
-	const originalRule = await rule.inputValue();
-	const values = await rule.locator('option').evaluateAll((options) =>
-		options.map((option) => (option as HTMLOptionElement).value)
-	);
-	const alternate = values.find((value) => value !== originalRule);
-	expect(alternate).toBeDefined();
-	await rule.selectOption(alternate!);
-	expect(await rule.inputValue()).not.toBe(originalRule);
-	await expect(page.getByTestId('automaton-background')).toHaveAttribute('data-rule', alternate!);
-	await page.goto('/');
-	await expect(page.getByTestId('automaton-background')).toHaveAttribute('data-rule', alternate!);
+	await rule.fill('B9/S23');
+	await page.getByRole('button', { name: 'Apply' }).click();
+	await expect(rule).toHaveAttribute('aria-invalid', 'true');
+	await expect(page.getByText('Use B…/S… notation with digits from 0 through 8.')).toBeVisible();
+
+	await rule.fill('b82 / s755');
+	await page.getByRole('button', { name: 'Apply' }).click();
+	await expect(rule).toHaveValue('B28/S57');
+	await expect(page.getByText('Custom B28/S57', { exact: true })).toBeVisible();
+	await expect(page.getByTestId('automaton-background')).toHaveAttribute('data-rule', 'B28/S57');
+	await page.getByRole('link', { name: 'Home', exact: true }).click();
+	await expect(page).toHaveURL(/\/$/u);
+	await expect(page.getByTestId('automaton-background')).toHaveAttribute('data-rule', 'B28/S57');
 });
 
 test('forced colors disables the visual Lab with an explicit explanation', async ({ page }) => {

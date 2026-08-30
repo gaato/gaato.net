@@ -22,7 +22,7 @@ function rssDate(value: string): string {
 export function buildFeedXml(posts: readonly LocalPost[]): string {
 	const items = posts
 		.map((post) => {
-			const url = canonicalUrl(`/posts/${post.slug}/`);
+			const url = canonicalUrl(`/articles/${post.slug}/`);
 			return [
 				'    <item>',
 				`      <title>${escapeXml(post.title)}</title>`,
@@ -55,14 +55,14 @@ export function buildFeedXml(posts: readonly LocalPost[]): string {
 	].join('\n');
 }
 
-const staticSitemapPaths = ['/', '/writing/', '/lab/cellular-automaton/', '/lab/event-pt/'] as const;
+const staticSitemapPaths = ['/', '/articles/', '/lab/cellular-automaton/', '/lab/event-pt/'] as const;
 
 export function buildSitemapXml(posts: readonly LocalPost[]): string {
 	const staticEntries = staticSitemapPaths.map(
 		(path) => `  <url><loc>${escapeXml(canonicalUrl(path))}</loc></url>`
 	);
 	const postEntries = posts.map((post) => {
-		const url = canonicalUrl(`/posts/${post.slug}/`);
+		const url = canonicalUrl(`/articles/${post.slug}/`);
 		const lastModified = post.updatedDate ?? post.publishedDate;
 		return `  <url><loc>${escapeXml(url)}</loc><lastmod>${lastModified}</lastmod></url>`;
 	});

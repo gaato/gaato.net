@@ -42,5 +42,9 @@
 	"trustedDependencies": [
 		"esbuild",
 		"workerd"
-	]
+	],
+	"dependencies": {
+		"katex": "^0.18.4",
+		"marked-katex-extension": "^5.1.12"
+	}
 }

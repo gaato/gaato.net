@@ -28,7 +28,7 @@
 		gap: 0.4rem 1rem;
 		align-items: baseline;
 		padding-block: 0.6rem;
-		border-block-end: 1px solid color-mix(in srgb, var(--color-line), transparent 45%);
+		border-block-end: 1px solid var(--color-line-subtle);
 	}
 
 	li:first-child {
@@ -43,7 +43,7 @@
 	time,
 	span {
 		color: var(--color-muted);
-		font: 0.78rem/1.45 ui-monospace, SFMono-Regular, Consolas, monospace;
+		font: 0.78rem/1.45 var(--font-mono);
 		font-variant-numeric: tabular-nums;
 	}
 
