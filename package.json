@@ -2,6 +2,7 @@
 	"name": "gaato-net",
 	"private": true,
 	"version": "0.2.0",
+	"license": "BlueOak-1.0.0",
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev --host 127.0.0.1",

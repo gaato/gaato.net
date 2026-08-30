@@ -50,6 +50,16 @@ test('the feed is served with the RSS media type', async ({ request }) => {
 	expect(response.headers()['content-type']).toMatch(/^application\/rss\+xml(?:;|$)/iu);
 });
 
+test('the footer links to the source repository', async ({ page }) => {
+	await page.goto('/', { waitUntil: 'networkidle' });
+
+	const siteInformation = page.getByRole('navigation', { name: 'Site information' });
+	await expect(siteInformation.getByRole('link', { name: 'Source' })).toHaveAttribute(
+		'href',
+		'https://github.com/gaato/gaato.net'
+	);
+});
+
 test('the home page links representative upstream contributions', async ({ page }) => {
 	await page.goto('/', { waitUntil: 'networkidle' });
 

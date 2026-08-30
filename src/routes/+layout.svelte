@@ -28,11 +28,16 @@
 	</main>
 
 	<footer class="site-footer">
-		<nav aria-label="Elsewhere">
-			{#each elsewhere as item}
-				<a href={item.href} rel="me">{item.label}</a>
-			{/each}
-		</nav>
+		<div class="footer-links">
+			<nav aria-label="Elsewhere">
+				{#each elsewhere as item}
+					<a href={item.href} rel="me">{item.label}</a>
+				{/each}
+			</nav>
+			<nav aria-label="Site information" lang="en">
+				<a href="https://github.com/gaato/gaato.net">Source</a>
+			</nav>
+		</div>
 		{#if !backgroundSuspended}
 			<button
 				type="button"
@@ -94,6 +99,12 @@
 		display: flex;
 		flex-wrap: wrap;
 		gap: 0.4rem 1.25rem;
+	}
+
+	.footer-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem 2rem;
 	}
 
 	.site-header nav a {
