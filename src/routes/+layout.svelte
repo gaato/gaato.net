@@ -36,7 +36,7 @@
 			</nav>
 			<nav aria-label="Site information" lang="en">
 				<a href="https://github.com/gaato/gaato.net">Source</a>
-				<a href="https://github.com/gaato/gaato.net/blob/main/LICENSE.md">License</a>
+				<a href="https://blueoakcouncil.org/license/1.0.0">License</a>
 				<a href="/THIRD_PARTY_NOTICES.txt">Third-party notices</a>
 			</nav>
 		</div>

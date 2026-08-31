@@ -68,7 +68,7 @@ test('the footer links to the source and license notices', async ({ page }) => {
 	);
 	await expect(siteInformation.getByRole('link', { name: 'License', exact: true })).toHaveAttribute(
 		'href',
-		'https://github.com/gaato/gaato.net/blob/main/LICENSE.md'
+		'https://blueoakcouncil.org/license/1.0.0'
 	);
 	await expect(
 		siteInformation.getByRole('link', { name: 'Third-party notices', exact: true })
