@@ -3,15 +3,46 @@
 @layer tokens {
 	:root {
 		color-scheme: light dark;
-		--color-page: #f4f1e8;
-		--color-surface: #fbf9f2;
-		--color-ink: #171714;
-		--color-muted: #65645d;
-		--color-line: #aaa79b;
+		--color-page-light: #f4f1e8;
+		--color-surface-light: #fbf9f2;
+		--color-ink-light: #171714;
+		--color-muted-light: #65645d;
+		--color-line-light: #aaa79b;
+		--color-control-line-light: #777267;
+		--color-accent-light: #176b50;
+		--color-error-light: #a22b2b;
+		--pattern-red-light: #9f2526;
+		--pattern-blue-light: #164fa6;
+		--pattern-green-light: #26713a;
+		--pattern-magenta-light: #9a2e82;
+		--pattern-yellow-light: #755d00;
+		--color-page-dark: #171714;
+		--color-surface-dark: #211f1a;
+		--color-ink-dark: #f5f2e8;
+		--color-muted-dark: #b7b2a5;
+		--color-line-dark: #777267;
+		--color-control-line-dark: #918b7e;
+		--color-accent-dark: #8dcab4;
+		--color-error-dark: #ff9c97;
+		--pattern-red-dark: #ff918a;
+		--pattern-blue-dark: #8fb4ff;
+		--pattern-green-dark: #8bd39d;
+		--pattern-magenta-dark: #f29bdc;
+		--pattern-yellow-dark: #ead36c;
+		--color-page: var(--color-page-light);
+		--color-surface: var(--color-surface-light);
+		--color-ink: var(--color-ink-light);
+		--color-muted: var(--color-muted-light);
+		--color-line: var(--color-line-light);
 		--color-line-subtle: color-mix(in srgb, var(--color-line), transparent 45%);
-		--color-control-line: #777267;
-		--color-accent: #176b50;
-		--color-error: #a22b2b;
+		--color-control-line: var(--color-control-line-light);
+		--color-accent: var(--color-accent-light);
+		--color-error: var(--color-error-light);
+		--pattern-red: var(--pattern-red-light);
+		--pattern-blue: var(--pattern-blue-light);
+		--pattern-green: var(--pattern-green-light);
+		--pattern-magenta: var(--pattern-magenta-light);
+		--pattern-yellow: var(--pattern-yellow-light);
 		--font-sans:
 			Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 		--font-mono: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
@@ -22,15 +53,54 @@
 
 	@media (prefers-color-scheme: dark) {
 		:root {
-			--color-page: #171714;
-			--color-surface: #211f1a;
-			--color-ink: #f5f2e8;
-			--color-muted: #b7b2a5;
-			--color-line: #777267;
-			--color-control-line: #918b7e;
-			--color-accent: #8dcab4;
-			--color-error: #ff9c97;
+			--color-page: var(--color-page-dark);
+			--color-surface: var(--color-surface-dark);
+			--color-ink: var(--color-ink-dark);
+			--color-muted: var(--color-muted-dark);
+			--color-line: var(--color-line-dark);
+			--color-control-line: var(--color-control-line-dark);
+			--color-accent: var(--color-accent-dark);
+			--color-error: var(--color-error-dark);
+			--pattern-red: var(--pattern-red-dark);
+			--pattern-blue: var(--pattern-blue-dark);
+			--pattern-green: var(--pattern-green-dark);
+			--pattern-magenta: var(--pattern-magenta-dark);
+			--pattern-yellow: var(--pattern-yellow-dark);
 		}
+	}
+
+	:root[data-color-scheme='light'] {
+		color-scheme: light;
+		--color-page: var(--color-page-light);
+		--color-surface: var(--color-surface-light);
+		--color-ink: var(--color-ink-light);
+		--color-muted: var(--color-muted-light);
+		--color-line: var(--color-line-light);
+		--color-control-line: var(--color-control-line-light);
+		--color-accent: var(--color-accent-light);
+		--color-error: var(--color-error-light);
+		--pattern-red: var(--pattern-red-light);
+		--pattern-blue: var(--pattern-blue-light);
+		--pattern-green: var(--pattern-green-light);
+		--pattern-magenta: var(--pattern-magenta-light);
+		--pattern-yellow: var(--pattern-yellow-light);
+	}
+
+	:root[data-color-scheme='dark'] {
+		color-scheme: dark;
+		--color-page: var(--color-page-dark);
+		--color-surface: var(--color-surface-dark);
+		--color-ink: var(--color-ink-dark);
+		--color-muted: var(--color-muted-dark);
+		--color-line: var(--color-line-dark);
+		--color-control-line: var(--color-control-line-dark);
+		--color-accent: var(--color-accent-dark);
+		--color-error: var(--color-error-dark);
+		--pattern-red: var(--pattern-red-dark);
+		--pattern-blue: var(--pattern-blue-dark);
+		--pattern-green: var(--pattern-green-dark);
+		--pattern-magenta: var(--pattern-magenta-dark);
+		--pattern-yellow: var(--pattern-yellow-dark);
 	}
 }
 

@@ -138,31 +138,31 @@
 	}
 
 	.article-body :global(.pattern-series) {
-		--pattern-red: #9f2526;
-		--pattern-blue: #164fa6;
-		--pattern-green: #26713a;
-		--pattern-magenta: #9a2e82;
-		--pattern-yellow: #755d00;
+		--article-pattern-red: var(--pattern-red);
+		--article-pattern-blue: var(--pattern-blue);
+		--article-pattern-green: var(--pattern-green);
+		--article-pattern-magenta: var(--pattern-magenta);
+		--article-pattern-yellow: var(--pattern-yellow);
 	}
 
 	.article-body :global(.pattern-series [mathcolor='patternred']) {
-		color: var(--pattern-red) !important;
+		color: var(--article-pattern-red) !important;
 	}
 
 	.article-body :global(.pattern-series [mathcolor='patternblue']) {
-		color: var(--pattern-blue) !important;
+		color: var(--article-pattern-blue) !important;
 	}
 
 	.article-body :global(.pattern-series [mathcolor='patterngreen']) {
-		color: var(--pattern-green) !important;
+		color: var(--article-pattern-green) !important;
 	}
 
 	.article-body :global(.pattern-series [mathcolor='patternmagenta']) {
-		color: var(--pattern-magenta) !important;
+		color: var(--article-pattern-magenta) !important;
 	}
 
 	.article-body :global(.pattern-series [mathcolor='patternyellow']) {
-		color: var(--pattern-yellow) !important;
+		color: var(--article-pattern-yellow) !important;
 	}
 
 	.article-body :global(.region-figure) {
@@ -196,16 +196,6 @@
 	.article-body :global(.region-label) {
 		fill: currentColor;
 		font: 8px var(--font-mono);
-	}
-
-	@media (prefers-color-scheme: dark) {
-		.article-body :global(.pattern-series) {
-			--pattern-red: #ff918a;
-			--pattern-blue: #8fb4ff;
-			--pattern-green: #8bd39d;
-			--pattern-magenta: #f29bdc;
-			--pattern-yellow: #ead36c;
-		}
 	}
 
 	@media (forced-colors: active) {

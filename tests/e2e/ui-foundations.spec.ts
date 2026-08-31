@@ -44,7 +44,8 @@ test('the static and runtime 404 pages present the same UI', async ({ page }, te
 			robots: await page.locator('meta[name="robots"]').getAttribute('content'),
 			text: (await main.innerText()).replace(/\s+/gu, ' ').trim(),
 			heading: await heading.innerText(),
-			homeHref: await main.getByRole('link', { name: 'Home' }).getAttribute('href'),
+			homeHref: await main.getByRole('link', { name: 'Return home' }).getAttribute('href'),
+			articlesHref: await main.getByRole('link', { name: 'Browse articles' }).getAttribute('href'),
 			headingStyle: await heading.evaluate((element) => {
 				const style = getComputedStyle(element);
 				return {
@@ -66,4 +67,10 @@ test('the static and runtime 404 pages present the same UI', async ({ page }, te
 	const { status: _runtimeStatus, ...runtimePresentation } = runtimePage;
 	expect(runtimePresentation).toEqual(staticPresentation);
 	expect(staticPage.robots).toMatch(/noindex/iu);
+	expect(staticPage.heading).toBe('We couldn’t find this page.');
+	expect(staticPage.text).toContain(
+		'We couldn’t find this page. That doesn’t mean it isn’t there.'
+	);
+	expect(staticPage.homeHref).toBe('/');
+	expect(staticPage.articlesHref).toBe('/articles/');
 });

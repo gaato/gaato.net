@@ -6,6 +6,23 @@
 		<meta name="color-scheme" content="light dark" />
 		<meta name="theme-color" content="#f4f1e8" media="(prefers-color-scheme: light)" />
 		<meta name="theme-color" content="#171714" media="(prefers-color-scheme: dark)" />
+		<script>
+			{
+				try {
+					const colorScheme = localStorage.getItem('gaato:color-scheme:v1');
+					if (colorScheme === 'light' || colorScheme === 'dark') {
+						document.documentElement.dataset.colorScheme = colorScheme;
+						document.querySelector('meta[name="color-scheme"]').content = colorScheme;
+						const themeColor = colorScheme === 'dark' ? '#171714' : '#f4f1e8';
+						for (const meta of document.querySelectorAll('meta[name="theme-color"]')) {
+							meta.content = themeColor;
+						}
+					}
+				} catch {
+					// The system color scheme remains the safe default when storage is unavailable.
+				}
+			}
+		</script>
 		<link rel="icon" href="%sveltekit.assets%/favicon.ico" sizes="any" />
 		<link
 			rel="icon"

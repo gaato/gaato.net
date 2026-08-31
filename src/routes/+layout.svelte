@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import AutomatonBackground from '$lib/components/AutomatonBackground.svelte';
+	import ColorSchemeToggle from '$lib/components/ColorSchemeToggle.svelte';
 	import { elsewhere } from '$lib/site/content';
 	import '../app.css';
 
@@ -40,16 +41,18 @@
 				<a href="/THIRD_PARTY_NOTICES.txt">Third-party notices</a>
 			</nav>
 		</div>
-		<button
-			type="button"
-			class="background-toggle"
-			aria-pressed={paused}
-			data-testid="automaton-background-toggle"
-			lang="en"
-			onclick={() => (paused = !paused)}
-		>
-			{paused ? 'Resume background' : 'Pause background'}
-		</button>
+		<div class="footer-controls">
+			<ColorSchemeToggle />
+			<button
+				type="button"
+				aria-pressed={paused}
+				data-testid="automaton-background-toggle"
+				lang="en"
+				onclick={() => (paused = !paused)}
+			>
+				{paused ? 'Resume background' : 'Pause background'}
+			</button>
+		</div>
 	</footer>
 </div>
 
@@ -149,7 +152,14 @@
 		min-block-size: var(--interactive-min-block-size);
 	}
 
-	.background-toggle {
+	.footer-controls {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-end;
+		gap: 0.4rem 1.25rem;
+	}
+
+	.footer-controls :global(button) {
 		min-block-size: var(--interactive-min-block-size);
 		padding: 0 0.25rem;
 		border: 0;
@@ -161,13 +171,17 @@
 		white-space: nowrap;
 	}
 
-	.background-toggle:hover {
+	.footer-controls :global(button:hover) {
 		color: var(--color-ink);
 	}
 
 	@media (max-width: 42rem) {
 		.site-footer {
 			flex-direction: column;
+		}
+
+		.footer-controls {
+			justify-content: flex-start;
 		}
 	}
 </style>

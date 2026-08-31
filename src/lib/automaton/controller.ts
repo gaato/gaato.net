@@ -100,6 +100,7 @@ export class AutomatonBackgroundController {
 	#resizeObserver: ResizeObserver | undefined;
 	#motionQuery: MediaQueryList | undefined;
 	#darkQuery: MediaQueryList | undefined;
+	#colorSchemeObserver: MutationObserver | undefined;
 	#forcedColorsQuery: MediaQueryList | undefined;
 	#dprQuery: MediaQueryList | undefined;
 	#timer: number | undefined;
@@ -150,10 +151,15 @@ export class AutomatonBackgroundController {
 		this.#darkQuery = matchMedia('(prefers-color-scheme: dark)');
 		this.#forcedColorsQuery = matchMedia('(forced-colors: active)');
 		this.#reducedMotion = this.#motionQuery.matches;
-		this.#dark = this.#darkQuery.matches;
+		this.#dark = this.#effectiveDarkMode();
 		this.#forcedColors = this.#forcedColorsQuery.matches;
 		this.#motionQuery.addEventListener('change', this.#handleMotionChange);
 		this.#darkQuery.addEventListener('change', this.#handleDarkChange);
+		this.#colorSchemeObserver = new MutationObserver(this.#handleColorSchemeOverrideChange);
+		this.#colorSchemeObserver.observe(document.documentElement, {
+			attributes: true,
+			attributeFilter: ['data-color-scheme']
+		});
 		this.#forcedColorsQuery.addEventListener('change', this.#handleForcedColorsChange);
 		document.addEventListener('visibilitychange', this.#handleVisibilityChange);
 		window.addEventListener('resize', this.#requestResize, { passive: true });
@@ -183,6 +189,7 @@ export class AutomatonBackgroundController {
 		this.#resizeObserver?.disconnect();
 		this.#motionQuery?.removeEventListener('change', this.#handleMotionChange);
 		this.#darkQuery?.removeEventListener('change', this.#handleDarkChange);
+		this.#colorSchemeObserver?.disconnect();
 		this.#forcedColorsQuery?.removeEventListener('change', this.#handleForcedColorsChange);
 		this.#dprQuery?.removeEventListener('change', this.#handleDprChange);
 		document.removeEventListener('visibilitychange', this.#handleVisibilityChange);
@@ -350,8 +357,18 @@ export class AutomatonBackgroundController {
 		this.#reconcile();
 	};
 
-	#handleDarkChange = (event: MediaQueryListEvent): void => {
-		this.#dark = event.matches;
+	#effectiveDarkMode(): boolean {
+		const override = document.documentElement.dataset.colorScheme;
+		return override === 'dark' || (override !== 'light' && Boolean(this.#darkQuery?.matches));
+	}
+
+	#handleDarkChange = (): void => {
+		this.#dark = this.#effectiveDarkMode();
+		this.requestDraw();
+	};
+
+	#handleColorSchemeOverrideChange = (): void => {
+		this.#dark = this.#effectiveDarkMode();
 		this.requestDraw();
 	};
 
