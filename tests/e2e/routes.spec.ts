@@ -58,7 +58,7 @@ test('the feed is served with the RSS media type', async ({ request }) => {
 	expect(response.headers()['content-type']).toMatch(/^application\/rss\+xml(?:;|$)/iu);
 });
 
-test('the footer links to the source repository', async ({ page }) => {
+test('the footer links to the source and license notices', async ({ page }) => {
 	await page.goto('/', { waitUntil: 'networkidle' });
 
 	const siteInformation = page.getByRole('navigation', { name: 'Site information' });
@@ -66,6 +66,13 @@ test('the footer links to the source repository', async ({ page }) => {
 		'href',
 		'https://github.com/gaato/gaato.net'
 	);
+	await expect(siteInformation.getByRole('link', { name: 'License', exact: true })).toHaveAttribute(
+		'href',
+		'https://github.com/gaato/gaato.net/blob/main/LICENSE.md'
+	);
+	await expect(
+		siteInformation.getByRole('link', { name: 'Third-party notices', exact: true })
+	).toHaveAttribute('href', '/THIRD_PARTY_NOTICES.txt');
 });
 
 test('the primary navigation links to the separate Lab site', async ({ page }) => {
