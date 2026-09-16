@@ -51,17 +51,17 @@ export const directoryEntries: Readonly<
 	package: [
 		{
 			id: 'karukan',
-			label: 'karukan',
+			label: 'openSUSE:Factory/karukan',
 			href: 'https://build.opensuse.org/package/show/openSUSE%3AFactory/karukan'
 		},
 		{
 			id: 'x11docker',
-			label: 'x11docker',
+			label: 'openSUSE:Factory/x11docker',
 			href: 'https://build.opensuse.org/package/show/openSUSE%3AFactory/x11docker'
 		},
 		{
 			id: 'ghq',
-			label: 'ghq',
+			label: 'openSUSE:Factory/ghq',
 			href: 'https://build.opensuse.org/package/show/openSUSE%3AFactory/ghq'
 		}
 	],

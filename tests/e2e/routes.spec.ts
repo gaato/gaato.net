@@ -99,12 +99,13 @@ test('the home page links the openSUSE packages I package', async ({ page }) => 
 	]);
 
 	const packages = ['karukan', 'x11docker', 'ghq'] as const;
-	await expect(section.getByRole('link')).toHaveText([...packages]);
+	await expect(section.getByRole('link')).toHaveText(
+		packages.map((name) => `openSUSE:Factory/${name}`)
+	);
 	for (const name of packages) {
-		await expect(section.getByRole('link', { name, exact: true })).toHaveAttribute(
-			'href',
-			`https://build.opensuse.org/package/show/openSUSE%3AFactory/${name}`
-		);
+		await expect(
+			section.getByRole('link', { name: `openSUSE:Factory/${name}`, exact: true })
+		).toHaveAttribute('href', `https://build.opensuse.org/package/show/openSUSE%3AFactory/${name}`);
 	}
 });
 
