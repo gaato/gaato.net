@@ -179,7 +179,7 @@ test('the home page lists representative collaborative projects', async ({ page 
 
 	const section = page.locator('section#part-of');
 	await expect(page.locator('section#contributed + section#part-of')).toBeVisible();
-	await expect(page.locator('section#part-of + section#play')).toBeVisible();
+	await expect(page.locator('section#play')).toHaveCount(0);
 	await expect(section.getByRole('heading', { name: 'I’ve been part of' })).toBeVisible();
 	await expect(section.getByRole('link')).toHaveText([
 		'PROJECT O to O',
