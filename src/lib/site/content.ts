@@ -11,6 +11,7 @@ export type DirectorySectionId =
 	| 'speak'
 	| 'write'
 	| 'maintain'
+	| 'package'
 	| 'contributed'
 	| 'part-of'
 	| 'play';
@@ -19,6 +20,7 @@ export const sectionOrder: readonly DirectorySectionId[] = [
 	'speak',
 	'write',
 	'maintain',
+	'package',
 	'contributed',
 	'part-of',
 	'play'
@@ -28,6 +30,7 @@ export const sectionLabels: Readonly<Record<DirectorySectionId, string>> = {
 	speak: 'I speak',
 	write: 'I write',
 	maintain: 'I maintain',
+	package: 'I package',
 	contributed: 'I contributed to',
 	'part-of': 'I’ve been part of',
 	play: 'I play'
@@ -42,13 +45,25 @@ export const directoryEntries: Readonly<
 		{ id: 'id', label: 'Bahasa Indonesia', lang: 'id' }
 	],
 	maintain: [
-		{
-			id: 'karukan',
-			label: 'Karukan for openSUSE',
-			href: 'https://build.opensuse.org/package/show/openSUSE%3AFactory/karukan'
-		},
 		{ id: 'coderunbot', label: 'CodeRunBot', href: 'https://coderunbot.gaato.net/' },
 		{ id: 'discord-mbt', label: 'discord.mbt', href: 'https://github.com/gaato/discord.mbt' }
+	],
+	package: [
+		{
+			id: 'karukan',
+			label: 'karukan',
+			href: 'https://build.opensuse.org/package/show/openSUSE%3AFactory/karukan'
+		},
+		{
+			id: 'x11docker',
+			label: 'x11docker',
+			href: 'https://build.opensuse.org/package/show/openSUSE%3AFactory/x11docker'
+		},
+		{
+			id: 'ghq',
+			label: 'ghq',
+			href: 'https://build.opensuse.org/package/show/openSUSE%3AFactory/ghq'
+		}
 	],
 	contributed: [
 		{

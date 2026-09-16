@@ -86,6 +86,28 @@ test('the primary navigation links to the separate Lab site', async ({ page }) =
 	await expect(page.locator('section#experiment')).toHaveCount(0);
 });
 
+test('the home page links the openSUSE packages I package', async ({ page }) => {
+	await page.goto('/', { waitUntil: 'networkidle' });
+
+	const section = page.locator('section#package');
+	await expect(page.locator('section#maintain + section#package')).toBeVisible();
+	await expect(page.locator('section#package + section#contributed')).toBeVisible();
+	await expect(section.getByRole('heading', { name: 'I package' })).toBeVisible();
+	await expect(page.locator('section#maintain').getByRole('link')).toHaveText([
+		'CodeRunBot',
+		'discord.mbt'
+	]);
+
+	const packages = ['karukan', 'x11docker', 'ghq'] as const;
+	await expect(section.getByRole('link')).toHaveText([...packages]);
+	for (const name of packages) {
+		await expect(section.getByRole('link', { name, exact: true })).toHaveAttribute(
+			'href',
+			`https://build.opensuse.org/package/show/openSUSE%3AFactory/${name}`
+		);
+	}
+});
+
 test('the home page links representative upstream contributions', async ({ page }) => {
 	await page.goto('/', { waitUntil: 'networkidle' });
 
