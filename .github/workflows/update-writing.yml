@@ -1,0 +1,82 @@
+name: Refresh writing snapshots
+
+on:
+  schedule:
+    # Monday 05:00 Asia/Tokyo.
+    - cron: "0 20 * * 0"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gaato-net-update-writing
+  cancel-in-progress: false
+
+env:
+  CI: "true"
+
+jobs:
+  refresh:
+    name: Fetch snapshots and open a pull request
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: "1.4.2"
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      # The updater writes every source it could fetch before reporting failures,
+      # so a partial refresh still becomes a pull request.
+      - name: Refresh writing snapshots
+        id: update
+        continue-on-error: true
+        run: bun run writing:update
+
+      - name: Create an installation token
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          app-id: ${{ vars.WRITING_UPDATE_APP_ID }}
+          private-key: ${{ secrets.WRITING_UPDATE_APP_PRIVATE_KEY }}
+
+      - name: Open or update the pull request
+        id: pull-request
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          add-paths: content/writing/*.json
+          branch: update-writing-snapshots
+          delete-branch: true
+          commit-message: Refresh writing snapshots
+          title: Refresh writing snapshots
+          body: |
+            Automated refresh of the external writing snapshots in `content/writing/`.
+
+            Updater result: **${{ steps.update.outcome }}**. See the workflow run for per-source output.
+
+      - name: Summarize
+        env:
+          UPDATE_OUTCOME: ${{ steps.update.outcome }}
+          PR_URL: ${{ steps.pull-request.outputs.pull-request-url }}
+          PR_OPERATION: ${{ steps.pull-request.outputs.pull-request-operation }}
+        run: |
+          {
+            echo "### Writing snapshots"
+            echo
+            echo "Updater: $UPDATE_OUTCOME"
+            echo "Pull request: ${PR_OPERATION:-none} ${PR_URL}"
+          } >> "$GITHUB_STEP_SUMMARY"
+          if [[ "$UPDATE_OUTCOME" != "success" ]]; then
+            echo "::error::At least one writing source failed to refresh."
+            exit 1
+          fi
