@@ -12,13 +12,8 @@ const routeFiles = new Map<string, string>([
 	['/articles/', 'articles/index.html'],
 	...postSlugs.map((slug) => [`/articles/${slug}/`, `articles/${slug}/index.html`] as const)
 ]);
-const legacyRedirectFiles = new Map<string, string>([
-	['posts/index.html', '/articles/'],
-	...postSlugs.map(
-		(slug) => [`posts/${slug}/index.html`, `/articles/${slug}/`] as const
-	)
-]);
-const expectedHtml = [...routeFiles.values(), ...legacyRedirectFiles.keys(), '404.html'].sort();
+const expectedRedirects = ['/posts /articles/ 308', '/posts/ /articles/ 308', '/posts/* /articles/:splat 308'];
+const expectedHtml = [...routeFiles.values(), '404.html'].sort();
 const expectedSitemapUrls = [...routeFiles.keys()].map((route) => `${canonicalOrigin}${route}`).sort();
 const expectedPostUrls = postSlugs.map((slug) => `${canonicalOrigin}/articles/${slug}/`).sort();
 const failures: string[] = [];
@@ -192,7 +187,8 @@ for (const required of [
 	'sitemap.xml',
 	'robots.txt',
 	'site.webmanifest',
-	'_headers'
+	'_headers',
+	'_redirects'
 ]) {
 	if (!files.includes(required)) fail(`Missing required output: ${required}`);
 }
@@ -274,14 +270,13 @@ for (const [route, file] of routeFiles) {
 	}
 }
 
-for (const [file, destination] of legacyRedirectFiles) {
-	if (!files.includes(file)) continue;
-	const html = await readOutput(file);
-	if (!html.includes(`location.href=${JSON.stringify(destination)}`)) {
-		fail(`${file} does not redirect with JavaScript to ${destination}`);
-	}
-	if (!hasTag(tags(html, 'meta'), { 'http-equiv': 'refresh', content: `0;url=${destination}` })) {
-		fail(`${file} does not redirect with meta refresh to ${destination}`);
+if (files.includes('_redirects')) {
+	const rules = (await readOutput('_redirects'))
+		.split('\n')
+		.map((line) => line.trim())
+		.filter((line) => line !== '' && !line.startsWith('#'));
+	if (JSON.stringify(rules) !== JSON.stringify(expectedRedirects)) {
+		fail(`_redirects rules differ. Expected ${expectedRedirects.join('; ')}; got ${rules.join('; ')}`);
 	}
 }
 

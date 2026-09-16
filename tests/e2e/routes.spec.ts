@@ -1,6 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
-import { collectBrowserProblems, pageRoutes } from './helpers';
+import { collectBrowserProblems, pageRoutes, postSlugs } from './helpers';
 
 for (const route of pageRoutes) {
 	test(`${route} renders without browser or layout errors`, async ({ page }) => {
@@ -49,6 +49,19 @@ test('unpublished local Lab paths remain ordinary 404s', async ({ request }) => 
 		const response = await request.get(path, { maxRedirects: 0 });
 		expect(response.status(), path).toBe(404);
 		expect(new URL(response.url()).pathname, path).toBe(path);
+	}
+});
+
+test('legacy /posts/ paths redirect permanently to /articles/', async ({ request }) => {
+	const redirects = [
+		['/posts', '/articles/'],
+		['/posts/', '/articles/'],
+		...postSlugs.map((slug) => [`/posts/${slug}/`, `/articles/${slug}/`] as const)
+	] as const;
+	for (const [from, to] of redirects) {
+		const response = await request.get(from, { maxRedirects: 0 });
+		expect(response.status(), from).toBe(308);
+		expect(new URL(response.headers().location, response.url()).pathname, from).toBe(to);
 	}
 });
 

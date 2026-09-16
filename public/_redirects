@@ -1,0 +1,3 @@
+/posts /articles/ 308
+/posts/ /articles/ 308
+/posts/* /articles/:splat 308

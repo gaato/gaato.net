@@ -1,6 +1,8 @@
 import { expect, type Locator, type Page } from '@playwright/test';
 import { publishedLocalPostSlugs as postSlugs } from '../../src/lib/content/local-post-manifest';
 
+export { postSlugs };
+
 export const pageRoutes = [
 	'/',
 	'/articles/',
