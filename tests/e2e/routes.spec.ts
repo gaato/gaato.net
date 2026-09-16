@@ -122,6 +122,10 @@ test('the home page links representative upstream contributions', async ({ page 
 			href: 'https://github.com/openSUSE/opi/pulls?q=is%3Apr+is%3Amerged+author%3Agaato'
 		},
 		{
+			name: 'openSUSE:Factory/Mesa',
+			href: 'https://build.opensuse.org/request/show/1376056'
+		},
+		{
 			name: 'repology/repology-rules',
 			href: 'https://github.com/repology/repology-rules/pulls?q=is%3Apr+is%3Amerged+author%3Agaato'
 		},

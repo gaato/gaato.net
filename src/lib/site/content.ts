@@ -77,6 +77,11 @@ export const directoryEntries: Readonly<
 			href: 'https://github.com/openSUSE/opi/pulls?q=is%3Apr+is%3Amerged+author%3Agaato'
 		},
 		{
+			id: 'mesa',
+			label: 'openSUSE:Factory/Mesa',
+			href: 'https://build.opensuse.org/request/show/1376056'
+		},
+		{
 			id: 'repology-rules',
 			label: 'repology/repology-rules',
 			href: 'https://github.com/repology/repology-rules/pulls?q=is%3Apr+is%3Amerged+author%3Agaato'
