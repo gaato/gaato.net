@@ -48,7 +48,6 @@
 	],
 	"dependencies": {
 		"katex": "^0.18.7",
-		"marked-katex-extension": "^5.1.12",
-		"playwright-core": "^1.63.0"
+		"marked-katex-extension": "^5.1.12"
 	}
 }
