@@ -5,7 +5,7 @@
     "title": "∫ [0,π] x f(sinx) dx に関する定理",
     "url": "https://mathlog.info/articles/2364",
     "publishedDate": "2021-06-01",
-    "updatedAt": "2026-03-27T05:42:11.000Z"
+    "updatedDate": "2026-03-27"
   },
   {
     "source": "mathlog",
@@ -13,7 +13,7 @@
     "title": "今週の積分#43の別解（部分積分）",
     "url": "https://mathlog.info/articles/1971",
     "publishedDate": "2021-03-18",
-    "updatedAt": "2026-06-09T11:07:50.000Z"
+    "updatedDate": "2026-06-09"
   },
   {
     "source": "mathlog",
@@ -21,7 +21,7 @@
     "title": "びぶんせきぶん",
     "url": "https://mathlog.info/articles/1926",
     "publishedDate": "2021-03-10",
-    "updatedAt": "2026-04-28T14:49:27.000Z"
+    "updatedDate": "2026-04-28"
   },
   {
     "source": "mathlog",
@@ -29,7 +29,7 @@
     "title": "∑ sin k を数IIBまでで解いてみた",
     "url": "https://mathlog.info/articles/1912",
     "publishedDate": "2021-03-08",
-    "updatedAt": "2026-08-19T00:24:18.000Z"
+    "updatedDate": "2026-08-19"
   },
   {
     "source": "mathlog",
@@ -37,7 +37,7 @@
     "title": "1/sin²x の積分の簡単な解法を見つけたのでメモ",
     "url": "https://mathlog.info/articles/1910",
     "publishedDate": "2021-03-08",
-    "updatedAt": "2026-08-06T06:47:54.000Z"
+    "updatedDate": "2026-08-06"
   },
   {
     "source": "mathlog",
@@ -45,7 +45,7 @@
     "title": "今週の積分#3の別解",
     "url": "https://mathlog.info/articles/1888",
     "publishedDate": "2021-03-06",
-    "updatedAt": "2026-07-14T15:02:14.000Z"
+    "updatedDate": "2026-07-15"
   },
   {
     "source": "mathlog",
@@ -53,7 +53,7 @@
     "title": "(2×3×5×7×11×13)¹⁰の桁数（一橋 2014）のクッソつまらない解法を思いついてしまったのでメモ",
     "url": "https://mathlog.info/articles/1652",
     "publishedDate": "2021-01-29",
-    "updatedAt": "2026-09-13T04:25:16.000Z"
+    "updatedDate": "2026-09-13"
   },
   {
     "source": "mathlog",
@@ -61,7 +61,7 @@
     "title": "【数列版ロピタルの定理】 Stolz-Cesàro の定理と証明",
     "url": "https://mathlog.info/articles/478",
     "publishedDate": "2020-11-11",
-    "updatedAt": "2026-09-07T00:48:35.000Z"
+    "updatedDate": "2026-09-07"
   },
   {
     "source": "mathlog",
@@ -69,6 +69,6 @@
     "title": "高校数学の数列と微分積分は似ているという話（和分差分）",
     "url": "https://mathlog.info/articles/138",
     "publishedDate": "2020-11-07",
-    "updatedAt": "2026-09-10T06:17:36.000Z"
+    "updatedDate": "2026-09-10"
   }
 ]

@@ -18,8 +18,6 @@ export type WritingItem = {
 	readonly url: string;
 	readonly publishedDate: DateString;
 	readonly updatedDate?: DateString;
-	/** ISO timestamp retained for the writing snapshot updater. */
-	readonly updatedAt?: string;
 };
 
 export type WritingOverrides = {

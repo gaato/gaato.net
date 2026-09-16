@@ -43,7 +43,7 @@ export function parseQiitaJson(value: unknown): WritingItem[] {
 			title: item.title as string,
 			url: item.url as string,
 			publishedDate: jstDate(item.created_at as string),
-			...(typeof item.updated_at === 'string' ? { updatedAt: item.updated_at } : {})
+			...(typeof item.updated_at === 'string' ? { updatedDate: jstDate(item.updated_at) } : {})
 		};
 	});
 }
@@ -97,7 +97,7 @@ export function parseMathlogHtml(html: string): WritingItem[] {
 			url: `https://mathlog.info/articles/${id}`,
 			publishedDate: jstDate(createdSeconds * 1000),
 			...(typeof updatedSeconds === 'number'
-				? { updatedAt: new Date(updatedSeconds * 1000).toISOString() }
+				? { updatedDate: jstDate(updatedSeconds * 1000) }
 				: {})
 		};
 	});

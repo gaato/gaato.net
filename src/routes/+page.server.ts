@@ -1,5 +1,5 @@
-import { getLatestWritingItems } from '$lib/server/content/writing';
+import { getWritingItems } from '$lib/server/content/writing';
 
 export function load() {
-	return { writing: getLatestWritingItems().slice(0, 5) };
+	return { writing: getWritingItems().slice(0, 5) };
 }

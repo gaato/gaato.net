@@ -20,7 +20,7 @@ describe('writing source parsers', () => {
 				title: 'Article',
 				url: 'https://qiita.com/gaato/items/abc',
 				publishedDate: '2026-08-01',
-				updatedAt: '2026-08-02T00:00:00+09:00'
+				updatedDate: '2026-08-02'
 			}
 		]);
 	});

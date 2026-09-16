@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest';
 import { publishedLocalPostSlugs } from '$lib/content/local-post-manifest';
 import { getLocalPost, getLocalPosts, parseLocalPost } from './posts';
-import { getLatestWritingItems, getWritingItems, mergeWritingItems } from './writing';
+import { getWritingItems, mergeWritingItems } from './writing';
 import type { WritingItem } from '$lib/content/writing-types';
 
 const base: WritingItem = {
@@ -81,10 +81,9 @@ describe('server-only local posts', () => {
 });
 
 describe('server-only writing index', () => {
-	test('merges local posts with all saved snapshots and returns the latest eight', () => {
+	test('merges local posts with all saved snapshots', () => {
 		const items = getWritingItems();
 		expect(items).toHaveLength(27);
-		expect(getLatestWritingItems()).toEqual(items.slice(0, 8));
 		expect(new Set(items.map((item) => item.source))).toEqual(
 			new Set(['gaato.net', 'qiita', 'note', 'mathlog', 'zenn', 'shinonome'])
 		);

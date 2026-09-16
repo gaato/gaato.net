@@ -51,7 +51,7 @@ function normalizeSnapshot(value: unknown): WritingItem[] {
 			return [];
 		}
 
-		const updatedDate = asDate(item.updatedDate) ?? asDate(item.updatedAt);
+		const updatedDate = asDate(item.updatedDate);
 		return [
 			{
 				source: item.source,
@@ -112,8 +112,4 @@ const items = Object.freeze(
 
 export function getWritingItems(): readonly WritingItem[] {
 	return items;
-}
-
-export function getLatestWritingItems(): readonly WritingItem[] {
-	return items.slice(0, 8);
 }
