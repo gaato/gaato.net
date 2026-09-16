@@ -96,6 +96,14 @@ test('the home page links representative upstream contributions', async ({ page 
 			href: 'https://github.com/openSUSE/sdbootutil/pulls?q=is%3Apr+is%3Amerged+author%3Agaato'
 		},
 		{
+			name: 'openSUSE/opi',
+			href: 'https://github.com/openSUSE/opi/pulls?q=is%3Apr+is%3Amerged+author%3Agaato'
+		},
+		{
+			name: 'repology/repology-rules',
+			href: 'https://github.com/repology/repology-rules/pulls?q=is%3Apr+is%3Amerged+author%3Agaato'
+		},
+		{
 			name: 'moonbitlang/async',
 			href: 'https://github.com/moonbitlang/async/pulls?q=is%3Apr+is%3Amerged+author%3Agaato'
 		},

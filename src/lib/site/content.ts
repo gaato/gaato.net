@@ -57,6 +57,16 @@ export const directoryEntries: Readonly<
 			href: 'https://github.com/openSUSE/sdbootutil/pulls?q=is%3Apr+is%3Amerged+author%3Agaato'
 		},
 		{
+			id: 'opi',
+			label: 'openSUSE/opi',
+			href: 'https://github.com/openSUSE/opi/pulls?q=is%3Apr+is%3Amerged+author%3Agaato'
+		},
+		{
+			id: 'repology-rules',
+			label: 'repology/repology-rules',
+			href: 'https://github.com/repology/repology-rules/pulls?q=is%3Apr+is%3Amerged+author%3Agaato'
+		},
+		{
 			id: 'async',
 			label: 'moonbitlang/async',
 			href: 'https://github.com/moonbitlang/async/pulls?q=is%3Apr+is%3Amerged+author%3Agaato'

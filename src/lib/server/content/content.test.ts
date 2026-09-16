@@ -89,7 +89,7 @@ describe('server-only local posts', () => {
 describe('server-only writing index', () => {
 	test('merges local posts with all saved snapshots and returns the latest eight', () => {
 		const items = getWritingItems();
-		expect(items).toHaveLength(26);
+		expect(items).toHaveLength(27);
 		expect(getLatestWritingItems()).toEqual(items.slice(0, 8));
 		expect(new Set(items.map((item) => item.source))).toEqual(
 			new Set(['gaato.net', 'qiita', 'note', 'mathlog', 'zenn', 'shinonome'])

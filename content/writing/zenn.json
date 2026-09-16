@@ -1,6 +1,13 @@
 [
   {
     "source": "zenn",
+    "sourceId": "https://zenn.dev/gaato/articles/sdbootutil-devicetree-bls",
+    "title": "ARM ボードの UEFI ブートで Device Tree はどう渡されるか",
+    "url": "https://zenn.dev/gaato/articles/sdbootutil-devicetree-bls",
+    "publishedDate": "2026-09-11"
+  },
+  {
+    "source": "zenn",
     "sourceId": "https://zenn.dev/gaato/articles/mmd-wine-linux",
     "title": "LinuxのWineでMikuMikuDanceを動かす",
     "url": "https://zenn.dev/gaato/articles/mmd-wine-linux",
