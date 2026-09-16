@@ -39,8 +39,8 @@
 	},
 	"overrides": {
 		"cookie": "^0.7.2",
-		"nanoid": "^3.3.18",
-		"postcss": "^8.5.26"
+		"nanoid": "^3.3.19",
+		"postcss": "^8.5.28"
 	},
 	"trustedDependencies": [
 		"esbuild",
