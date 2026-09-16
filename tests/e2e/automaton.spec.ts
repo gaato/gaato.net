@@ -113,8 +113,34 @@ test('a mobile swipe paints a continuous background trail while the page can scr
 
 	const client = await page.context().newCDPSession(page);
 	const x = Math.floor(viewport!.width * 0.8);
-	const startY = Math.floor(viewport!.height * 0.72);
 	const endY = Math.floor(viewport!.height * 0.28);
+	// The background ignores touches that start on links or controls so they keep working, and
+	// Chromium snaps a touch to any link within roughly 30px of it. The home page content shifts
+	// over time, so pick a start row with clear space around it instead of a fixed fraction.
+	const startY = await page.evaluate(
+		([column, preferred]) => {
+			const interactive =
+				'a, button, input, select, textarea, label, summary, [role="button"], [contenteditable="true"], [data-automaton-exclude]';
+			const clearance = 40;
+			const isClear = (y: number): boolean => {
+				for (let dy = -clearance; dy <= clearance; dy += 8) {
+					for (let dx = -clearance; dx <= clearance; dx += 8) {
+						const element = document.elementFromPoint(column + dx, y + dy);
+						if (!element || element.closest(interactive)) return false;
+					}
+				}
+				return true;
+			};
+			for (let offset = 0; offset <= 240; offset += 8) {
+				for (const y of [preferred - offset, preferred + offset]) {
+					if (y - clearance >= 0 && y + clearance < innerHeight && isClear(y)) return y;
+				}
+			}
+			throw new Error('no touch start point clear of interactive elements was found');
+		},
+		[x, Math.floor(viewport!.height * 0.72)] as const
+	);
+	expect(startY).toBeGreaterThan(endY);
 	await client.send('Input.dispatchTouchEvent', {
 		type: 'touchStart',
 		touchPoints: [{ x, y: startY, id: 1 }]
