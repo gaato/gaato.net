@@ -35,15 +35,6 @@ markdown.use(
 	})
 );
 
-export function tokyoToday(now = new Date()): DateString {
-	return new Intl.DateTimeFormat('en-CA', {
-		timeZone: 'Asia/Tokyo',
-		year: 'numeric',
-		month: '2-digit',
-		day: '2-digit'
-	}).format(now) as DateString;
-}
-
 export function splitFrontmatter(source: string): { data: Frontmatter; body: string } {
 	const match = source.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/u);
 	if (!match) return { data: {}, body: source };
@@ -58,11 +49,7 @@ function asDate(value: unknown): DateString | undefined {
 	return typeof value === 'string' && datePattern.test(value) ? (value as DateString) : undefined;
 }
 
-export function parseLocalPost(
-	source: string,
-	path: string,
-	today = tokyoToday()
-): LocalPost | null {
+export function parseLocalPost(source: string, path: string): LocalPost | null {
 	const slug = path.split('/').at(-1)?.replace(/\.md$/u, '') ?? '';
 	if (!slug || slug === 'index') return null;
 
@@ -71,7 +58,6 @@ export function parseLocalPost(
 	if (data.draft === true || typeof data.title !== 'string' || publishedDate === undefined) {
 		return null;
 	}
-	if (publishedDate > today) return null;
 
 	const updatedDate = asDate(data.updatedDate) ?? asDate(data.updated);
 	const html = (markdown.parse(body, { async: false }) as string).replaceAll(

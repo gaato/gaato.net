@@ -9,6 +9,8 @@ bun install
 bun run dev
 ```
 
+Articles live in `content/posts/*.md`. A post with `draft: true` in its front matter is excluded from the build; use it for unpublished or future articles. Every published slug must also be listed in `src/lib/content/local-post-manifest.ts`.
+
 To run the full verification suite:
 
 ```fish

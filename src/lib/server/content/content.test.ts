@@ -25,8 +25,7 @@ describe('server-only local posts', () => {
 	test('parses a separate updated date and Markdown body', () => {
 		const post = parseLocalPost(
 			`---\ntitle: Test\ndescription: Safe & short\ndate: "2026-08-20"\nupdated: "2026-08-28"\ntags: [one]\n---\n\nText with \`code\`.`,
-			'/content/posts/test.md',
-			'2026-08-29'
+			'/content/posts/test.md'
 		);
 		expect(post).toMatchObject({
 			slug: 'test',
@@ -40,8 +39,7 @@ describe('server-only local posts', () => {
 	test('makes scrollable fenced code blocks keyboard focusable', () => {
 		const post = parseLocalPost(
 			'---\ntitle: Test\ndate: "2026-08-20"\n---\n\n```text\noutput\n```',
-			'/content/posts/test.md',
-			'2026-08-29'
+			'/content/posts/test.md'
 		);
 		expect(post?.html).toContain('<pre tabindex="0"><code');
 	});
@@ -49,8 +47,7 @@ describe('server-only local posts', () => {
 	test('renders inline and display math as accessible server-side HTML', () => {
 		const post = parseLocalPost(
 			'---\ntitle: Test\ndate: "2026-08-20"\n---\n\nInline $x^2$.\n\n$$\n\\frac{1}{2}\n$$',
-			'/content/posts/test.md',
-			'2026-08-29'
+			'/content/posts/test.md'
 		);
 		expect(post?.html).toContain('<math');
 		expect(post?.html).toContain('<math');
@@ -60,8 +57,7 @@ describe('server-only local posts', () => {
 	test('does not render TeX delimiters inside fenced code blocks', () => {
 		const post = parseLocalPost(
 			'---\ntitle: Test\ndate: "2026-08-20"\n---\n\n```tex\n$$\\input{file}$$\n```',
-			'/content/posts/test.md',
-			'2026-08-29'
+			'/content/posts/test.md'
 		);
 		expect(post?.html).toContain('class="language-tex"');
 		expect(post?.html).not.toContain('<math');
@@ -71,18 +67,16 @@ describe('server-only local posts', () => {
 		expect(() =>
 			parseLocalPost(
 				'---\ntitle: Test\ndate: "2026-08-20"\n---\n\n$$\n\\notACommand{x}\n$$',
-				'/content/posts/test.md',
-				'2026-08-29'
+				'/content/posts/test.md'
 			)
 		).toThrow();
 	});
 
-	test('excludes drafts, future posts, and the index document', () => {
+	test('excludes drafts and the index document', () => {
 		const draft = '---\ntitle: Draft\ndate: "2026-08-20"\ndraft: true\n---\nDraft';
-		const future = '---\ntitle: Future\ndate: "2026-08-30"\n---\nFuture';
-		expect(parseLocalPost(draft, '/content/posts/draft.md', '2026-08-29')).toBeNull();
-		expect(parseLocalPost(future, '/content/posts/future.md', '2026-08-29')).toBeNull();
-		expect(parseLocalPost(future, '/content/posts/index.md', '2026-09-01')).toBeNull();
+		const index = '---\ntitle: Index\ndate: "2026-08-20"\n---\nIndex';
+		expect(parseLocalPost(draft, '/content/posts/draft.md')).toBeNull();
+		expect(parseLocalPost(index, '/content/posts/index.md')).toBeNull();
 	});
 });
 
