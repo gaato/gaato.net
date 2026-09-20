@@ -148,6 +148,10 @@ test('the home page links representative upstream contributions', async ({ page 
 			href: 'https://github.com/moonbitlang/async/pulls?q=is%3Apr+is%3Amerged+author%3Agaato'
 		},
 		{
+			name: 'moonbitlang/moon',
+			href: 'https://github.com/moonbitlang/moon/pulls?q=is%3Apr+is%3Amerged+author%3Agaato'
+		},
+		{
 			name: 'aquaproj/aqua-registry',
 			href:
 				'https://github.com/aquaproj/aqua-registry/pulls?q=is%3Apr+is%3Amerged+author%3Agaato'

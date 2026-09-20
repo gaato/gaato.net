@@ -89,6 +89,11 @@ export const directoryEntries: Readonly<
 			href: 'https://github.com/moonbitlang/async/pulls?q=is%3Apr+is%3Amerged+author%3Agaato'
 		},
 		{
+			id: 'moon',
+			label: 'moonbitlang/moon',
+			href: 'https://github.com/moonbitlang/moon/pulls?q=is%3Apr+is%3Amerged+author%3Agaato'
+		},
+		{
 			id: 'aqua-registry',
 			label: 'aquaproj/aqua-registry',
 			href:
