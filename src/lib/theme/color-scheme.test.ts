@@ -2,6 +2,7 @@ import { describe, expect, test } from 'vitest';
 import {
 	COLOR_SCHEME_STORAGE_KEY,
 	colorSchemeActionLabel,
+	nextColorSchemePreference,
 	oppositeColorScheme,
 	readColorSchemePreference,
 	writeColorSchemePreference,
@@ -62,6 +63,16 @@ describe('color scheme preferences', () => {
 		expect(oppositeColorScheme('dark')).toBe('light');
 		expect(colorSchemeActionLabel(null, 'light')).toBe('Switch to dark theme');
 		expect(colorSchemeActionLabel(null, 'dark')).toBe('Switch to light theme');
-		expect(colorSchemeActionLabel('dark', 'light')).toBe('Use system theme');
+		expect(colorSchemeActionLabel('dark', 'light')).toBe('Switch to light theme');
+		expect(colorSchemeActionLabel('light', 'dark')).toBe('Switch to dark theme');
+	});
+
+	test('always flips the appearance and falls back to the system when it matches', () => {
+		expect(nextColorSchemePreference(null, 'light')).toBe('dark');
+		expect(nextColorSchemePreference(null, 'dark')).toBe('light');
+		expect(nextColorSchemePreference('dark', 'light')).toBeNull();
+		expect(nextColorSchemePreference('light', 'dark')).toBeNull();
+		expect(nextColorSchemePreference('dark', 'dark')).toBe('light');
+		expect(nextColorSchemePreference('light', 'light')).toBe('dark');
 	});
 });

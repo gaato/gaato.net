@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import {
 		colorSchemeActionLabel,
-		oppositeColorScheme,
+		nextColorSchemePreference,
 		readColorSchemePreference,
 		writeColorSchemePreference,
 		type ColorScheme,
@@ -41,7 +41,7 @@
 	});
 
 	function toggleColorScheme(): void {
-		preference = preference ? null : oppositeColorScheme(systemColorScheme);
+		preference = nextColorSchemePreference(preference, systemColorScheme);
 		if (storage) writeColorSchemePreference(storage, preference);
 		applyColorScheme(preference);
 	}
@@ -64,10 +64,71 @@
 
 <button
 	type="button"
-	aria-pressed={preference !== null}
+	class="color-scheme-toggle"
+	aria-label={actionLabel}
+	title={actionLabel}
 	data-testid="color-scheme-toggle"
 	lang="en"
 	onclick={toggleColorScheme}
 >
-	{actionLabel}
+	<svg class="sun" viewBox="0 0 24 24" aria-hidden="true">
+		<circle cx="12" cy="12" r="4" />
+		<path
+			d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+		/>
+	</svg>
+	<svg class="moon" viewBox="0 0 24 24" aria-hidden="true">
+		<path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z" />
+	</svg>
 </button>
+
+<style>
+	.color-scheme-toggle {
+		display: inline-grid;
+		place-items: center;
+		inline-size: var(--interactive-min-block-size);
+		block-size: var(--interactive-min-block-size);
+		padding: 0;
+		border: 0;
+		border-radius: 50%;
+		background: transparent;
+		color: var(--color-muted);
+		cursor: pointer;
+	}
+
+	.color-scheme-toggle:hover {
+		color: var(--color-ink);
+	}
+
+	svg {
+		inline-size: 1.25rem;
+		block-size: 1.25rem;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 1.75;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+
+	.moon {
+		display: none;
+	}
+
+	@media (prefers-color-scheme: dark) {
+		:global(:root:not([data-color-scheme='light'])) .sun {
+			display: none;
+		}
+
+		:global(:root:not([data-color-scheme='light'])) .moon {
+			display: block;
+		}
+	}
+
+	:global(:root[data-color-scheme='dark']) .sun {
+		display: none;
+	}
+
+	:global(:root[data-color-scheme='dark']) .moon {
+		display: block;
+	}
+</style>

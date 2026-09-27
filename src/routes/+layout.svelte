@@ -22,6 +22,7 @@
 			>
 			<a href="https://lab.gaato.net/">Lab</a>
 		</nav>
+		<ColorSchemeToggle />
 	</header>
 
 	<main id="content" class:home-page={page.url.pathname === '/'} tabindex="-1">
@@ -42,7 +43,6 @@
 			</nav>
 		</div>
 		<div class="footer-controls">
-			<ColorSchemeToggle />
 			<button
 				type="button"
 				aria-pressed={paused}
@@ -91,7 +91,8 @@
 
 	.site-header {
 		display: flex;
-		align-items: baseline;
+		align-items: center;
+		justify-content: space-between;
 		gap: 1.5rem;
 		padding-block: 1.25rem;
 		border-block-end: 1px solid var(--color-line);

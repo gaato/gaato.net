@@ -34,11 +34,17 @@ export function oppositeColorScheme(colorScheme: ColorScheme): ColorScheme {
 	return colorScheme === 'dark' ? 'light' : 'dark';
 }
 
+export function nextColorSchemePreference(
+	preference: ColorScheme | null,
+	systemColorScheme: ColorScheme
+): ColorScheme | null {
+	const next = oppositeColorScheme(preference ?? systemColorScheme);
+	return next === systemColorScheme ? null : next;
+}
+
 export function colorSchemeActionLabel(
 	preference: ColorScheme | null,
 	systemColorScheme: ColorScheme
 ): string {
-	return preference
-		? 'Use system theme'
-		: `Switch to ${oppositeColorScheme(systemColorScheme)} theme`;
+	return `Switch to ${oppositeColorScheme(preference ?? systemColorScheme)} theme`;
 }
