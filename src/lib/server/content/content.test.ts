@@ -1,8 +1,14 @@
 import { describe, expect, test } from 'vitest';
+import overrides from '../../../../content/writing/overrides.json';
 import { publishedLocalPostSlugs } from '$lib/content/local-post-manifest';
 import { getLocalPost, getLocalPosts, parseLocalPost } from './posts';
 import { getWritingItems, mergeWritingItems } from './writing';
-import type { WritingItem } from '$lib/content/writing-types';
+import type { WritingItem, WritingOverrides } from '$lib/content/writing-types';
+
+const writingSnapshots = import.meta.glob<readonly WritingItem[]>(
+	['/content/writing/*.json', '!/content/writing/overrides.json'],
+	{ eager: true, import: 'default' }
+);
 
 const base: WritingItem = {
 	source: 'note',
@@ -83,7 +89,13 @@ describe('server-only local posts', () => {
 describe('server-only writing index', () => {
 	test('merges local posts with all saved snapshots', () => {
 		const items = getWritingItems();
-		expect(items).toHaveLength(27);
+		const snapshotItems = Object.values(writingSnapshots).flat();
+		expect(snapshotItems.length).toBeGreaterThan(0);
+		expect(items).toHaveLength(
+			snapshotItems.length +
+				publishedLocalPostSlugs.length -
+				(overrides as WritingOverrides).exclude.length
+		);
 		expect(new Set(items.map((item) => item.source))).toEqual(
 			new Set(['gaato.net', 'qiita', 'note', 'mathlog', 'zenn', 'shinonome'])
 		);
