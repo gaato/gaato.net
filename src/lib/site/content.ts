@@ -1,4 +1,10 @@
+import packagesData from '../../../content/contributions/packages.json' with { type: 'json' };
+import upstreamData from '../../../content/contributions/upstream.json' with { type: 'json' };
+import type { ContributionEntry } from '$lib/content/contribution-types';
 import type { WritingItem } from '$lib/content/writing-types';
+
+const packageSnapshot = packagesData as readonly ContributionEntry[];
+const upstreamSnapshot = upstreamData as readonly ContributionEntry[];
 
 export type DirectoryEntry = {
 	readonly id: string;
@@ -33,6 +39,10 @@ export const sectionLabels: Readonly<Record<DirectorySectionId, string>> = {
 	'part-of': 'I’ve been part of'
 };
 
+function toDirectoryEntry({ id, label, href }: ContributionEntry): DirectoryEntry {
+	return { id, label, href };
+}
+
 export const directoryEntries: Readonly<
 	Record<Exclude<DirectorySectionId, 'write'>, readonly DirectoryEntry[]>
 > = {
@@ -45,72 +55,8 @@ export const directoryEntries: Readonly<
 		{ id: 'coderunbot', label: 'CodeRunBot', href: 'https://coderunbot.gaato.net/' },
 		{ id: 'discord-mbt', label: 'discord.mbt', href: 'https://github.com/gaato/discord.mbt' }
 	],
-	package: [
-		{
-			id: 'karukan',
-			label: 'openSUSE:Factory/karukan',
-			href: 'https://build.opensuse.org/package/show/openSUSE%3AFactory/karukan'
-		},
-		{
-			id: 'x11docker',
-			label: 'openSUSE:Factory/x11docker',
-			href: 'https://build.opensuse.org/package/show/openSUSE%3AFactory/x11docker'
-		},
-		{
-			id: 'ghq',
-			label: 'openSUSE:Factory/ghq',
-			href: 'https://build.opensuse.org/package/show/openSUSE%3AFactory/ghq'
-		}
-	],
-	contributed: [
-		{
-			id: 'sdbootutil',
-			label: 'openSUSE/sdbootutil',
-			href: 'https://github.com/openSUSE/sdbootutil/pulls?q=is%3Apr+is%3Amerged+author%3Agaato'
-		},
-		{
-			id: 'opi',
-			label: 'openSUSE/opi',
-			href: 'https://github.com/openSUSE/opi/pulls?q=is%3Apr+is%3Amerged+author%3Agaato'
-		},
-		{
-			id: 'mesa',
-			label: 'openSUSE:Factory/Mesa',
-			href: 'https://build.opensuse.org/request/show/1376056'
-		},
-		{
-			id: 'repology-rules',
-			label: 'repology/repology-rules',
-			href: 'https://github.com/repology/repology-rules/pulls?q=is%3Apr+is%3Amerged+author%3Agaato'
-		},
-		{
-			id: 'async',
-			label: 'moonbitlang/async',
-			href: 'https://github.com/moonbitlang/async/pulls?q=is%3Apr+is%3Amerged+author%3Agaato'
-		},
-		{
-			id: 'moon',
-			label: 'moonbitlang/moon',
-			href: 'https://github.com/moonbitlang/moon/pulls?q=is%3Apr+is%3Amerged+author%3Agaato'
-		},
-		{
-			id: 'aqua-registry',
-			label: 'aquaproj/aqua-registry',
-			href:
-				'https://github.com/aquaproj/aqua-registry/pulls?q=is%3Apr+is%3Amerged+author%3Agaato'
-		},
-		{
-			id: 'kholidays',
-			label: 'KDE Frameworks/kholidays',
-			href:
-				'https://invent.kde.org/frameworks/kholidays/-/merge_requests/?sort=created_date&state=merged&author_username=gaato&first_page_size=20'
-		},
-		{
-			id: 'a',
-			label: 'purpleblueslime/a',
-			href: 'https://github.com/purpleblueslime/a/pulls?q=is%3Apr+is%3Amerged+author%3Agaato'
-		}
-	],
+	package: packageSnapshot.map(toDirectoryEntry),
+	contributed: upstreamSnapshot.map(toDirectoryEntry),
 	'part-of': [
 		{
 			id: 'project-o-to-o',

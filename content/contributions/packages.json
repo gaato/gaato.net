@@ -1,0 +1,26 @@
+[
+  {
+    "id": "opensuse-factory-ghq",
+    "key": "openSUSE:Factory/ghq",
+    "label": "openSUSE:Factory/ghq",
+    "href": "https://build.opensuse.org/package/show/openSUSE%3AFactory/ghq",
+    "lastDate": "2026-09-08",
+    "origin": "obs"
+  },
+  {
+    "id": "opensuse-factory-x11docker",
+    "key": "openSUSE:Factory/x11docker",
+    "label": "openSUSE:Factory/x11docker",
+    "href": "https://build.opensuse.org/package/show/openSUSE%3AFactory/x11docker",
+    "lastDate": "2026-09-08",
+    "origin": "obs"
+  },
+  {
+    "id": "opensuse-factory-karukan",
+    "key": "openSUSE:Factory/karukan",
+    "label": "openSUSE:Factory/karukan",
+    "href": "https://build.opensuse.org/package/show/openSUSE%3AFactory/karukan",
+    "lastDate": "2026-03-25",
+    "origin": "obs"
+  }
+]

@@ -18,6 +18,7 @@
 		"prepare:preview-headers": "bun scripts/prepare-preview-headers.ts",
 		"verify": "bun run check && bun run test && bun run build && bun run check:licenses && bun run check:artifacts && bun run test:e2e",
 		"writing:update": "bun scripts/update-writing.ts",
+		"contributions:update": "bun scripts/update-contributions.ts",
 		"wrangler": "wrangler"
 	},
 	"devDependencies": {

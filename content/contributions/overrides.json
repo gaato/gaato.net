@@ -1,0 +1,18 @@
+{
+  "exclude": [
+    "Pycord-Development/pycord",
+    "Rapptz/discord.py",
+    "gw31415/prime_factorization",
+    "gw31415/tex2jpg",
+    "mathlava/gartbot",
+    "nim-lang/packages",
+    "shinonome-inc/backend-final-assignment",
+    "shinonome-inc/backend-final-assignment-gakuto",
+    "shinonome-inc/prras",
+    "shinonome-inc/shokei-chan"
+  ],
+  "labels": {
+    "frameworks/kholidays": "KDE Frameworks/kholidays",
+    "X11:XOrg/Mesa": "openSUSE:Factory/Mesa"
+  }
+}

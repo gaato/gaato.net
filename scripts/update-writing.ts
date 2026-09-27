@@ -8,7 +8,7 @@ const root = process.cwd();
 const snapshotDirectory = join(root, 'content', 'writing');
 const xmlParser = new XMLParser({ ignoreAttributes: false, parseTagValue: false, trimValues: true });
 
-function jstDate(value: string | number): `${number}-${number}-${number}` {
+export function jstDate(value: string | number): `${number}-${number}-${number}` {
 	const date = typeof value === 'number' ? new Date(value) : new Date(value);
 	if (Number.isNaN(date.valueOf())) throw new Error(`invalid publication date: ${value}`);
 	return new Intl.DateTimeFormat('en-CA', {
@@ -25,7 +25,7 @@ function textValue(value: unknown): string {
 	return '';
 }
 
-function asArray<T>(value: T | readonly T[] | undefined): readonly T[] {
+export function asArray<T>(value: T | readonly T[] | undefined): readonly T[] {
 	if (value === undefined) return [];
 	return Array.isArray(value) ? value : [value as T];
 }

@@ -1,5 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
+import { directoryEntries } from '../../src/lib/site/content';
 import { collectBrowserProblems, pageRoutes, postSlugs } from './helpers';
 
 for (const route of pageRoutes) {
@@ -99,83 +100,34 @@ test('the primary navigation links to the separate Lab site', async ({ page }) =
 	await expect(page.locator('section#experiment')).toHaveCount(0);
 });
 
-test('the home page links the openSUSE packages I package', async ({ page }) => {
-	await page.goto('/', { waitUntil: 'networkidle' });
+for (const [section, heading, previous] of [
+	['package', 'I package', 'maintain'],
+	['contributed', 'I contributed to', 'package']
+] as const) {
+	test(`the home page lists the ${section} snapshot`, async ({ page }) => {
+		await page.goto('/', { waitUntil: 'networkidle' });
 
-	const section = page.locator('section#package');
-	await expect(page.locator('section#maintain + section#package')).toBeVisible();
-	await expect(page.locator('section#package + section#contributed')).toBeVisible();
-	await expect(section.getByRole('heading', { name: 'I package' })).toBeVisible();
-	await expect(page.locator('section#maintain').getByRole('link')).toHaveText([
-		'CodeRunBot',
-		'discord.mbt'
-	]);
-
-	const packages = ['karukan', 'x11docker', 'ghq'] as const;
-	await expect(section.getByRole('link')).toHaveText(
-		packages.map((name) => `openSUSE:Factory/${name}`)
-	);
-	for (const name of packages) {
-		await expect(
-			section.getByRole('link', { name: `openSUSE:Factory/${name}`, exact: true })
-		).toHaveAttribute('href', `https://build.opensuse.org/package/show/openSUSE%3AFactory/${name}`);
-	}
-});
-
-test('the home page links representative upstream contributions', async ({ page }) => {
-	await page.goto('/', { waitUntil: 'networkidle' });
-
-	const section = page.locator('section#contributed');
-	const contributions = [
-		{
-			name: 'openSUSE/sdbootutil',
-			href: 'https://github.com/openSUSE/sdbootutil/pulls?q=is%3Apr+is%3Amerged+author%3Agaato'
-		},
-		{
-			name: 'openSUSE/opi',
-			href: 'https://github.com/openSUSE/opi/pulls?q=is%3Apr+is%3Amerged+author%3Agaato'
-		},
-		{
-			name: 'openSUSE:Factory/Mesa',
-			href: 'https://build.opensuse.org/request/show/1376056'
-		},
-		{
-			name: 'repology/repology-rules',
-			href: 'https://github.com/repology/repology-rules/pulls?q=is%3Apr+is%3Amerged+author%3Agaato'
-		},
-		{
-			name: 'moonbitlang/async',
-			href: 'https://github.com/moonbitlang/async/pulls?q=is%3Apr+is%3Amerged+author%3Agaato'
-		},
-		{
-			name: 'moonbitlang/moon',
-			href: 'https://github.com/moonbitlang/moon/pulls?q=is%3Apr+is%3Amerged+author%3Agaato'
-		},
-		{
-			name: 'aquaproj/aqua-registry',
-			href:
-				'https://github.com/aquaproj/aqua-registry/pulls?q=is%3Apr+is%3Amerged+author%3Agaato'
-		},
-		{
-			name: 'KDE Frameworks/kholidays',
-			href:
-				'https://invent.kde.org/frameworks/kholidays/-/merge_requests/?sort=created_date&state=merged&author_username=gaato&first_page_size=20'
-		},
-		{
-			name: 'purpleblueslime/a',
-			href: 'https://github.com/purpleblueslime/a/pulls?q=is%3Apr+is%3Amerged+author%3Agaato'
+		const locator = page.locator(`section#${section}`);
+		const entries = directoryEntries[section];
+		expect(entries.length).toBeGreaterThan(0);
+		await expect(page.locator(`section#${previous} + section#${section}`)).toBeVisible();
+		await expect(locator.getByRole('heading', { name: heading })).toBeVisible();
+		await expect(locator.getByRole('link')).toHaveText(entries.map((entry) => entry.label));
+		for (const entry of entries) {
+			await expect(locator.getByRole('link', { name: entry.label, exact: true })).toHaveAttribute(
+				'href',
+				entry.href!
+			);
 		}
-	] as const;
+	});
+}
 
-	await expect(section.getByRole('link')).toHaveText(
-		contributions.map((contribution) => contribution.name)
+test('the home page links the projects I maintain', async ({ page }) => {
+	await page.goto('/', { waitUntil: 'networkidle' });
+
+	await expect(page.locator('section#maintain').getByRole('link')).toHaveText(
+		directoryEntries.maintain.map((entry) => entry.label)
 	);
-	for (const contribution of contributions) {
-		await expect(section.getByRole('link', { name: contribution.name })).toHaveAttribute(
-			'href',
-			contribution.href
-		);
-	}
 });
 
 test('the home page lists representative collaborative projects', async ({ page }) => {
