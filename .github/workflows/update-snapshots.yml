@@ -1,4 +1,4 @@
-name: Refresh writing snapshots
+name: Refresh snapshots
 
 on:
   schedule:
@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: gaato-net-update-writing
+  group: gaato-net-update-snapshots
   cancel-in-progress: false
 
 env:
@@ -18,9 +18,21 @@ env:
 
 jobs:
   refresh:
-    name: Fetch snapshots and open a pull request
+    name: Refresh ${{ matrix.snapshot }} and open a pull request
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - snapshot: writing
+            paths: content/writing/*.json
+            branch: update-writing-snapshots
+            title: Refresh writing snapshots
+          - snapshot: contributions
+            paths: content/contributions/*.json
+            branch: update-contribution-snapshots
+            title: Refresh contribution snapshots
     steps:
       - name: Check out the repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -35,12 +47,16 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
-      # The updater writes every source it could fetch before reporting failures,
+      # The updaters write every source they could fetch before reporting failures,
       # so a partial refresh still becomes a pull request.
-      - name: Refresh writing snapshots
+      - name: Refresh snapshots
         id: update
         continue-on-error: true
-        run: bun run writing:update
+        env:
+          GITHUB_TOKEN: ${{ matrix.snapshot == 'contributions' && github.token || '' }}
+          OBS_PASSWORD: ${{ matrix.snapshot == 'contributions' && secrets.OBS_PASSWORD || '' }}
+          SNAPSHOT: ${{ matrix.snapshot }}
+        run: bun run "$SNAPSHOT:update"
 
       - name: Create an installation token
         id: app-token
@@ -54,29 +70,30 @@ jobs:
         uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
         with:
           token: ${{ steps.app-token.outputs.token }}
-          add-paths: content/writing/*.json
-          branch: update-writing-snapshots
+          add-paths: ${{ matrix.paths }}
+          branch: ${{ matrix.branch }}
           delete-branch: true
-          commit-message: Refresh writing snapshots
-          title: Refresh writing snapshots
+          commit-message: ${{ matrix.title }}
+          title: ${{ matrix.title }}
           body: |
-            Automated refresh of the external writing snapshots in `content/writing/`.
+            Automated refresh of `${{ matrix.paths }}`. It merges itself once "Verify and deploy" passes.
 
             Updater result: **${{ steps.update.outcome }}**. See the workflow run for per-source output.
 
       - name: Summarize
         env:
+          SNAPSHOT: ${{ matrix.snapshot }}
           UPDATE_OUTCOME: ${{ steps.update.outcome }}
           PR_URL: ${{ steps.pull-request.outputs.pull-request-url }}
           PR_OPERATION: ${{ steps.pull-request.outputs.pull-request-operation }}
         run: |
           {
-            echo "### Writing snapshots"
+            echo "### ${SNAPSHOT^} snapshots"
             echo
             echo "Updater: $UPDATE_OUTCOME"
             echo "Pull request: ${PR_OPERATION:-none} ${PR_URL}"
           } >> "$GITHUB_STEP_SUMMARY"
           if [[ "$UPDATE_OUTCOME" != "success" ]]; then
-            echo "::error::At least one writing source failed to refresh."
+            echo "::error::At least one $SNAPSHOT source failed to refresh."
             exit 1
           fi

@@ -1,0 +1,55 @@
+name: Merge verified snapshot PRs
+
+on:
+  workflow_run:
+    workflows: ["Verify and deploy"]
+    types: [completed]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gaato-net-automerge-${{ github.event.workflow_run.head_branch }}
+  cancel-in-progress: false
+
+jobs:
+  merge:
+    name: Merge the verified snapshot pull request
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.head_repository.full_name == github.repository &&
+      github.event.workflow_run.pull_requests[0].base.ref == 'main' &&
+      contains(fromJSON('["update-writing-snapshots", "update-contribution-snapshots"]'), github.event.workflow_run.head_branch)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Create an installation token
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          app-id: ${{ vars.WRITING_UPDATE_APP_ID }}
+          private-key: ${{ secrets.WRITING_UPDATE_APP_PRIVATE_KEY }}
+
+      # Merge only what the updater opened and only the exact commit that was verified.
+      - name: Merge the pull request
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          GH_REPO: ${{ github.repository }}
+          APP_SLUG: ${{ steps.app-token.outputs.app-slug }}
+          PR_NUMBER: ${{ github.event.workflow_run.pull_requests[0].number }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          read -r state author head < <(gh pr view "$PR_NUMBER" --json state,author,headRefOid \
+            --jq '[.state, .author.login, .headRefOid] | @tsv')
+          if [[ "$state" != "OPEN" || "$head" != "$HEAD_SHA" ]]; then
+            echo "PR #$PR_NUMBER is $state at $head, not the verified $HEAD_SHA; skipping."
+            exit 0
+          fi
+          # gh reports app authors as "app/<slug>".
+          if [[ "$author" != "app/$APP_SLUG" ]]; then
+            echo "::error::PR #$PR_NUMBER was opened by $author, not the snapshot updater."
+            exit 1
+          fi
+          gh pr merge "$PR_NUMBER" --squash --delete-branch --match-head-commit "$HEAD_SHA"
+          echo "Merged PR #$PR_NUMBER at $HEAD_SHA." >> "$GITHUB_STEP_SUMMARY"
