@@ -1,0 +1,31 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", "helpers:pinGitHubActionDigests", ":timezone(Asia/Tokyo)"],
+  "schedule": ["before 6am on friday"],
+  "rangeStrategy": "update-lockfile",
+  "minimumReleaseAge": "3 days",
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 6am on friday"]
+  },
+  "packageRules": [
+    {
+      "description": "Merge verified non-major updates without review; majors stay manual.",
+      "matchUpdateTypes": ["minor", "patch", "digest", "pin", "pinDigest", "lockFileMaintenance"],
+      "groupName": "non-major dependencies",
+      "automerge": true,
+      "automergeType": "pr",
+      "platformAutomerge": false
+    },
+    {
+      "description": "Keep Node types on the Node line pinned in mise.toml.",
+      "matchPackageNames": ["@types/node"],
+      "allowedVersions": "<25"
+    },
+    {
+      "description": "svelte-check does not support TypeScript 7 without --tsgo yet.",
+      "matchPackageNames": ["typescript"],
+      "allowedVersions": "<7"
+    }
+  ]
+}
