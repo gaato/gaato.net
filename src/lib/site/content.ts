@@ -78,6 +78,8 @@ export const directoryEntries: Readonly<
 
 export const elsewhere = [
 	{ label: 'GitHub', href: 'https://github.com/gaato' },
+	{ label: 'OBS', href: 'https://build.opensuse.org/users/gaato' },
+	{ label: 'LinkedIn', href: 'https://www.linkedin.com/in/gaato/' },
 	{ label: 'X @gaato__', href: 'https://x.com/gaato__' },
 	{ label: 'X @gaato11', href: 'https://x.com/gaato11' }
 ] as const;
