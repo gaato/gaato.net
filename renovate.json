@@ -10,6 +10,11 @@
   },
   "packageRules": [
     {
+      "description": "Lock file maintenance never passed the release-age wait (PR #49 stayed pending for a week), which defeats running it daily for transitive fixes.",
+      "matchUpdateTypes": ["lockFileMaintenance"],
+      "minimumReleaseAge": null
+    },
+    {
       "description": "Merge verified non-major updates without review; majors stay manual.",
       "matchUpdateTypes": ["minor", "patch", "digest", "pin", "pinDigest", "lockFileMaintenance"],
       "groupName": "non-major dependencies",
