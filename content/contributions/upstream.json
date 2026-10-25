@@ -1,5 +1,13 @@
 [
   {
+    "id": "moonbitlang-core",
+    "key": "moonbitlang/core",
+    "label": "moonbitlang/core",
+    "href": "https://github.com/moonbitlang/core/pulls?q=is%3Apr+is%3Amerged+author%3Agaato",
+    "lastDate": "2026-10-23",
+    "origin": "github"
+  },
+  {
     "id": "moonbitlang-async",
     "key": "moonbitlang/async",
     "label": "moonbitlang/async",
