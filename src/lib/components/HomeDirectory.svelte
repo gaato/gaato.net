@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { WritingItem } from '$lib/content/writing-types';
-	import { directoryEntries, sectionLabels, sectionOrder } from '$lib/site/content';
+	import type { WritingItem } from '#lib/content/writing-types.ts';
+	import { directoryEntries, sectionLabels, sectionOrder } from '#lib/site/content.ts';
 	import WritingList from './WritingList.svelte';
 
 	let { writing }: { writing: readonly WritingItem[] } = $props();

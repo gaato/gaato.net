@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import ErrorPage from '$lib/components/ErrorPage.svelte';
-	import PageMeta from '$lib/components/PageMeta.svelte';
+	import ErrorPage from '#lib/components/ErrorPage.svelte';
+	import PageMeta from '#lib/components/PageMeta.svelte';
 </script>
 
 <PageMeta

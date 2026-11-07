@@ -1,6 +1,6 @@
 <script lang="ts">
-	import HomeDirectory from '$lib/components/HomeDirectory.svelte';
-	import PageMeta from '$lib/components/PageMeta.svelte';
+	import HomeDirectory from '#lib/components/HomeDirectory.svelte';
+	import PageMeta from '#lib/components/PageMeta.svelte';
 
 	let { data } = $props();
 </script>

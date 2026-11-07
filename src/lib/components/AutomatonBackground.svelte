@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { AutomatonBackgroundController } from '$lib/automaton/controller';
-	import { AUTOMATON_RULES } from '$lib/automaton/rules';
+	import { AutomatonBackgroundController } from '#lib/automaton/controller.ts';
+	import { AUTOMATON_RULES } from '#lib/automaton/rules.ts';
 	import {
 		readPausePreference,
 		writePausePreference,
 		type StorageLike
-	} from '$lib/automaton/storage';
+	} from '#lib/automaton/storage.ts';
 
 	type Props = {
 		paused?: boolean;

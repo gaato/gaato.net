@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { LocalPost } from '$lib/server/content/posts';
+	import type { LocalPost } from '#lib/server/content/posts.ts';
 	import PageHeader from './PageHeader.svelte';
 
 	let { post }: { post: LocalPost } = $props();

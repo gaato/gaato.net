@@ -7,7 +7,7 @@
 		writeColorSchemePreference,
 		type ColorScheme,
 		type StorageLike
-	} from '$lib/theme/color-scheme';
+	} from '#lib/theme/color-scheme.ts';
 
 	const themeColors: Record<ColorScheme, string> = {
 		light: '#f4f1e8',

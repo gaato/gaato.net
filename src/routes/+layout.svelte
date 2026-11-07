@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import AutomatonBackground from '$lib/components/AutomatonBackground.svelte';
-	import ColorSchemeToggle from '$lib/components/ColorSchemeToggle.svelte';
-	import { elsewhere } from '$lib/site/content';
+	import AutomatonBackground from '#lib/components/AutomatonBackground.svelte';
+	import ColorSchemeToggle from '#lib/components/ColorSchemeToggle.svelte';
+	import { elsewhere } from '#lib/site/content.ts';
 	import '../app.css';
 
 	let { children } = $props();

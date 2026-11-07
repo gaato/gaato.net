@@ -1,7 +1,7 @@
 import packagesData from '../../../content/contributions/packages.json' with { type: 'json' };
 import upstreamData from '../../../content/contributions/upstream.json' with { type: 'json' };
-import type { ContributionEntry } from '$lib/content/contribution-types';
-import type { WritingItem } from '$lib/content/writing-types';
+import type { ContributionEntry } from '#lib/content/contribution-types.ts';
+import type { WritingItem } from '#lib/content/writing-types.ts';
 
 const packageSnapshot = packagesData as readonly ContributionEntry[];
 const upstreamSnapshot = upstreamData as readonly ContributionEntry[];
