@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { WritingItem } from '$lib/content/writing-types';
+	import type { WritingItem } from '#lib/content/writing-types.ts';
 	import PageHeader from './PageHeader.svelte';
 	import WritingList from './WritingList.svelte';
 

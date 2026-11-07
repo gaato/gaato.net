@@ -30,7 +30,7 @@
 		"@types/node": "^24.13.6",
 		"fast-xml-parser": "^5.11.1",
 		"marked": "^18.0.13",
-		"svelte": "^5.57.1",
+		"svelte": "^5.57.2",
 		"svelte-check": "^4.7.6",
 		"typescript": "^6.0.3",
 		"vite": "^8.3.0",
@@ -39,7 +39,6 @@
 		"yaml": "^2.9.1"
 	},
 	"overrides": {
-		"cookie": "^0.7.2",
 		"nanoid": "^3.3.19",
 		"postcss": "^8.5.28"
 	},
@@ -50,5 +49,8 @@
 	"dependencies": {
 		"katex": "^0.19.0",
 		"marked-katex-extension": "^5.1.13"
+	},
+	"imports": {
+		"#lib/*": "./src/lib/*"
 	}
 }

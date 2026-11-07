@@ -10,7 +10,7 @@ import {
 	type WritingItem,
 	type WritingOverrides,
 	type WritingSource
-} from '$lib/content/writing-types';
+} from '#lib/content/writing-types.ts';
 import { getLocalPosts } from './posts';
 
 const sourceOrder: Readonly<Record<WritingSource, number>> = {

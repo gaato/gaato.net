@@ -1,9 +1,9 @@
 import { describe, expect, test } from 'vitest';
 import overrides from '../../../../content/writing/overrides.json';
-import { publishedLocalPostSlugs } from '$lib/content/local-post-manifest';
+import { publishedLocalPostSlugs } from '#lib/content/local-post-manifest.ts';
 import { getLocalPost, getLocalPosts, parseLocalPost } from './posts';
 import { getWritingItems, mergeWritingItems } from './writing';
-import type { WritingItem, WritingOverrides } from '$lib/content/writing-types';
+import type { WritingItem, WritingOverrides } from '#lib/content/writing-types.ts';
 
 const writingSnapshots = import.meta.glob<readonly WritingItem[]>(
 	['/content/writing/*.json', '!/content/writing/overrides.json'],

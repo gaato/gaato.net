@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit';
-import { getLocalPost, getLocalPosts } from '$lib/server/content/posts';
+import { getLocalPost, getLocalPosts } from '#lib/server/content/posts.ts';
 
 export function entries() {
 	return getLocalPosts().map((post) => ({ slug: post.slug }));

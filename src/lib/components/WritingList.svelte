@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { WritingItem } from '$lib/content/writing-types';
-	import { sourceNames, writingHref } from '$lib/site/content';
+	import type { WritingItem } from '#lib/content/writing-types.ts';
+	import { sourceNames, writingHref } from '#lib/site/content.ts';
 
 	let { items }: { items: readonly WritingItem[] } = $props();
 </script>

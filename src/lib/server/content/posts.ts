@@ -1,8 +1,8 @@
 import { Marked } from 'marked';
 import markedKatex from 'marked-katex-extension';
 import { parse as parseYaml } from 'yaml';
-import { publishedLocalPostSlugs } from '$lib/content/local-post-manifest';
-import type { DateString } from '$lib/content/writing-types';
+import { publishedLocalPostSlugs } from '#lib/content/local-post-manifest.ts';
+import type { DateString } from '#lib/content/writing-types.ts';
 
 export type LocalPost = {
 	readonly slug: string;

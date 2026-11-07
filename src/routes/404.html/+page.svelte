@@ -1,6 +1,6 @@
 <script lang="ts">
-	import ErrorPage from '$lib/components/ErrorPage.svelte';
-	import PageMeta from '$lib/components/PageMeta.svelte';
+	import ErrorPage from '#lib/components/ErrorPage.svelte';
+	import PageMeta from '#lib/components/PageMeta.svelte';
 </script>
 
 <PageMeta

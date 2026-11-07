@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Article from '$lib/components/Article.svelte';
-	import PageMeta from '$lib/components/PageMeta.svelte';
+	import Article from '#lib/components/Article.svelte';
+	import PageMeta from '#lib/components/PageMeta.svelte';
 
 	let { data } = $props();
 </script>

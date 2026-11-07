@@ -1,5 +1,5 @@
-import { getLocalPosts } from '$lib/server/content/posts';
-import { buildFeedXml } from '$lib/server/content/xml';
+import { getLocalPosts } from '#lib/server/content/posts.ts';
+import { buildFeedXml } from '#lib/server/content/xml.ts';
 import type { RequestHandler } from './$types';
 
 export const prerender = true;
